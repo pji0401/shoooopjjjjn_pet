@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart'; // import 'package:flutter/cupertino.dart'; // import 'package:flutter/widgets.dart';
 import '../config/route/index.dart';
 
-// MARK: MaterialApp - 기본적으로 머테리얼 앱 구조를 채택합니다. 필요에 따라 내부 위젯만 Platform.isIOS/Platform.isAndroid 조건으로 분기 처리합니다.
+// 04.25 - NOTE: MaterialApp - 기본적으로 머테리얼 앱 구조를 채택합니다. 필요에 따라 내부 위젯만 Platform.isIOS/Platform.isAndroid 조건으로 분기 처리합니다.
 class App extends StatelessWidget {
   const App({super.key});
 
@@ -10,7 +10,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Layout Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: Color(0xff4A9BF6), // 04.29 - NOTE : Color hex로 사용 시, Color(0xff{#hex})
       ),
       initialRoute: RouteName.root,
       routes: namedRoutes,
@@ -18,7 +18,7 @@ class App extends StatelessWidget {
   }
 }
 
-// MARK: CupertinoApp
+// 04.25 - NOTE: CupertinoApp
 // class App extends StatelessWidget {
 //   const App({super.key});
 
@@ -35,7 +35,7 @@ class App extends StatelessWidget {
 //   }
 // }
 
-// MARK: WidgetsApp
+// 04.25 - NOTE: WidgetsApp
 // class App extends StatelessWidget {
 //   const App({super.key});
 

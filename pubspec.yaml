@@ -1,5 +1,5 @@
 name: pawprints
-description: "A new Flutter project."
+description: 'A new Flutter project.'
 publish_to: 'none'
 
 version: 1.0.0+1
@@ -53,7 +53,7 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
-  assets:
+  assets: # 04.29 - NOTE: figma export 시 SVG 사용 권장
     - assets/datas/
     - assets/fonts/
     - assets/icons/
@@ -75,3 +75,17 @@ flutter:
           weight: 600
         - asset: assets/fonts/Pretendard-Bold.ttf
           weight: 700
+
+flutter_launcher_icons:
+  android: 'launcher_icon'
+  ios: true
+  image_path: 'assets/icons/app_icon.png'
+# 04.29 - NOTE: flutter pub run flutter_launcher_icons
+
+flutter_native_splash:
+  background_image: assets/datas/splash_background.png
+  image: assets/datas/splash_image.png
+  android: true
+  ios: true
+  fullscreen: true
+# 04.29 - NOTE: flutter pub run flutter_native_splash:remove / flutter pub run flutter_native_splash:create
