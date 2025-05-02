@@ -8,10 +8,11 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Layout Demo',
+      // title: 'Flutter Layout Demo',
       theme: ThemeData(
-        primaryColor: Color(0xff4A9BF6), // 04.29 - NOTE : Color hex로 사용 시, Color(0xff{#hex})
+        primaryColor: Color(0xff070707/*0xff4A9BF6*/), // 04.29 - NOTE : Color hex로 사용 시, Color(0xff{#hex})
       ),
+      debugShowCheckedModeBanner: false,
       initialRoute: RouteName.root,
       routes: namedRoutes,
     );
