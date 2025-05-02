@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart'; // import 'package:flutter/cupertino.dart'; // import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:pawprints/screens/base_scaffold.dart';
+import 'package:pawprints/screens/chat_view.dart';
+import 'package:pawprints/screens/login_view.dart';
 
 // 04.25 - NOTE: MaterialApp
 class RootView extends StatefulWidget {
-  const RootView({super.key, required this.title});
-
-  final String title;
+  const RootView({super.key});
 
   @override
   State<RootView> createState() => _RootViewState();
@@ -17,7 +18,7 @@ class _RootViewState extends State<RootView> {
   static const List<Widget> _widgetOptions = <Widget>[
     Text('Home View'),
     Text('Community View'),
-    Text('AIChatBot View'),
+    ChatScreen(), // Text('AIChatBot View'),
     Text('Care View'),
     Text('My View'),
   ];
@@ -30,14 +31,11 @@ class _RootViewState extends State<RootView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return BaseScaffold(
       body: Stack(
         children: [
           Column(
             children: [
-              AppBar(
-                title: Text(widget.title),
-              ),
               Expanded(
                 child: Center(
                   child: _widgetOptions[_selectedIndex],
