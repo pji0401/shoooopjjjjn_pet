@@ -12,14 +12,22 @@
 .swiftpm/
 migrate_working_dir/
 
-# IntelliJ related
+
+# IDE specific files
+.idea/
+.vscode/
 *.iml
 *.ipr
 *.iws
-.idea/
-
-# VSCode related
-.vscode/
+app*.iml
+ios/.idea/
+ios/Flutter/ephemeral/
+ios/Flutter/app.framework
+ios/Flutter/flutter_assets/
+ios/Flutter/.last_build_id
+macos/Flutter/ephemeral/
+windows/flutter/ephemeral/
+linux/flutter/ephemeral/
 
 # Flutter/Dart/Pub related
 **/doc/api/
@@ -69,3 +77,12 @@ app.*.symbols
 **/ios/Flutter/flutter_export_environment.sh
 **/ios/ServiceDefinitions.json
 **/ios/Runner/GeneratedPluginRegistrant.*
+
+# macOS specific files
+macos/Pods/
+macos/.symlinks/
+macos/Runner.xcworkspace/xcuserdata/
+macos/Flutter/GeneratedPluginRegistrant.swift 
+
+# Android C/C++ NDK build intermediates
+android/app/.cxx/
