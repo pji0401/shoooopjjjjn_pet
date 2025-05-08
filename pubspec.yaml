@@ -56,10 +56,13 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
-  assets: # 04.29 - NOTE: figma export 시 SVG 사용 권장
+  # 04.29 - NOTE: figma export 시 SVG 사용 권장
+  # 05.08 - NOTE: images <- 커뮤니티용 기본 프로필 사진 png 등록 필요로 생성
+  assets: 
     - assets/datas/
     - assets/fonts/
     - assets/icons/
+    - assets/images/
 
   fonts:
     - family: Pretendard

@@ -17,7 +17,7 @@ class _RootViewState extends State<RootView> {
 
   static const List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
-    CommunityView(),
+    CommunityScreen(),
     ChatScreen(),
     CareScreen(),
     MyScreen(),
