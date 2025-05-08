@@ -2,6 +2,7 @@ import 'package:flutter/material.dart'; // import 'package:flutter/cupertino.dar
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pawprints/screens/base_scaffold.dart';
 import 'package:pawprints/screens/chat_view.dart';
+import 'package:pawprints/screens/community_view.dart';
 import 'package:pawprints/screens/login_view.dart';
 
 // 04.25 - NOTE: MaterialApp
@@ -12,12 +13,13 @@ class RootView extends StatefulWidget {
   State<RootView> createState() => _RootViewState();
 }
 
+// 05.08 - NOTE: root_view에 CommunityView 연결 및 community_view.dart 파일 생성 완료.
 class _RootViewState extends State<RootView> {
   int _selectedIndex = 0;
 
   static const List<Widget> _widgetOptions = <Widget>[
     Text('Home View'),
-    Text('Community View'),
+    CommunityView(),
     ChatScreen(), // Text('AIChatBot View'),
     Text('Care View'),
     Text('My View'),
@@ -58,11 +60,15 @@ class _RootViewState extends State<RootView> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  _buildNavItem('assets/icons/home_off.svg', 'assets/icons/home_on.svg', '홈', 0),
-                  _buildNavItem('assets/icons/community_off.svg', 'assets/icons/community_on.svg', '커뮤니티', 1),
+                  _buildNavItem('assets/icons/home_off.svg',
+                      'assets/icons/home_on.svg', '홈', 0),
+                  _buildNavItem('assets/icons/community_off.svg',
+                      'assets/icons/community_on.svg', '커뮤니티', 1),
                   SizedBox(width: 67),
-                  _buildNavItem('assets/icons/care_off.svg', 'assets/icons/care_on.svg', '케어', 3),
-                  _buildNavItem('assets/icons/my_off.svg', 'assets/icons/my_on.svg', '마이', 4),
+                  _buildNavItem('assets/icons/care_off.svg',
+                      'assets/icons/care_on.svg', '케어', 3),
+                  _buildNavItem('assets/icons/my_off.svg',
+                      'assets/icons/my_on.svg', '마이', 4),
                 ],
               ),
             ),
@@ -72,15 +78,16 @@ class _RootViewState extends State<RootView> {
             left: 0,
             right: 0,
             child: Center(
-              child: _buildNavItem('assets/icons/chatbot_off.svg', 'assets/icons/chatbot_on.svg', 'AI 챗봇', 2)
-            ),
+                child: _buildNavItem('assets/icons/chatbot_off.svg',
+                    'assets/icons/chatbot_on.svg', 'AI 챗봇', 2)),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildNavItem(String assetNameOff, String assetNameOn, String label, int index) {
+  Widget _buildNavItem(
+      String assetNameOff, String assetNameOn, String label, int index) {
     return GestureDetector(
       onTap: () => _onItemTapped(index),
       child: Column(
@@ -97,7 +104,11 @@ class _RootViewState extends State<RootView> {
             label,
             style: TextStyle(
               fontSize: 12,
-              color: _selectedIndex == 2 ? Color(0xff070707) : _selectedIndex == index ? Color(0xff135DB2) : Color(0xff070707),
+              color: _selectedIndex == 2
+                  ? Color(0xff070707)
+                  : _selectedIndex == index
+                      ? Color(0xff135DB2)
+                      : Color(0xff070707),
             ),
           ),
         ],
