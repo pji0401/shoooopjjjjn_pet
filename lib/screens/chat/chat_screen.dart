@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:pawprints/screens/base_scaffold.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:pawprints/widgets/index.dart';
 
 class ChatScreen extends StatefulWidget {
-  const ChatScreen({Key? key}) : super(key: key);
+  const ChatScreen({super.key});
 
-  final String title = "AI 챗봇";
+  final String title = 'AI 챗봇 이름';
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -14,10 +15,10 @@ class _ChatScreenState extends State<ChatScreen> {
   final List<ChatMessage> _messages = [
     ChatMessage(text: '안녕하세요!', isSentByMe: false, time: '10:00 AM'),
     ChatMessage(
-        text:
-            '안녕하세요! 어떻게 도와드릴까요? 안녕하세요! 어떻게 도와드릴까요? 안녕하세요! 어떻게 도와드릴까요? 안녕하세요! 어떻게 도와드릴까요? 안녕하세요! 어떻게 도와드릴까요? 안녕하세요! 어떻게 도와드릴까요? 안녕하세요! 어떻게 도와드릴까요?',
+        text: '안녕하세요! 어떻게 도와드릴까요?',
         isSentByMe: true,
-        time: '10:01 AM'),
+        time: '10:01 AM'
+    ),
   ];
 
   final TextEditingController _messageController = TextEditingController();
@@ -45,26 +46,48 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
-      title: "AI 챗봇",
-      leadingItems: [
-      ],
-      trailingItems: [
-      ],
+      title: widget.title, // FIXME: Custom
+      // leadingItem: SvgPicture.asset('assets/icons/chevron_left.svg', width: 24, height: 24),
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Color(0xFFFFFFFF), // 0%
-              Color(0xFFEFF8EA), // 50%
-              Color(0xFFE1E9FD), // 100%
+              Color(0xFFFFFFFF),
+              Color(0xFFEFF8EA),
+              Color(0xFFE1E9FD),
             ],
             stops: [0.0, 0.5, 1.0],
           ),
         ),
         child: Column(
           children: [
+            Padding(
+              padding:
+              const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: _messageController,
+                      decoration: InputDecoration(
+                        hintText: '메시지를 입력하세요.',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 15.0),
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    icon: SvgPicture.asset('assets/icons/send.svg'),
+                    onPressed: _sendMessage,
+                  ),
+                ],
+              ),
+            ),
             Expanded(
               child: ListView.builder(
                 padding: const EdgeInsets.all(10.0),
@@ -122,33 +145,6 @@ class _ChatScreenState extends State<ChatScreen> {
                     ),
                   );
                 },
-              ),
-            ),
-            Padding(
-              padding:
-              const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: _messageController,
-                      decoration: InputDecoration(
-                        hintText: '메시지를 입력하세요...',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                        contentPadding:
-                        const EdgeInsets.symmetric(horizontal: 15.0),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  // 전송 버튼
-                  IconButton(
-                    icon: const Icon(Icons.send, color: Color(0xFFFE7442)),
-                    onPressed: _sendMessage,
-                  ),
-                ],
               ),
             ),
           ],
