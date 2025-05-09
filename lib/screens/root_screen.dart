@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart'; // import 'package:flutter/cupertino.dart'; // import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:pawprints/screens/base_scaffold.dart';
-import 'package:pawprints/screens/chat_view.dart';
-import 'package:pawprints/screens/community_view.dart';
-import 'package:pawprints/screens/login_view.dart';
+import 'package:pawprints/screens/index.dart';
+import 'package:pawprints/widgets/index.dart';
 
 // 04.25 - NOTE: MaterialApp
 class RootView extends StatefulWidget {
@@ -18,11 +16,11 @@ class _RootViewState extends State<RootView> {
   int _selectedIndex = 0;
 
   static const List<Widget> _widgetOptions = <Widget>[
-    Text('Home View'),
-    CommunityView(),
-    ChatScreen(), // Text('AIChatBot View'),
-    Text('Care View'),
-    Text('My View'),
+    HomeScreen(),
+    CommunityScreen(),
+    ChatScreen(),
+    CareScreen(),
+    MyScreen(),
   ];
 
   void _onItemTapped(int index) {

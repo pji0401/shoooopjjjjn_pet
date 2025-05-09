@@ -1,21 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pawprints/screens/base_scaffold.dart';
-
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: LoginScreen(),
-      debugShowCheckedModeBanner: false,
-    );
-  }
-}
+import 'package:pawprints/widgets/base_scaffold.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

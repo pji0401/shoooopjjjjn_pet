@@ -1,0 +1,31 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:pawprints/widgets/index.dart';
+
+class MyScreen extends StatefulWidget {
+  const MyScreen({super.key});
+
+  final String title = '마이';
+
+  @override
+  _MyScreenState createState() => _MyScreenState();
+}
+
+class _MyScreenState extends State<MyScreen> {
+
+  @override
+  Widget build(BuildContext context) {
+    return BaseScaffold(
+      title: widget.title,
+      // leadingItem: SvgPicture.asset('assets/icons/chevron_left.svg'),
+      trailingItems: [],
+      body: Center(
+        child: CustomText(
+          '커뮤니티',
+          fontSize: 24,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
+  }
+}

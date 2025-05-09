@@ -41,10 +41,11 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  # 05.02 - NOTE: flutter packages pub run build_runner build
+  build_runner: ^2.4.15
   flutter_lints: ^5.0.0
   riverpod_lint: ^2.3.12
   custom_lint: ^0.6.0
-  build_runner: ^2.4.15
   json_serializable: ^6.9.0
   flutter_launcher_icons: ^0.14.3
   flutter_native_splash: ^2.4.6
@@ -55,10 +56,13 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
-  assets: # 04.29 - NOTE: figma export 시 SVG 사용 권장
+  # 04.29 - NOTE: figma export 시 SVG 사용 권장
+  # 05.08 - NOTE: images <- 커뮤니티용 기본 프로필 사진 png 등록 필요로 생성
+  assets: 
     - assets/datas/
     - assets/fonts/
     - assets/icons/
+    - assets/images/
 
   fonts:
     - family: Pretendard

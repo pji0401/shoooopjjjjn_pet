@@ -6,11 +6,12 @@ class BaseResponse<T> {
   String code;
   T data;
 
-  BaseResponse(
-      {required this.isSuccess,
-        required this.code,
-        required this.message,
-        required this.data});
+  BaseResponse({
+    required this.isSuccess,
+    required this.code,
+    required this.message,
+    required this.data,
+  });
 
   factory BaseResponse.fromJson(Map<String, dynamic> json, BaseObject target) {
     return BaseResponse(
