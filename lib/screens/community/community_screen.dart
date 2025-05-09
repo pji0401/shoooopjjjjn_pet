@@ -125,6 +125,51 @@ class _CommunityScreenState extends State<CommunityScreen>
           ),
         ],
       ),
+      floatingActionButton: CreatePostButton(
+        onPressed: () {
+          AppLogger.d('글 작성하기 버튼 클릭');
+          // Navigator.push(context, MaterialPageRoute(builder: (context) => CreatePostScreen()));
+        },
+        backgroundColor: primaryColor,
+      ),
+    );
+  }
+}
+
+class CreatePostButton extends StatelessWidget {
+  final VoidCallback? onPressed;
+  final Color backgroundColor;
+  final double elevation;
+  final double bottomMargin;
+
+  const CreatePostButton({
+    super.key,
+    this.onPressed,
+    this.backgroundColor = Colors.blue,
+    this.elevation = 4.0,
+    this.bottomMargin = 64.0,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: bottomMargin), // 버튼을 위로 올리기 위한 패딩
+      child: FloatingActionButton(
+        onPressed: onPressed ??
+            () {
+              AppLogger.d('글 작성하기 버튼 클릭');
+              // 기본 동작 구현
+            },
+        backgroundColor: backgroundColor,
+        elevation: elevation,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+        ),
+        child: const Icon(
+          Icons.edit,
+          color: Colors.white,
+        ),
+      ),
     );
   }
 }
