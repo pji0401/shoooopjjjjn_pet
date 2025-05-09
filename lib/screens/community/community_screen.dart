@@ -127,8 +127,8 @@ class _CommunityScreenState extends State<CommunityScreen>
       ),
       floatingActionButton: CreatePostButton(
         onPressed: () {
-          AppLogger.d('글 작성하기 버튼 클릭');
-          // Navigator.push(context, MaterialPageRoute(builder: (context) => CreatePostScreen()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => CreatePostScreen()));
         },
         backgroundColor: primaryColor,
       ),
@@ -168,6 +168,75 @@ class CreatePostButton extends StatelessWidget {
         child: const Icon(
           Icons.edit,
           color: Colors.white,
+        ),
+      ),
+    );
+  }
+}
+
+// 05.09 - WIP: 임시 레이아웃, 레퍼런스 디자인 적용 중
+class CreatePostScreen extends StatefulWidget {
+  const CreatePostScreen({super.key});
+
+  @override
+  State<CreatePostScreen> createState() => _CreatePostScreenState();
+}
+
+class _CreatePostScreenState extends State<CreatePostScreen> {
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _contentController = TextEditingController();
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _contentController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('글 작성하기'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              // 글 작성 완료 로직
+              AppLogger.d('글 작성 완료: ${_titleController.text}');
+              Navigator.pop(context);
+            },
+            child: const Text('완료'),
+          ),
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: _titleController,
+              decoration: const InputDecoration(
+                hintText: '제목을 입력하세요',
+                border: InputBorder.none,
+              ),
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const Divider(),
+            Expanded(
+              child: TextField(
+                controller: _contentController,
+                decoration: const InputDecoration(
+                  hintText: '내용을 입력하세요',
+                  border: InputBorder.none,
+                ),
+                maxLines: null,
+                keyboardType: TextInputType.multiline,
+              ),
+            ),
+          ],
         ),
       ),
     );
