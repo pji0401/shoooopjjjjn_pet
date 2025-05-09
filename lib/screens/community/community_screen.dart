@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pawprints/widgets/index.dart';
-
-final logger = Logger();
+import 'package:pawprints/services/app_logger.dart';
 
 class CommunityScreen extends StatefulWidget {
   const CommunityScreen({super.key});
@@ -60,7 +58,7 @@ class _CommunityScreenState extends State<CommunityScreen>
             ),
             onPressed: () {
               // 05.08 - TODO: 검색 기능 구현
-              logger.d('돋보기 아이콘 클릭');
+              AppLogger.d('돋보기 아이콘 클릭');
             },
           ),
           IconButton(
@@ -75,7 +73,7 @@ class _CommunityScreenState extends State<CommunityScreen>
             ), // 또는 Icons.person_outline
             onPressed: () {
               // 05.08 - TODO: 내 정보 화면으로 이동 또는 관련 기능 구현
-              logger.d('내정보 아이콘 클릭');
+              AppLogger.d('내정보 아이콘 클릭');
             },
           ),
         ],
