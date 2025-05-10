@@ -1,18 +1,18 @@
-import 'package:flutter/material.dart'; // import 'package:flutter/cupertino.dart'; // import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pawprints/screens/index.dart';
 import 'package:pawprints/widgets/index.dart';
 
 // 04.25 - NOTE: MaterialApp
-class RootView extends StatefulWidget {
-  const RootView({super.key});
+class RootScreen extends StatefulWidget {
+  const RootScreen({super.key});
 
   @override
-  State<RootView> createState() => _RootViewState();
+  State<RootScreen> createState() => _RootViewState();
 }
 
 // 05.08 - NOTE: root_view에 CommunityView 연결 및 community_view.dart 파일 생성 완료.
-class _RootViewState extends State<RootView> {
+class _RootViewState extends State<RootScreen> {
   int _selectedIndex = 0;
 
   static const List<Widget> _widgetOptions = <Widget>[
@@ -20,7 +20,7 @@ class _RootViewState extends State<RootView> {
     CommunityScreen(),
     ChatScreen(),
     CareScreen(),
-    MyScreen(),
+    LoginScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -114,126 +114,3 @@ class _RootViewState extends State<RootView> {
     );
   }
 }
-
-// 04.25 - NOTE: CupertinoApp
-// class CupertinoRootView extends StatefulWidget {
-//   const CupertinoRootView({super.key, required this.title});
-
-//   final String title;
-
-//   @override
-//   State<CupertinoRootView> createState() => _CupertinoRootViewState();
-// }
-
-// class _CupertinoRootViewState extends State<CupertinoRootView> {
-//   int _selectedIndex = 0;
-
-//   static const List<Widget> _widgetOptions = <Widget>[
-//     Text('Home View'),
-//     Text('Community View'),
-//     Text('AIChatBot View'),
-//     Text('Care View'),
-//     Text('My View'),
-//   ];
-
-//   void _onItemTapped(int index) {
-//     setState(() {
-//       _selectedIndex = index;
-//     });
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return CupertinoPageScaffold(
-//       navigationBar: CupertinoNavigationBar(
-//         middle: Text(widget.title),
-//       ),
-//       child: SafeArea(
-//         top: false,
-//         bottom: false,
-//         child: Column(
-//           children: [
-//             Expanded(
-//               child: _widgetOptions[_selectedIndex],
-//             ),
-//             CupertinoTabBar(
-//               currentIndex: _selectedIndex,
-//               onTap: _onItemTapped,
-//               items: <BottomNavigationBarItem>[
-//                 BottomNavigationBarItem(
-//                   icon: SvgPicture.asset(
-//                     'assets/icons/home_off.svg',
-//                     width: 20,
-//                     height: 20,
-//                   ),
-//                   activeIcon: SvgPicture.asset(
-//                     'assets/icons/home_off.svg',
-//                     width: 20,
-//                     height: 20,
-//                   ),
-//                   label: '홈',
-//                 ),
-//                 BottomNavigationBarItem(
-//                   icon: SvgPicture.asset(
-//                     'assets/icons/community.svg',
-//                     width: 20,
-//                     height: 20,
-//                   ),
-//                   activeIcon: SvgPicture.asset(
-//                     'assets/icons/community.svg',
-//                     width: 25,
-//                     height: 25,
-//                   ),
-//                   label: '커뮤니티',
-//                 ),
-//                 BottomNavigationBarItem(
-//                   icon: Icon(CupertinoIcons.ellipsis),
-//                   label: 'AI 챗봇',
-//                 ),
-//                 BottomNavigationBarItem(
-//                   icon: SvgPicture.asset(
-//                     'assets/icons/care_off.svg',
-//                     width: 20,
-//                     height: 20,
-//                   ),
-//                   activeIcon: SvgPicture.asset(
-//                     'assets/icons/care_off.svg',
-//                     width: 20,
-//                     height: 20,
-//                   ),
-//                   label: '케어',
-//                 ),
-//                 BottomNavigationBarItem(
-//                   icon: SvgPicture.asset(
-//                     'assets/icons/my_off.svg',
-//                     width: 20,
-//                     height: 20,
-//                   ),
-//                   activeIcon: SvgPicture.asset(
-//                     'assets/icons/my_off.svg',
-//                     width: 20,
-//                     height: 20,
-//                   ),
-//                   label: '마이',
-//                 ),
-//               ],
-//               activeColor: CupertinoColors.activeBlue,
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// 04.25 - NOTE: WidgetsApp
-// class WidgetsRootView extends StatelessWidget {
-//   const WidgetsRootView({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Center(
-//       child: Text('WidgetsApp Home'),
-//     );
-//   }
-// }

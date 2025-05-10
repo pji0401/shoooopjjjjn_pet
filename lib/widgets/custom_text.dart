@@ -7,6 +7,7 @@ class CustomText extends StatelessWidget {
   final double fontSize;
   final FontWeight fontWeight;
   final double height;
+  final double letterSpacing;
 
   const CustomText(
       this.text, {
@@ -16,6 +17,7 @@ class CustomText extends StatelessWidget {
         this.fontSize = 12,
         this.fontWeight = FontWeight.w600,
         this.height = 20,
+        this.letterSpacing = 0,
       }) : super(key: key);
 
   @override
@@ -29,6 +31,7 @@ class CustomText extends StatelessWidget {
         fontFamily: "Pretendard",
         fontWeight: fontWeight,
         height: height,
+        letterSpacing: letterSpacing,
       ),
     );
   }

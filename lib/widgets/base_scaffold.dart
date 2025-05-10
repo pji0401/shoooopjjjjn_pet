@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 // 05.02 - NOTE: Scaffold에 동일한 스타일의 Navigation Bar 추가 가능하도록
 class BaseScaffold extends StatelessWidget {
   final String? title;
+  final TextStyle? titleTextStyle;
   final Widget? leadingItem;
   final List<Widget>? trailingItems;
   final Widget body;
@@ -12,6 +13,7 @@ class BaseScaffold extends StatelessWidget {
   const BaseScaffold({
     Key? key,
     this.title,
+    this.titleTextStyle,
     this.leadingItem,
     this.trailingItems,
     required this.body,
@@ -24,6 +26,7 @@ class BaseScaffold extends StatelessWidget {
     return Scaffold(
       appBar: buildCustomAppBar(
         title: title,
+        titleTextStyle: titleTextStyle,
         leadingItem: leadingItem,
         trailingItems: trailingItems,
         toolBarHeight: toolBarHeight,
@@ -37,6 +40,7 @@ class BaseScaffold extends StatelessWidget {
 // 05.02 - NOTE: Build Custom Top NavigationBar
 PreferredSizeWidget? buildCustomAppBar({
   final String? title,
+  final TextStyle? titleTextStyle,
   final Widget? leadingItem,
   final List<Widget>? trailingItems,
   final double? toolBarHeight,
@@ -63,7 +67,7 @@ PreferredSizeWidget? buildCustomAppBar({
           )
         : null,
     title: title != null ? Text(title) : null,
-    titleTextStyle: const TextStyle(
+    titleTextStyle: titleTextStyle != null ? titleTextStyle : TextStyle(
       color: Colors.black,
       fontSize: 20,
       fontWeight: FontWeight.w600,
@@ -75,13 +79,7 @@ PreferredSizeWidget? buildCustomAppBar({
             Padding(
               padding: const EdgeInsets.only(right: 14),
               child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: trailingItems!
-                    .map((item) => Padding(
-                  padding: const EdgeInsets.only(left: 10),
-                  child: item,
-                ))
-                    .toList(),
+                children: trailingItems,
               ),
             ),
           ]
