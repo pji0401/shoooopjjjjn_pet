@@ -1,2 +1,3 @@
-export 'route_name.dart';
-export 'route_map.dart';
+export 'package:go_router/go_router.dart';
+export 'go_router.dart';
+export 'route_path.dart';

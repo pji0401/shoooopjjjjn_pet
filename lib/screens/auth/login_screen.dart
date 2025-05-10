@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pawprints/widgets/base_scaffold.dart';
+import 'package:pawprints/config/route/index.dart';
+import 'package:pawprints/widgets/index.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -82,7 +83,9 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.go(RoutePath.root.value);
+                  },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
                     backgroundColor: const Color(0xFF3A8DFF),
@@ -115,7 +118,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const Text('|', style: TextStyle(color: Colors.grey)),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        context.push(RoutePath.signup_profile.value); // context.go(RoutePath.root.value);
+                      },
                       child: const Text('회원가입'),
                     ),
                   ],
