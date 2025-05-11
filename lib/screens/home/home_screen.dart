@@ -44,8 +44,9 @@ class _HomeScreenState extends State<HomeScreen> {
                ),
             ),
             child: Container(
-               color: Colors.white.withOpacity(0.2),
+               color: Colors.white.withValues(alpha: 0.2),
                 child: SingleChildScrollView(
+
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -174,7 +175,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.05),
+                              color: Colors.black.withValues(alpha: 0.05),
                               blurRadius: 10,
 
                               // 필요할지도 있음
@@ -359,8 +360,107 @@ class _HomeScreenState extends State<HomeScreen> {
 
                             ],
                           )
-                      )
+                      ),
 
+                      const SizedBox(height: 10),
+
+                      // Mission Feed Section
+                      
+                      // fundamental container with setting
+                      Container(
+                        width: double.infinity, 
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.05),
+                              blurRadius: 10,
+                            )
+                          ]
+                        ),
+
+                        padding: EdgeInsets.symmetric(vertical: 25),
+
+                        // Main content
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // header section
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 25),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Text(
+                                    '미션 필드',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    )
+                                  ),
+
+                                  InkWell(
+                                    onTap: () {},
+                                    child: Row(
+                                      children: const [
+                                        Text('전체보기',
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.black,
+                                          )
+                                        ),
+                                        Icon(Icons.chevron_right,
+                                          size: 16,
+                                          color: Colors.black,
+                                        )
+                                      ]
+                                    )
+                                  )
+
+                                ]
+                              )
+                            ),
+
+                            const SizedBox(height: 20),
+
+                            // Horizontal Scrollable mission cards
+                            SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 25, right: 10),
+                                child: Row(
+                                  children: [
+                                    _buildMissionCard(
+                                      'assets/images/dog_home_test.jpg',
+                                      '최애 장난감으로\n하루종일 공놀이',
+                                    ),
+                                    const SizedBox(width: 12),
+                                    _buildMissionCard(
+                                      'assets/images/dog_home_test.jpg',
+                                      '최애 장난감으로\n하루종일 공놀이',
+                                    ),
+                                    const SizedBox(width: 12),
+
+                                    _buildMissionCard(
+                                      'assets/images/dog_home_test.jpg',
+                                      '최애 장난감으로\n하루종일 공놀이',
+                                    ),
+                                    const SizedBox(width: 12),
+
+                                    _buildMissionCard(
+                                      'assets/images/dog_home_test.jpg',
+                                      '최애 장난감으로\n하루종일 공놀이',
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                          ] 
+                        )
+
+                      ),
+
+                    const SizedBox(height: 45),
                     ],
                   ),
               ),
@@ -393,4 +493,55 @@ class _HomeScreenState extends State<HomeScreen> {
       ],
     );
   }
+
+  Widget _buildMissionCard(String imagePath, String title) {
+  return Container(
+    width: 138,
+    height: 120,
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(10),
+      image: DecorationImage(
+        image: AssetImage(imagePath),
+        fit: BoxFit.cover,
+      ),
+    ),
+    child: Stack(
+      children: [
+        // Gradient overlay for better text readability
+        Positioned.fill(
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.transparent,
+                  Colors.black.withValues(alpha: 0.6),
+                ],
+                stops: const [0.5, 1.0],
+              ),
+            ),
+          ),
+        ),
+
+        // Text at the bottom
+        Positioned(
+          bottom: 10,
+          left: 10,
+          right: 10,
+          child: Text(
+            title,
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 14,
+              height: 1.4,
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
 }
