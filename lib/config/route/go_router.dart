@@ -9,10 +9,10 @@ final router = GoRouter(
   routes: [
     // Auth
     GoRoute(path: RoutePath.login.value, builder: (context, state) => const LoginScreen()),
-    GoRoute(path: RoutePath.signup_user.value, builder: (context, state) => const SignUpUserScreen()),
-    GoRoute(path: RoutePath.signup_profile.value, builder: (context, state) => const SignUpProfileScreen()),
+    // GoRoute(path: RoutePath.signup_user.value, builder: (context, state) => const SignUpUserScreen()),
+    // GoRoute(path: RoutePath.signup_profile.value, builder: (context, state) => const SignUpProfileScreen()),
     // GoRoute(path: RoutePath.signup_pet.value, builder: (context, state) => const SignUpPetScreen()),
-    GoRoute(path: RoutePath.signup_welcome.value, builder: (context, state) => const SignUpWelcomeScreen()),
+    // GoRoute(path: RoutePath.signup_welcome.value, builder: (context, state) => const SignUpWelcomeScreen()),
 
     // Home
     GoRoute(path: RoutePath.root.value, builder: (context, state) => const RootScreen()),
@@ -37,13 +37,13 @@ final router = GoRouter(
 
     // Care
     GoRoute(path: RoutePath.care.value, builder: (context, state) => const CareScreen()),
-    GoRoute(path: RoutePath.careDetail.value, builder: (context, state) => const CareDetailScreen()),
+    // GoRoute(path: RoutePath.careDetail.value, builder: (context, state) => const CareDetailScreen()),
 
     // Etc
     GoRoute(path: RoutePath.chat.value, builder: (context, state) => const ChatScreen()),
     GoRoute(path: RoutePath.my.value, builder: (context, state) => const MyScreen()),
-    GoRoute(path: RoutePath.schedule.value, builder: (context, state) => const ScheduleScreen()),
-    GoRoute(path: RoutePath.schedule_write.value, builder: (context, state) => const ScheduleWriteScreen()),
-    GoRoute(path: RoutePath.notification.value, builder: (context, state) => const NotificationScreen()),
+    // GoRoute(path: RoutePath.schedule.value, builder: (context, state) => const ScheduleScreen()),
+    // GoRoute(path: RoutePath.schedule_write.value, builder: (context, state) => const ScheduleWriteScreen()),
+    // GoRoute(path: RoutePath.notification.value, builder: (context, state) => const NotificationScreen()),
   ],
 );
