@@ -161,7 +161,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 width: MediaQuery.of(context).size.width * 0.9,
                 height: 52,
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.7),
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(26),
                   border: Border.all(color: Color(0xFF5CA8FF), width: 1.5),
                 ),
@@ -172,9 +172,16 @@ class _ChatScreenState extends State<ChatScreen> {
                         controller: _messageController,
                         decoration: const InputDecoration(
                           hintText: '메시지를 입력하세요.',
-                          hintStyle: TextStyle(color: Color(0xFFBDBDBD), fontSize: 16),
+                          hintStyle: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: 'Pretendard',
+                              color: Color(0xff8D8D8D),
+                              height: 40 / 13,
+                              letterSpacing: -0.24),
                           border: InputBorder.none,
-                          contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                          contentPadding:
+                              EdgeInsets.symmetric(horizontal: 20, vertical: 0),
                         ),
                         style: const TextStyle(fontSize: 16),
                         minLines: 1,

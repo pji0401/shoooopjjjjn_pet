@@ -2,7 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:pawprints/screens/auth/signup_profile_screen.dart';
 import 'package:pawprints/screens/auth/signup_user_screen.dart';
 import 'package:pawprints/screens/index.dart';
-import 'package:pawprints/config/route/index.dart';
+import 'package:pawprints/config/index.dart';
 
 final router = GoRouter(
   initialLocation: RoutePath.root.value,
@@ -42,8 +42,8 @@ final router = GoRouter(
     // Etc
     GoRoute(path: RoutePath.chat.value, builder: (context, state) => const ChatScreen()),
     GoRoute(path: RoutePath.my.value, builder: (context, state) => const MyScreen()),
-    // GoRoute(path: RoutePath.schedule.value, builder: (context, state) => const ScheduleScreen()),
+    GoRoute(path: RoutePath.schedule.value, builder: (context, state) => const ScheduleScreen()),
     // GoRoute(path: RoutePath.schedule_write.value, builder: (context, state) => const ScheduleWriteScreen()),
-    // GoRoute(path: RoutePath.notification.value, builder: (context, state) => const NotificationScreen()),
+    GoRoute(path: RoutePath.notification.value, builder: (context, state) => const NotificationScreen()),
   ],
 );

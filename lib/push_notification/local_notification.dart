@@ -34,12 +34,20 @@ class LocalNotificationService {
       importance: Importance.max,
       priority: Priority.max,
       playSound: true,
+      enableVibration: true,
+      showWhen: true,
+      autoCancel: true,
     );
 
-    const DarwinNotificationDetails iosDetails = DarwinNotificationDetails();
+    const DarwinNotificationDetails iosDetails = DarwinNotificationDetails(
+      presentAlert: true,
+      presentBadge: true,
+      presentSound: true,
+    );
 
     return const NotificationDetails(
-      android: androidDetails, iOS: iosDetails
+      android: androidDetails, 
+      iOS: iosDetails
     );
   }
 
@@ -77,8 +85,12 @@ class LocalNotificationService {
   }
 }
 
-void initLocalNofication() async {
+void initLocalNotification() async {
   await LocalNotificationService.instance.initialize();
+  testLocalNotification();
+}
+
+void testLocalNotification() async {
   LocalNotificationService.instance.showNotification(
     id: 1,
     title: '알림 기능 테스트',

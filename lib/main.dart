@@ -6,6 +6,6 @@ import 'push_notification/local_notification.dart';
 void main() {
   launchNativeSplash();
   WidgetsFlutterBinding.ensureInitialized();
-  initLocalNofication();
+  initLocalNotification();
   runApp(const App());
 }

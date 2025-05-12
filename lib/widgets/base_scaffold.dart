@@ -61,19 +61,23 @@ PreferredSizeWidget? buildCustomAppBar({
     leading: leadingItem != null
         ? Padding(
             padding: const EdgeInsets.only(left: 14),
-            child: Row(
-              children: [leadingItem], // 05.02 - FIXME: leadingItem
-            ),
+            child: leadingItem,
+            // 05.02 - FIXME: leadingItem
+            // child: Row(
+            //   children: [leadingItem],
+            // ),
           )
         : null,
     title: title != null ? Text(title) : null,
-    titleTextStyle: titleTextStyle != null ? titleTextStyle : TextStyle(
-      color: Colors.black,
-      fontSize: 20,
-      fontWeight: FontWeight.w600,
-      height: 34 / 20,
-      fontFamily: "Pretendard",
-    ),
+    titleTextStyle: titleTextStyle != null
+        ? titleTextStyle
+        : TextStyle(
+            color: Colors.black,
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+            height: 34 / 20,
+            fontFamily: "Pretendard",
+          ),
     actions: trailingItems != null
         ? [
             Padding(

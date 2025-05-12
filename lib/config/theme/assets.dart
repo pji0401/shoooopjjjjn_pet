@@ -1,4 +1,4 @@
-class Assets {
+abstract final class Assets {
   // fonts
   static const String latoRegular = "Lato-Regular";
 

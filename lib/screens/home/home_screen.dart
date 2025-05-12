@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pawprints/widgets/index.dart';
-import 'package:pawprints/config/route/index.dart';
+import 'package:pawprints/config/index.dart';
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -18,7 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
       leadingItem: SvgPicture.asset('assets/icons/pawprint.svg'),
       trailingItems: [
         IconButton(
-          icon: SvgPicture.asset('assets/icons/notification.svg', width: 24, height: 24),
+          icon: SvgPicture.asset('assets/icons/notification_on.svg', width: 24, height: 24),
           onPressed: () {
             context.push(RoutePath.notification.value);
           }
