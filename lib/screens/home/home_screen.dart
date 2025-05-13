@@ -56,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Left content
+                            // Left content 
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,37 +69,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                         height: 1.5,
                                       ),
                                       children: [
-                                        TextSpan(
-                                          text: '호준',
-                                          style: const TextStyle(
-                                            fontSize: 26.0,
-                                            color: AppColors.main,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
+                                        BlueColoredText.toTextSpan('호준', fontSize: 26.0),
                                         const TextSpan(text: '님, '),
-                                        TextSpan(
-                                          text: '봄이와 ',
-                                          style: const TextStyle(
-                                            color: AppColors.main,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
+                                        BlueColoredText.toTextSpan('봄이와와', fontSize: 26.0),
                                         const TextSpan(text: '함께\n'),
-                                        TextSpan(
-                                          text: '32',
-                                          style: const TextStyle(
-                                            color: AppColors.main,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
+                                        BlueColoredText.toTextSpan('32', fontSize: 26.0),
                                         const TextSpan(text: '개의 추억을\n쌓았어요!'),
                                       ],
                                     ),
                                   ),
-                                      
-                                  // Memory button
+
                                   const SizedBox(height: 20),
+
+                                  // Memory button
                                   ElevatedButton(
                                     onPressed: () {},
                                     style: ElevatedButton.styleFrom(
@@ -164,7 +146,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       // Space between sections
                       const SizedBox(height: 40),
 
-
                       // Today's Mission Section
                       Container(
                         width: double.infinity,
@@ -177,8 +158,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             BoxShadow(
                               color: Colors.black.withValues(alpha: 0.05),
                               blurRadius: 10,
-
-                              // 필요할지도 있음
                               // offset: Offset(0, -2),
                             )
                           ]
@@ -193,14 +172,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    const Text(
-                                      '오늘의 미션',
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                      )
-                                    ),
-
+                                    HomeSectionHeader('오늘의 미션'),
                                     InkWell(
                                       onTap: () {},
                                       child: Row(
@@ -224,7 +196,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                 )
                               ),
                               
-
                                const SizedBox(height: 15),
                               
                               Padding(
@@ -247,7 +218,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                           height: 70,
                                         )
                                       ),
-
 
                                       // Add space between icon and text
                                       const SizedBox(width: 16),
@@ -391,14 +361,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  const Text(
-                                    '미션 필드',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    )
-                                  ),
-
+                                  HomeSectionHeader('미션 피드'),
                                   InkWell(
                                     onTap: () {},
                                     child: Row(
@@ -416,7 +379,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ]
                                     )
                                   )
-
                                 ]
                               )
                             ),
@@ -440,13 +402,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                       '최애 장난감으로\n하루종일 공놀이',
                                     ),
                                     const SizedBox(width: 12),
-
                                     _buildMissionCard(
                                       'assets/images/dog_home_test.jpg',
                                       '최애 장난감으로\n하루종일 공놀이',
                                     ),
                                     const SizedBox(width: 12),
-
                                     _buildMissionCard(
                                       'assets/images/dog_home_test.jpg',
                                       '최애 장난감으로\n하루종일 공놀이',
@@ -457,9 +417,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             )
                           ] 
                         )
-
                       ),
-
                     const SizedBox(height: 45),
                     ],
                   ),
