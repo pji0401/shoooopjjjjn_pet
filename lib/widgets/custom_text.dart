@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pawprints/config/theme/colors.dart';
 
 class CustomText extends StatelessWidget {
   final String text;
@@ -7,16 +8,18 @@ class CustomText extends StatelessWidget {
   final double fontSize;
   final FontWeight fontWeight;
   final double height;
+  final double letterSpacing;
 
   const CustomText(
-      this.text, {
-        Key? key,
-        this.textAlign = TextAlign.center,
-        this.color = Colors.black,
-        this.fontSize = 12,
-        this.fontWeight = FontWeight.w600,
-        this.height = 20,
-      }) : super(key: key);
+    this.text, {
+    Key? key,
+    this.textAlign = TextAlign.center,
+    this.color = Colors.black,
+    this.fontSize = 12,
+    this.fontWeight = FontWeight.w600,
+    this.height = 20,
+    this.letterSpacing = 0,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +32,62 @@ class CustomText extends StatelessWidget {
         fontFamily: "Pretendard",
         fontWeight: fontWeight,
         height: height,
+        letterSpacing: letterSpacing,
       ),
     );
+  }
+}
+
+class BlueColoredText extends StatelessWidget {
+
+    final String text;
+    final double fontSize;
+
+  const BlueColoredText({
+    required this.text,
+    this.fontSize = 26.0,
+    super.key,
+    });
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: TextStyle(
+        fontSize: fontSize,
+        color: AppColors.main,
+        fontWeight: FontWeight.bold,
+      )
+    );
+  }
+
+  // Helper method to get a TextSpan with the same styling
+  static TextSpan toTextSpan(String text, {double fontSize = 16.0}) {
+    return TextSpan(
+      text: text,
+      style: TextStyle(
+        fontSize: fontSize,
+        color: AppColors.main,
+        fontWeight: FontWeight.bold,
+      )
+    );
+  }
+}
+
+class HomeSectionHeader extends StatelessWidget {
+  const HomeSectionHeader(this.text, {super.key});
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.bold,
+      )
+    );
+
   }
 }
