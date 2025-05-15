@@ -24,6 +24,9 @@ class BaseScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // backgroundColor: Colors.transparent,
+      extendBodyBehindAppBar: true,
+      resizeToAvoidBottomInset: false,
       appBar: buildCustomAppBar(
         title: title,
         titleTextStyle: titleTextStyle,
@@ -56,6 +59,7 @@ PreferredSizeWidget? buildCustomAppBar({
     elevation: 0,
     shadowColor: Colors.transparent,
     surfaceTintColor: Colors.transparent,
+    centerTitle: true,
     leadingWidth: leadingwWidth ?? null,
     toolbarHeight: toolBarHeight ?? 34,
     leading: leadingItem != null
@@ -76,7 +80,7 @@ PreferredSizeWidget? buildCustomAppBar({
             fontSize: 20,
             fontWeight: FontWeight.w600,
             height: 34 / 20,
-            fontFamily: "Pretendard",
+            fontFamily: 'Pretendard',
           ),
     actions: trailingItems != null
         ? [
