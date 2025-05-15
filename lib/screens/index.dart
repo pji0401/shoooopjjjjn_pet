@@ -2,7 +2,7 @@
 export 'auth/login_screen.dart';
 export 'auth/signup_user_screen.dart';
 export 'auth/signup_profile_screen.dart';
-// export 'auth/signup_pet_screen.dart';
+export 'auth/signup_pet_screen.dart';
 export 'auth/signup_welcome_screen.dart';
 
 // Home

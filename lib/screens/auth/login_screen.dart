@@ -24,29 +24,62 @@ class _LoginScreenState extends State<LoginScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 40),
-              const Text(
+              Text(
                 '로그인',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  color: Color(0xff000000),
+                  fontSize: 23,
+                  fontFamily: 'Pretendard',
+                  fontWeight: FontWeight.w600,
+                  height: 20 / 23,
+                  letterSpacing: 0,
+                ),
               ),
               const SizedBox(height: 30),
               const Align(
                 alignment: Alignment.centerLeft,
-                child: Text('아이디'),
+                child: Text(
+                  '아이디',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 13,
+                    fontFamily: 'Pretendard',
+                    fontWeight: FontWeight.w500,
+                    height: 20 / 13,
+                    letterSpacing: 0,
+                  ),
+                ),
               ),
               const SizedBox(height: 8),
               TextField(
                 controller: _idController,
                 decoration: const InputDecoration(
                   hintText: '영문 아이디를 입력하세요',
+                  hintStyle: TextStyle(
+                    fontSize: 16,
+                    color: Color(0xff626262),
+                    fontWeight: FontWeight.w500,
+                    fontFamily: 'Pretendard',
+                  ),
                   filled: true,
-                  fillColor: Color(0xFFF4F4F4),
+                  fillColor: Color(0xfff5f5f9),
                   border: OutlineInputBorder(borderSide: BorderSide.none),
                 ),
               ),
               const SizedBox(height: 20),
               const Align(
                 alignment: Alignment.centerLeft,
-                child: Text('비밀번호'),
+                child: Text(
+                  '비밀번호',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 13,
+                    fontFamily: 'Pretendard',
+                    fontWeight: FontWeight.w500,
+                    height: 20 / 13,
+                    letterSpacing: 0,
+                  ),
+                ),
               ),
               const SizedBox(height: 8),
               TextField(
@@ -54,8 +87,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 obscureText: true,
                 decoration: const InputDecoration(
                   hintText: '비밀번호를 입력하세요',
+                  hintStyle: TextStyle(
+                    fontSize: 16,
+                    color: Color(0xff626262),
+                    fontWeight: FontWeight.w500,
+                    fontFamily: 'Pretendard',
+                  ),
                   filled: true,
-                  fillColor: Color(0xFFF4F4F4),
+                  fillColor: Color(0xfff5f5f9),
                   border: OutlineInputBorder(borderSide: BorderSide.none),
                 ),
               ),
@@ -88,8 +127,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
-                    backgroundColor: const Color(0xFF3A8DFF),
-                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    backgroundColor: Color(0xFF3A8DFF),
+                    padding: EdgeInsets.symmetric(vertical: 14),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -97,12 +136,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     elevation: 0,
                   ),
                   child: const Text(
-                    "로그인하기",
+                    '로그인하기',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Color(0xffffffff),
                       fontSize: 17,
-                      fontFamily: "Pretendard",
+                      fontFamily: 'Pretendard',
                       fontWeight: FontWeight.w500,
                       height: 20 / 17,
                       letterSpacing: 0,
@@ -117,20 +156,19 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     TextButton(
                       onPressed: () {},
-                      child: const Text('아이디 찾기'),
+                      child: const Text('아이디 찾기', style: TextStyle(color: Color(0xff626262))),
                     ),
-                    const Text('|', style: TextStyle(color: Colors.grey)),
+                    const Text('|', style: TextStyle(color: Color(0xff626262))),
                     TextButton(
                       onPressed: () {},
-                      child: const Text('비밀번호 찾기'),
+                      child: const Text('비밀번호 찾기', style: TextStyle(color: Color(0xff626262))),
                     ),
-                    const Text('|', style: TextStyle(color: Colors.grey)),
+                    const Text('|', style: TextStyle(color: Color(0xff626262))),
                     TextButton(
                       onPressed: () {
-                        context.push(RoutePath.signup_profile
-                            .value); // context.go(RoutePath.root.value);
+                        context.push(RoutePath.signup_user.value);
                       },
-                      child: const Text('회원가입'),
+                      child: const Text('회원가입', style: TextStyle(color: Color(0xff626262))),
                     ),
                   ],
                 ),

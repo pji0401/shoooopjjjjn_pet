@@ -3,9 +3,10 @@ import 'app/app.dart';
 import 'utils/native_splash.dart';
 import 'push_notification/local_notification.dart';
 
-void main() {
+void main() async {
   launchNativeSplash();
   WidgetsFlutterBinding.ensureInitialized();
-  initLocalNotification();
+  await requestNotificationPermission();
+  await initLocalNotification();
   runApp(const App());
 }

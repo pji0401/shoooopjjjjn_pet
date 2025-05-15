@@ -29,7 +29,7 @@ class CustomText extends StatelessWidget {
       style: TextStyle(
         color: color,
         fontSize: fontSize,
-        fontFamily: "Pretendard",
+        fontFamily: 'Pretendard',
         fontWeight: fontWeight,
         height: height,
         letterSpacing: letterSpacing,
