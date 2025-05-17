@@ -38,6 +38,7 @@ class CustomText extends StatelessWidget {
   }
 }
 
+// Blue Colored Text at HomeScreen
 class BlueColoredText extends StatelessWidget {
 
     final String text;
@@ -91,3 +92,5 @@ class HomeSectionHeader extends StatelessWidget {
 
   }
 }
+
+
