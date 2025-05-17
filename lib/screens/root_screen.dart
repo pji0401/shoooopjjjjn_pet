@@ -3,7 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pawprints/screens/index.dart';
 import 'package:pawprints/widgets/index.dart';
 
-// 04.25 - NOTE: MaterialApp
 class RootScreen extends StatefulWidget {
   const RootScreen({super.key});
 
@@ -11,7 +10,6 @@ class RootScreen extends StatefulWidget {
   State<RootScreen> createState() => _RootViewState();
 }
 
-// 05.08 - NOTE: root_view에 CommunityView 연결 및 community_view.dart 파일 생성 완료.
 class _RootViewState extends State<RootScreen> {
   int _selectedIndex = 0;
 
@@ -20,7 +18,7 @@ class _RootViewState extends State<RootScreen> {
     CommunityScreen(),
     ChatScreen(),
     CareScreen(),
-    MyScreen(),
+    LoginScreen() // MyScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -50,7 +48,10 @@ class _RootViewState extends State<RootScreen> {
               margin: EdgeInsets.only(bottom: 0),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(30),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30)
+                ),
                 boxShadow: [
                   BoxShadow(color: Colors.black12, blurRadius: 10),
                 ],

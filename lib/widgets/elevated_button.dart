@@ -41,7 +41,7 @@ class CustomElevatedButton extends StatelessWidget {
           style: const TextStyle(
             color: Color(0xffffffff),
             fontSize: 17,
-            fontFamily: "Pretendard",
+            fontFamily: 'Pretendard',
             fontWeight: FontWeight.w500,
             height: 20 / 17,
             letterSpacing: 0,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
+import 'package:permission_handler/permission_handler.dart';
 
 class LocalNotificationService {
   static final LocalNotificationService _localNotificationServiceInstance = LocalNotificationService();
@@ -85,17 +86,24 @@ class LocalNotificationService {
   }
 }
 
-void initLocalNotification() async {
+Future<void> initLocalNotification() async {
   await LocalNotificationService.instance.initialize();
   testLocalNotification();
 }
 
-void testLocalNotification() async {
+Future<void> testLocalNotification() async {
   LocalNotificationService.instance.showNotification(
     id: 1,
     title: '알림 기능 테스트',
     body: '이 알림 테스트 기능에는 이것을 구현하느라 밤에 잠을 자지 못한 불쌍한 앱 프론트엔드 개발자의 영혼이 깃들어 있습니다.',
   );
+}
+
+// 05.14 - FIXME: permissionHandler
+Future<void> requestNotificationPermission() async {
+  if (await Permission.notification.isDenied) {
+    await Permission.notification.request();
+  }
 }
 
 // 05.09 - NOTE: 호출 예시

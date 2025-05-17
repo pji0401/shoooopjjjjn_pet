@@ -14,11 +14,7 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   final List<ChatMessage> _messages = [
     ChatMessage(text: '안녕하세요!', isSentByMe: false, time: '오전 10:00'),
-    ChatMessage(
-        text: '안녕하세요! 어떻게 도와드릴까요?',
-        isSentByMe: true,
-        time: '오전 10:01'
-    ),
+    ChatMessage(text: '안녕하세요! 어떻게 도와드릴까요?', isSentByMe: true, time: '오전 10:01'),
   ];
 
   final TextEditingController _messageController = TextEditingController();
@@ -27,7 +23,7 @@ class _ChatScreenState extends State<ChatScreen> {
     fontFamily: 'Pretendard',
     fontWeight: FontWeight.w400,
     fontSize: 14,
-    height: 20/14,
+    height: 20 / 14,
     letterSpacing: -0.24,
   );
 
@@ -44,18 +40,23 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BaseScaffold( // FIXME: BaseScaffold Custom 필요
+    return BaseScaffold(
+      // resizeToAvoidBottomInset: false,
       title: widget.title,
       titleTextStyle: TextStyle(
         color: Colors.black,
         fontSize: 14,
         fontWeight: FontWeight.w500,
         height: 20 / 14,
-        fontFamily: "Pretendard",
+        fontFamily: 'Pretendard',
       ),
       body: Stack(
         children: [
           Container(
+            padding: EdgeInsets.only(
+              top: MediaQuery.of(context).padding.top + 34,
+              bottom: 83,
+            ),
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
@@ -70,83 +71,91 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
             child: Column(
               children: [
-                Expanded(
-                  child: ListView.builder(
-                    padding: const EdgeInsets.all(16.0),
-                    itemCount: _messages.length,
-                    itemBuilder: (context, index) {
-                      final message = _messages[index];
-                      return Align(
-                        alignment: message.isSentByMe
-                            ? Alignment.centerRight
-                            : Alignment.centerLeft,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            if (!message.isSentByMe) ...[
-                              Container(
-                                margin: const EdgeInsets.symmetric(vertical: 5.0),
-                                padding: const EdgeInsets.all(16.0),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: const BorderRadius.only(
-                                    topLeft: Radius.circular(18.0),
-                                    topRight: Radius.circular(18.0),
-                                    bottomRight: Radius.circular(18.0),
-                                  ),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.04),
-                                      blurRadius: 6,
-                                      offset: Offset(0, 2),
+                SingleChildScrollView(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxHeight: 600 - MediaQuery.of(context).viewInsets.bottom * 0.7,
+                    ),
+                    child: ListView.builder(
+                      padding: const EdgeInsets.all(16.0),
+                      itemCount: _messages.length,
+                      itemBuilder: (context, index) {
+                        final message = _messages[index];
+                        return Align(
+                          alignment: message.isSentByMe
+                              ? Alignment.centerRight
+                              : Alignment.centerLeft,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              if (!message.isSentByMe) ...[
+                                Container(
+                                  margin:
+                                      const EdgeInsets.symmetric(vertical: 5.0),
+                                  padding: const EdgeInsets.all(16.0),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(18.0),
+                                      topRight: Radius.circular(18.0),
+                                      bottomRight: Radius.circular(18.0),
                                     ),
-                                  ],
-                                ),
-                                child: Text(
-                                  message.text,
-                                  style: chatBubbleTextStyle,
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              Text(
-                                message.time,
-                                style: const TextStyle(
-                                  color: Colors.black54,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ],
-                            if (message.isSentByMe) ...[
-                              Text(
-                                message.time,
-                                style: const TextStyle(
-                                  color: Colors.black54,
-                                  fontSize: 12,
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              Container(
-                                margin: const EdgeInsets.symmetric(vertical: 5.0),
-                                padding: const EdgeInsets.all(16.0),
-                                decoration: const BoxDecoration(
-                                  color: Color(0xFF5CA8FF),
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(18.0),
-                                    topRight: Radius.circular(18.0),
-                                    bottomLeft: Radius.circular(18.0),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.04),
+                                        blurRadius: 6,
+                                        offset: Offset(0, 2),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Text(
+                                    message.text,
+                                    style: chatBubbleTextStyle,
                                   ),
                                 ),
-                                child: Text(
-                                  message.text,
-                                  style: chatBubbleTextStyle.copyWith(color: Colors.white),
+                                const SizedBox(width: 8),
+                                Text(
+                                  message.time,
+                                  style: const TextStyle(
+                                    color: Colors.black54,
+                                    fontSize: 12,
+                                  ),
                                 ),
-                              ),
+                              ],
+                              if (message.isSentByMe) ...[
+                                Text(
+                                  message.time,
+                                  style: const TextStyle(
+                                    color: Colors.black54,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                Container(
+                                  margin:
+                                      const EdgeInsets.symmetric(vertical: 5.0),
+                                  padding: const EdgeInsets.all(16.0),
+                                  decoration: const BoxDecoration(
+                                    color: Color(0xFF5CA8FF),
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(18.0),
+                                      topRight: Radius.circular(18.0),
+                                      bottomLeft: Radius.circular(18.0),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    message.text,
+                                    style: chatBubbleTextStyle.copyWith(
+                                        color: Colors.white),
+                                  ),
+                                ),
+                              ],
                             ],
-                          ],
-                        ),
-                      );
-                    },
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ),
               ],
@@ -155,7 +164,7 @@ class _ChatScreenState extends State<ChatScreen> {
           Positioned(
             left: 0,
             right: 0,
-            bottom: 134,
+            bottom: 134 + MediaQuery.of(context).viewInsets.bottom * 0.7,
             child: Center(
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.9,
@@ -212,7 +221,6 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 }
 
-// 05.11 - FIXME: 임시 모델 수정 필요
 class ChatMessage {
   final String text;
   final bool isSentByMe;
