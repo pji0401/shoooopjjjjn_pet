@@ -1,7 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:pawprints/screens/auth/signup_profile_screen.dart';
 import 'package:pawprints/screens/auth/signup_user_screen.dart';
-import 'package:pawprints/screens/index.dart';
+import 'package:pawprints/screens/index.dart';  
 import 'package:pawprints/config/index.dart';
 
 final router = GoRouter(
@@ -19,11 +19,11 @@ final router = GoRouter(
     GoRoute(path: RoutePath.home.value, builder: (context, state) => const HomeScreen()),
 
     // Mission
-    // GoRoute(path: RoutePath.mission.value, builder: (context, state) => const MissionScreen()),
+    GoRoute(path: RoutePath.mission.value, builder: (context, state) => const MissionScreen()),
     // WIP: GoRoute(path: RoutePath.mission_today.value, builder: (context, state) => const MissionTodayScreen()),
     // GoRoute(path: RoutePath.mission_weekly.value, builder: (context, state) => const MissionWeeklyScreen()),
-    // GoRoute(path: RoutePath.mission_write.value, builder: (context, state) => const MissionWriteScreen()),
-    // GoRoute(path: RoutePath.mission_complete.value, builder: (context, state) => const MissionCompleteScreen()),
+    GoRoute(path: RoutePath.mission_write.value, builder: (context, state) => const MissionWriteScreen()),
+    GoRoute(path: RoutePath.mission_complete.value, builder: (context, state) => const MissionCompleteScreen()),
 
     // Memory
     // GoRoute(path: RoutePath.memory.value, builder: (context, state) => const MemoryScreen()),
