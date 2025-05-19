@@ -86,3 +86,58 @@ macos/Flutter/GeneratedPluginRegistrant.swift
 
 # Android C/C++ NDK build intermediates
 android/app/.cxx/
+
+# Python 바이트코드 및 캐시
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Python 가상 환경
+venv/
+env/
+.venv/
+.env/
+ENV/
+# pipenv
+.pipenv/
+Pipfile.lock
+# poetry
+poetry.lock
+# pdm
+pdm.lock
+.pdm.toml
+.pdm-python
+
+# 배포 및 빌드 산출물 (Python 패키징)
+dist/
+build/
+*.egg-info/
+*.egg
+wheelhouse/
+# sdist archives
+*.tar.gz
+*.zip
+
+# 테스트 관련
+.pytest_cache/
+.tox/
+.nox/
+htmlcov/ # Coverage.py HTML 보고서
+.coverage # Coverage.py 데이터 파일
+.coverage.*
+.outputs/
+
+# 타입 체킹 (Mypy)
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Jupyter Notebook 체크포인트
+.ipynb_checkpoints/
+
+# Python 로깅 설정 (특정 라이브러리)
+# .python-version
+
+# IPython 프로필
+profile_default/
+ipython_config.py
