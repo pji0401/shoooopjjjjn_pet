@@ -12,14 +12,14 @@ class CustomText extends StatelessWidget {
 
   const CustomText(
     this.text, {
-    Key? key,
+    super.key,
     this.textAlign = TextAlign.center,
     this.color = Colors.black,
     this.fontSize = 12,
     this.fontWeight = FontWeight.w600,
     this.height = 20,
     this.letterSpacing = 0,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -40,38 +40,34 @@ class CustomText extends StatelessWidget {
 
 // Blue Colored Text at HomeScreen
 class BlueColoredText extends StatelessWidget {
-
-    final String text;
-    final double fontSize;
+  final String text;
+  final double fontSize;
 
   const BlueColoredText({
     required this.text,
     this.fontSize = 26.0,
     super.key,
-    });
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: TextStyle(
-        fontSize: fontSize,
-        color: AppColors.main,
-        fontWeight: FontWeight.bold,
-      )
-    );
+    return Text(text,
+        style: TextStyle(
+          fontSize: fontSize,
+          color: AppColors.main,
+          fontWeight: FontWeight.bold,
+        ));
   }
 
   // Helper method to get a TextSpan with the same styling
   static TextSpan toTextSpan(String text, {double fontSize = 16.0}) {
     return TextSpan(
-      text: text,
-      style: TextStyle(
-        fontSize: fontSize,
-        color: AppColors.main,
-        fontWeight: FontWeight.bold,
-      )
-    );
+        text: text,
+        style: TextStyle(
+          fontSize: fontSize,
+          color: AppColors.main,
+          fontWeight: FontWeight.bold,
+        ));
   }
 }
 
@@ -82,15 +78,10 @@ class HomeSectionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: TextStyle(
-        fontSize: 18,
-        fontWeight: FontWeight.bold,
-      )
-    );
-
+    return Text(text,
+        style: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ));
   }
 }
-
-

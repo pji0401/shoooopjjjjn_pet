@@ -9,14 +9,14 @@ class CustomElevatedButton extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
 
   const CustomElevatedButton({
-    Key? key,
+    super.key,
     required this.onPressed,
     required this.text,
     this.backgroundColor = const Color(0xFF3A8DFF),
     this.height = 50,
     this.borderRadius = 10,
     this.padding,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

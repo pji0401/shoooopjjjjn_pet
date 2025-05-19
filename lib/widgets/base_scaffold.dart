@@ -11,7 +11,7 @@ class BaseScaffold extends StatelessWidget {
   final double? leadingWidth;
 
   const BaseScaffold({
-    Key? key,
+    super.key,
     this.title,
     this.titleTextStyle,
     this.leadingItem,
@@ -19,7 +19,7 @@ class BaseScaffold extends StatelessWidget {
     required this.body,
     this.toolBarHeight,
     this.leadingWidth,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class BaseScaffold extends StatelessWidget {
         leadingItem: leadingItem,
         trailingItems: trailingItems,
         toolBarHeight: toolBarHeight,
-        leadingwWidth: leadingWidth,
+        leadingWidth: leadingWidth,
       ),
       body: body,
     );
@@ -47,7 +47,7 @@ PreferredSizeWidget? buildCustomAppBar({
   final Widget? leadingItem,
   final List<Widget>? trailingItems,
   final double? toolBarHeight,
-  final double? leadingwWidth,
+  final double? leadingWidth,
 }) {
   if (title == null && leadingItem == null && trailingItems == null) {
     return null;
@@ -60,7 +60,7 @@ PreferredSizeWidget? buildCustomAppBar({
     shadowColor: Colors.transparent,
     surfaceTintColor: Colors.transparent,
     centerTitle: true,
-    leadingWidth: leadingwWidth ?? null,
+    leadingWidth: leadingWidth,
     toolbarHeight: toolBarHeight ?? 34,
     leading: leadingItem != null
         ? Padding(
@@ -73,15 +73,14 @@ PreferredSizeWidget? buildCustomAppBar({
           )
         : null,
     title: title != null ? Text(title) : null,
-    titleTextStyle: titleTextStyle != null
-        ? titleTextStyle
-        : TextStyle(
-            color: Colors.black,
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-            height: 34 / 20,
-            fontFamily: 'Pretendard',
-          ),
+    titleTextStyle: titleTextStyle ??
+        TextStyle(
+          color: Colors.black,
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+          height: 34 / 20,
+          fontFamily: 'Pretendard',
+        ),
     actions: trailingItems != null
         ? [
             Padding(
