@@ -23,7 +23,7 @@ final router = GoRouter(
     // WIP: GoRoute(path: RoutePath.mission_today.value, builder: (context, state) => const MissionTodayScreen()),
     // GoRoute(path: RoutePath.mission_weekly.value, builder: (context, state) => const MissionWeeklyScreen()),
     GoRoute(path: RoutePath.mission_write.value, builder: (context, state) => const MissionWriteScreen()),
-    // GoRoute(path: RoutePath.mission_complete.value, builder: (context, state) => const MissionCompleteScreen()),
+    GoRoute(path: RoutePath.mission_complete.value, builder: (context, state) => const MissionCompleteScreen()),
 
     // Memory
     // GoRoute(path: RoutePath.memory.value, builder: (context, state) => const MemoryScreen()),
