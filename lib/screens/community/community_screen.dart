@@ -5,7 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pawprints/widgets/index.dart';
 import 'package:pawprints/services/app_logger.dart';
 import 'package:pawprints/screens/community/whole_tab.dart';
-import 'package:pawprints/screens/community/hot_tab.dart';
+// import 'package:pawprints/screens/community/hot_tab.dart';
 import 'package:pawprints/screens/community/qna_tab.dart';
 
 class CommunityScreen extends StatefulWidget {
@@ -23,8 +23,8 @@ class _CommunityScreenState extends State<CommunityScreen>
   late TabController _tabController;
 
   final List<Tab> _tabs = <Tab>[
-    const Tab(text: '전체'),
-    const Tab(text: '인기'),
+    const Tab(text: '커뮤니티'),
+    // const Tab(text: '인기'),
     const Tab(text: 'QnA'),
   ];
 
@@ -96,6 +96,10 @@ class _CommunityScreenState extends State<CommunityScreen>
             child: TabBar(
               controller: _tabController,
               tabs: _tabs,
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              isScrollable: true,
+              tabAlignment: TabAlignment.start,
+              labelPadding: const EdgeInsets.symmetric(horizontal: 30.0),
               labelColor: primaryColor,
               unselectedLabelColor: greyColor,
               indicatorColor: primaryColor,
@@ -103,7 +107,7 @@ class _CommunityScreenState extends State<CommunityScreen>
               indicatorSize: TabBarIndicatorSize.tab,
               labelStyle: const TextStyle(
                 fontFamily: pretendardFontFamily,
-                fontWeight: FontWeight.w400,
+                fontWeight: FontWeight.w600,
                 fontSize: 16.0,
               ),
               unselectedLabelStyle: const TextStyle(
@@ -118,7 +122,7 @@ class _CommunityScreenState extends State<CommunityScreen>
               controller: _tabController,
               children: <Widget>[
                 const WholeTabBody(),
-                const HotTabBody(),
+                // const HotTabBody(),
                 const QnaTabBody(),
               ],
             ),

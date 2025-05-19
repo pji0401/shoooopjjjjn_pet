@@ -15,13 +15,13 @@ class PopularArticles extends StatelessWidget {
     return Column(
       children: [
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 20.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const Text(
-                '지금 가장 HOT한 글 🔥',
+                '지금 가장 HOT한 글',
                 style: TextStyle(
                   color: Color(0xFF070707),
                   fontSize: 18,
