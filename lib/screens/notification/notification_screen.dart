@@ -62,78 +62,80 @@ class _NotificationScreenState extends State<NotificationScreen> with SingleTick
             context.pop();
           }
       ),
-      body: Stack(
-        children: [
-          Column(
-            children: [
-              Container(
-                color: Colors.white,
-                child: TabBar(
-                  controller: _tabController,
-                  labelColor: Color(0xFF3A8DFF),
-                  unselectedLabelColor: Color(0xFFBDBDBD),
-                  indicatorColor: Color(0xFF3A8DFF),
-                  labelStyle: const TextStyle(
-                      fontFamily: 'Pretendard', fontWeight: FontWeight.w500, fontSize: 16, height: 20/16, letterSpacing: -0.24),
-                  unselectedLabelStyle: const TextStyle(
-                      fontFamily: 'Pretendard', fontWeight: FontWeight.w400, fontSize: 16, height: 20/16, letterSpacing: -0.24),
-                  tabs: const [
-                    Tab(text: '일정'),
-                    Tab(text: '커뮤니티'),
-                  ],
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Column(
+              children: [
+                Container(
+                  color: Colors.white,
+                  child: TabBar(
+                    controller: _tabController,
+                    labelColor: Color(0xFF3A8DFF),
+                    unselectedLabelColor: Color(0xFFBDBDBD),
+                    indicatorColor: Color(0xFF3A8DFF),
+                    labelStyle: const TextStyle(
+                        fontFamily: 'Pretendard', fontWeight: FontWeight.w500, fontSize: 16, height: 20/16, letterSpacing: -0.24),
+                    unselectedLabelStyle: const TextStyle(
+                        fontFamily: 'Pretendard', fontWeight: FontWeight.w400, fontSize: 16, height: 20/16, letterSpacing: -0.24),
+                    tabs: const [
+                      Tab(text: '일정'),
+                      Tab(text: '커뮤니티'),
+                    ],
+                  ),
                 ),
-              ),
-              const Divider(height: 1, thickness: 1, color: Color(0xFFF4F4F4)),
-              Expanded(
-                child: TabBarView(
-                  controller: _tabController,
-                  children: [
-                    ListView.separated(
-                      itemCount: notifications.length,
-                      separatorBuilder: (context, idx) => const Divider(height: 1, thickness: 1, color: Color(0xFFF4F4F4)),
-                      itemBuilder: (context, idx) {
-                        final n = notifications[idx];
-                        return InkWell(
-                          onTap: () => _handleNotificationTap(n),
-                          child: Container(
-                            color: Colors.white,
-                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Image.asset('assets/datas/splash_image.png', width: 50, height: 50),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Text(n.type, style: const TextStyle(fontFamily: 'Pretendard', fontWeight: FontWeight.w500, fontSize: 12, color: Color(0xFF626262), height: 20 / 12, letterSpacing: 0)),
-                                          const Spacer(),
-                                          Text(n.timeAgo, style: const TextStyle(fontFamily: 'Pretendard', fontWeight: FontWeight.w400, fontSize: 12, color: Color(0xFF626262), height: 20 / 12, letterSpacing: 0)),
-                                        ],
-                                      ),
-                                      const SizedBox(height: 4),
-                                      Text(n.title, style: const TextStyle(fontFamily: 'Pretendard', fontWeight: FontWeight.w500, fontSize: 16, color: Color(0xFF070707), height: 20 / 16, letterSpacing: 0)),
-                                      const SizedBox(height: 2),
-                                      Text(n.memo, style: const TextStyle(fontFamily: 'Pretendard', fontWeight: FontWeight.w400, fontSize: 15, color: Color(0xFF626262), height: 20 / 15, letterSpacing: 0)),
-                                    ],
+                const Divider(height: 1, thickness: 1, color: Color(0xFFF4F4F4)),
+                Expanded(
+                  child: TabBarView(
+                    controller: _tabController,
+                    children: [
+                      ListView.separated(
+                        itemCount: notifications.length,
+                        separatorBuilder: (context, idx) => const Divider(height: 1, thickness: 1, color: Color(0xFFF4F4F4)),
+                        itemBuilder: (context, idx) {
+                          final n = notifications[idx];
+                          return InkWell(
+                            onTap: () => _handleNotificationTap(n),
+                            child: Container(
+                              color: Colors.white,
+                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Image.asset('assets/datas/splash_image.png', width: 50, height: 50),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text(n.type, style: const TextStyle(fontFamily: 'Pretendard', fontWeight: FontWeight.w500, fontSize: 12, color: Color(0xFF626262), height: 20 / 12, letterSpacing: 0)),
+                                            const Spacer(),
+                                            Text(n.timeAgo, style: const TextStyle(fontFamily: 'Pretendard', fontWeight: FontWeight.w400, fontSize: 12, color: Color(0xFF626262), height: 20 / 12, letterSpacing: 0)),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 4),
+                                        Text(n.title, style: const TextStyle(fontFamily: 'Pretendard', fontWeight: FontWeight.w500, fontSize: 16, color: Color(0xFF070707), height: 20 / 16, letterSpacing: 0)),
+                                        const SizedBox(height: 2),
+                                        Text(n.memo, style: const TextStyle(fontFamily: 'Pretendard', fontWeight: FontWeight.w400, fontSize: 15, color: Color(0xFF626262), height: 20 / 15, letterSpacing: 0)),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                        );
-                      },
-                    ),
-                    Container(color: Colors.white),
-                  ],
+                          );
+                        },
+                      ),
+                      Container(color: Colors.white),
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

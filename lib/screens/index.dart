@@ -21,7 +21,7 @@ export 'memory/memory_screen.dart';
 
 // Community
 export 'community/community_screen.dart';
-export 'community/community_write_screen.dart';
+// export 'community/community_write_screen.dart';
 export 'community/community_search_screen.dart';
 export 'community/community_profile_screen.dart';
 // WIP: export 'community/community_detail_screen.dart';

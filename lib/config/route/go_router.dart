@@ -26,7 +26,7 @@ final router = GoRouter(
     GoRoute(path: RoutePath.mission_complete.value, builder: (context, state) => const MissionCompleteScreen()),
 
     // Memory
-    // GoRoute(path: RoutePath.memory.value, builder: (context, state) => const MemoryScreen()),
+    GoRoute(path: RoutePath.memory.value, builder: (context, state) => const MemoryScreen()),
 
     // Community
     GoRoute(path: RoutePath.community.value, builder: (context, state) => const CommunityScreen()),

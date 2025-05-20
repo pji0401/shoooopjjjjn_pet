@@ -55,208 +55,210 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
           onPressed: () {
             context.pop();
           }),
-      body: Stack(
-        children: [
-          Container(
-            height: 125,
-            width: double.infinity,
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(24)),
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Color(0xFFEFF8EA),
-                  Color(0xFFE1E9FD),
-                ],
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Container(
+              height: 125,
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(24)),
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color(0xFFEFF8EA),
+                    Color(0xFFE1E9FD),
+                  ],
+                ),
               ),
             ),
-          ),
-          // FIXME: Gradient Background
-          SingleChildScrollView(
-            padding: const EdgeInsets.only(bottom: 80),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 16),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: Text(
-                      '$currentMonth월 $selectedDate일 $selectedWeekday요일',
-                      style: const TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18,
-                          color: Color(0xFF070707))),
-                ),
-                const SizedBox(height: 16),
-                SizedBox(
-                  height: 64,
-                  child: ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    itemCount: days.length,
-                    separatorBuilder: (_, __) => const SizedBox(width: 8),
-                    itemBuilder: (context, idx) {
-                      final isSelected = idx == selectedDayIndex;
-                      return GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            selectedDayIndex = idx;
-                          });
-                        },
-                        child: Container(
-                          width: 43,
-                          height: 64,
-                          decoration: BoxDecoration(
-                            color: isSelected
-                                ? const Color(0xff4A9BF6)
-                                : Colors.white,
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(days[idx]['label'],
-                                  style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 14,
-                                      color: isSelected
-                                          ? Color(0xFFFFFFFF)
-                                          : Color(0xFF070707))),
-                              const SizedBox(height: 4),
-                              Text('${days[idx]['date']}',
-                                  style: TextStyle(
-                                      fontFamily: 'Pretendard',
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 16,
-                                      color: isSelected
-                                          ? Color(0xFFFFFFFF)
-                                          : Color(0xFF070707))),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
+            // FIXME: Gradient Background
+            SingleChildScrollView(
+              padding: const EdgeInsets.only(bottom: 80),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 16),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Text(
+                        '$currentMonth월 $selectedDate일 $selectedWeekday요일',
+                        style: const TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18,
+                            color: Color(0xFF070707))),
                   ),
-                ),
-                const SizedBox(height: 50),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: Text('오늘의 일정',
-                      style: const TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18,
-                          color: Color(0xFF070707))),
-                ),
-                const SizedBox(height: 12),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Column(
-                    children: List.generate(schedules.length, (idx) {
-                      final s = schedules[idx];
-                      final isDone = s['done'] as bool;
-                      return GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            schedules[idx]['done'] = !isDone;
-                          });
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.only(bottom: 12),
-                          decoration: BoxDecoration(
-                            color: isDone
-                                ? const Color(0xffe9f3ff)
-                                : Color(0xffffffff),
-                            border: Border.all(
-                                color: isDone
-                                    ? const Color(0xff4A9BF6)
-                                    : const Color(0xffD9D9D9),
-                                width: 1),
-                            borderRadius: BorderRadius.circular(12),
+                  const SizedBox(height: 16),
+                  SizedBox(
+                    height: 64,
+                    child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      itemCount: days.length,
+                      separatorBuilder: (_, __) => const SizedBox(width: 8),
+                      itemBuilder: (context, idx) {
+                        final isSelected = idx == selectedDayIndex;
+                        return GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              selectedDayIndex = idx;
+                            });
+                          },
+                          child: Container(
+                            width: 43,
+                            height: 64,
+                            decoration: BoxDecoration(
+                              color: isSelected
+                                  ? const Color(0xff4A9BF6)
+                                  : Colors.white,
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(days[idx]['label'],
+                                    style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 14,
+                                        color: isSelected
+                                            ? Color(0xFFFFFFFF)
+                                            : Color(0xFF070707))),
+                                const SizedBox(height: 4),
+                                Text('${days[idx]['date']}',
+                                    style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 16,
+                                        color: isSelected
+                                            ? Color(0xFFFFFFFF)
+                                            : Color(0xFF070707))),
+                              ],
+                            ),
                           ),
-                          child: Row(
-                            children: [
-                              Container(
-                                margin:
-                                    const EdgeInsets.only(left: 16, right: 12),
-                                child: Icon(
-                                  Icons.check_box,
+                        );
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 50),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Text('오늘의 일정',
+                        style: const TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18,
+                            color: Color(0xFF070707))),
+                  ),
+                  const SizedBox(height: 12),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
+                      children: List.generate(schedules.length, (idx) {
+                        final s = schedules[idx];
+                        final isDone = s['done'] as bool;
+                        return GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              schedules[idx]['done'] = !isDone;
+                            });
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.only(bottom: 12),
+                            decoration: BoxDecoration(
+                              color: isDone
+                                  ? const Color(0xffe9f3ff)
+                                  : Color(0xffffffff),
+                              border: Border.all(
                                   color: isDone
                                       ? const Color(0xff4A9BF6)
                                       : const Color(0xffD9D9D9),
-                                  size: 28,
-                                ),
-                              ),
-                              Expanded(
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 16),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(s['title'],
-                                          style: TextStyle(
-                                              fontFamily: 'Pretendard',
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 18,
-                                              color: Color(0xFF070707))),
-                                      const SizedBox(height: 4),
-                                      Text(s['subtitle'],
-                                          style: const TextStyle(
-                                              fontFamily: 'Pretendard',
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 14,
-                                              color: Color(0xFF070707))),
-                                    ],
+                                  width: 1),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Row(
+                              children: [
+                                Container(
+                                  margin:
+                                      const EdgeInsets.only(left: 16, right: 12),
+                                  child: Icon(
+                                    Icons.check_box,
+                                    color: isDone
+                                        ? const Color(0xff4A9BF6)
+                                        : const Color(0xffD9D9D9),
+                                    size: 28,
                                   ),
                                 ),
-                              ),
-                            ],
+                                Expanded(
+                                  child: Padding(
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 16),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(s['title'],
+                                            style: TextStyle(
+                                                fontFamily: 'Pretendard',
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 18,
+                                                color: Color(0xFF070707))),
+                                        const SizedBox(height: 4),
+                                        Text(s['subtitle'],
+                                            style: const TextStyle(
+                                                fontFamily: 'Pretendard',
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 14,
+                                                color: Color(0xFF070707))),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      );
-                    }),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Positioned(
-            right: 24,
-            bottom: 24,
-            child: GestureDetector(
-              onTap: () {
-                context.push(RoutePath.schedule_write.value);
-              },
-              child: Container(
-                width: 55,
-                height: 55,
-                decoration: BoxDecoration(
-                  color: const Color(0xff4A9BF6),
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 8,
-                      offset: const Offset(0, 4),
+                        );
+                      }),
                     ),
-                  ],
-                ),
-                child: const Center(
-                  child: Icon(
-                    Icons.add,
-                    size: 30,
-                    color: Color(0xffffffff),
+                  ),
+                ],
+              ),
+            ),
+            Positioned(
+              right: 24,
+              bottom: 24,
+              child: GestureDetector(
+                onTap: () {
+                  context.push(RoutePath.schedule_write.value);
+                },
+                child: Container(
+                  width: 55,
+                  height: 55,
+                  decoration: BoxDecoration(
+                    color: const Color(0xff4A9BF6),
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 8,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: const Center(
+                    child: Icon(
+                      Icons.add,
+                      size: 30,
+                      color: Color(0xffffffff),
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
