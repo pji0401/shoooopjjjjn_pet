@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pawprints/widgets/index.dart';
+import 'package:pawprints/viewmodels/index.dart';
+import 'package:pawprints/utils/index.dart';
+import 'package:pawprints/data/models/index.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
 
-  final String title = 'AI 챗봇 이름';
+  final String title = 'AI 챗봇';
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  final List<ChatMessage> _messages = [
-    ChatMessage(text: '안녕하세요!', isSentByMe: false, time: '오전 10:00'),
-    ChatMessage(text: '안녕하세요! 어떻게 도와드릴까요?', isSentByMe: true, time: '오전 10:01'),
-  ];
-
   final TextEditingController _messageController = TextEditingController();
 
   static const TextStyle chatBubbleTextStyle = TextStyle(
@@ -27,23 +25,13 @@ class _ChatScreenState extends State<ChatScreen> {
     letterSpacing: -0.24,
   );
 
-  void _sendMessage() {
-    String text = _messageController.text.trim();
-    if (text.isNotEmpty) {
-      setState(() {
-        _messages.add(ChatMessage(
-            text: text, isSentByMe: true, time: _formatCurrentTime()));
-      });
-      _messageController.clear();
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    final chatProvider = Provider.of<ChatProvider>(context);
+    final _messages = chatProvider.messages;
     return BaseScaffold(
-      // resizeToAvoidBottomInset: false,
       title: widget.title,
-      titleTextStyle: TextStyle(
+      titleTextStyle: const TextStyle(
         color: Colors.black,
         fontSize: 14,
         fontWeight: FontWeight.w500,
@@ -71,47 +59,50 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
             child: Column(
               children: [
-                SingleChildScrollView(
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      maxHeight: 600 - MediaQuery.of(context).viewInsets.bottom * 0.7,
-                    ),
-                    child: ListView.builder(
-                      padding: const EdgeInsets.all(16.0),
-                      itemCount: _messages.length,
-                      itemBuilder: (context, index) {
-                        final message = _messages[index];
-                        return Align(
-                          alignment: message.isSentByMe
-                              ? Alignment.centerRight
-                              : Alignment.centerLeft,
+                SingleChildScrollView(child: ConstrainedBox(
+                  constraints: BoxConstraints(maxHeight: 600), // FIXME: - MediaQuery.of(context).viewInsets.bottom * 0.5
+                  child: ListView.builder(
+                    padding: const EdgeInsets.all(16.0),
+                    itemCount: _messages.length,
+                    itemBuilder: (context, index) {
+                      final message = _messages[index];
+                      return Align(
+                        alignment: message.isSentByMe
+                            ? Alignment.centerRight
+                            : Alignment.centerLeft,
+                        child: Container(
+                          constraints: BoxConstraints(
+                            maxWidth: MediaQuery.of(context).size.width * 0.7,
+                          ),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               if (!message.isSentByMe) ...[
-                                Container(
-                                  margin:
-                                      const EdgeInsets.symmetric(vertical: 5.0),
-                                  padding: const EdgeInsets.all(16.0),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: const BorderRadius.only(
-                                      topLeft: Radius.circular(18.0),
-                                      topRight: Radius.circular(18.0),
-                                      bottomRight: Radius.circular(18.0),
-                                    ),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.04),
-                                        blurRadius: 6,
-                                        offset: Offset(0, 2),
+                                Flexible(
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 5.0),
+                                    padding: const EdgeInsets.all(16.0),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: const BorderRadius.only(
+                                        topLeft: Radius.circular(18.0),
+                                        topRight: Radius.circular(18.0),
+                                        bottomRight: Radius.circular(18.0),
                                       ),
-                                    ],
-                                  ),
-                                  child: Text(
-                                    message.text,
-                                    style: chatBubbleTextStyle,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.04),
+                                          blurRadius: 6,
+                                          offset: const Offset(0, 2),
+                                        ),
+                                      ],
+                                    ),
+                                    child: Text(
+                                      message.text,
+                                      style: chatBubbleTextStyle,
+                                    ),
                                   ),
                                 ),
                                 const SizedBox(width: 8),
@@ -132,32 +123,34 @@ class _ChatScreenState extends State<ChatScreen> {
                                   ),
                                 ),
                                 const SizedBox(width: 8),
-                                Container(
-                                  margin:
-                                      const EdgeInsets.symmetric(vertical: 5.0),
-                                  padding: const EdgeInsets.all(16.0),
-                                  decoration: const BoxDecoration(
-                                    color: Color(0xFF5CA8FF),
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(18.0),
-                                      topRight: Radius.circular(18.0),
-                                      bottomLeft: Radius.circular(18.0),
+                                Flexible(
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 5.0),
+                                    padding: const EdgeInsets.all(16.0),
+                                    decoration: const BoxDecoration(
+                                      color: Color(0xFF5CA8FF),
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(18.0),
+                                        topRight: Radius.circular(18.0),
+                                        bottomLeft: Radius.circular(18.0),
+                                      ),
                                     ),
-                                  ),
-                                  child: Text(
-                                    message.text,
-                                    style: chatBubbleTextStyle.copyWith(
-                                        color: Colors.white),
+                                    child: Text(
+                                      message.text,
+                                      style: chatBubbleTextStyle.copyWith(
+                                          color: Colors.white),
+                                    ),
                                   ),
                                 ),
                               ],
                             ],
                           ),
-                        );
-                      },
-                    ),
+                        ),
+                      );
+                    },
                   ),
-                ),
+                )),
               ],
             ),
           ),
@@ -172,7 +165,10 @@ class _ChatScreenState extends State<ChatScreen> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(26),
-                  border: Border.all(color: Color(0xFF5CA8FF), width: 1.5),
+                  border: Border.all(
+                    color: const Color(0xFF5CA8FF),
+                    width: 1.5,
+                  ),
                 ),
                 child: Row(
                   children: [
@@ -182,15 +178,18 @@ class _ChatScreenState extends State<ChatScreen> {
                         decoration: const InputDecoration(
                           hintText: '메시지를 입력하세요.',
                           hintStyle: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w500,
-                              fontFamily: 'Pretendard',
-                              color: Color(0xff8D8D8D),
-                              height: 40 / 13,
-                              letterSpacing: -0.24),
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: 'Pretendard',
+                            color: Color(0xff8D8D8D),
+                            height: 40 / 13,
+                            letterSpacing: -0.24,
+                          ),
                           border: InputBorder.none,
-                          contentPadding:
-                              EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 0,
+                          ),
                         ),
                         style: const TextStyle(fontSize: 16),
                         minLines: 1,
@@ -198,9 +197,27 @@ class _ChatScreenState extends State<ChatScreen> {
                       ),
                     ),
                     IconButton(
-                      icon: SvgPicture.asset('assets/icons/send.svg'),
-                      onPressed: _sendMessage,
-                    ),
+                        icon: SvgPicture.asset('assets/icons/send.svg'),
+                        onPressed: () async {
+                          final text = _messageController.text.trim();
+                          if (text.isEmpty) return;
+                          setState(() {
+                            _messages.add(ChatMessage(
+                                text: text,
+                                isSentByMe: true,
+                                time: getCurrentTime()
+                            ));
+                          });
+                          _messageController.clear();
+                          setState(() {
+                            _messages.add(ChatMessage(
+                                text: '',
+                                isSentByMe: false,
+                                time: getCurrentTime()
+                            ));
+                          });
+                          await chatProvider.sendMessage(text);
+                        }),
                   ],
                 ),
               ),
@@ -210,25 +227,4 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
     );
   }
-
-  String _formatCurrentTime() {
-    final now = DateTime.now();
-    final hour = now.hour;
-    final minute = now.minute.toString().padLeft(2, '0');
-    final period = hour < 12 ? '오전' : '오후';
-    final displayHour = hour == 0 ? 12 : (hour > 12 ? hour - 12 : hour);
-    return '$period ${displayHour.toString().padLeft(2, '0')}:$minute';
-  }
-}
-
-class ChatMessage {
-  final String text;
-  final bool isSentByMe;
-  final String time;
-
-  ChatMessage({
-    required this.text,
-    required this.isSentByMe,
-    required this.time,
-  });
 }
