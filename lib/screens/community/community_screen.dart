@@ -7,6 +7,7 @@ import 'package:pawprints/services/app_logger.dart';
 import 'package:pawprints/screens/community/whole_tab.dart';
 // import 'package:pawprints/screens/community/hot_tab.dart';
 import 'package:pawprints/screens/community/qna_tab.dart';
+import 'package:pawprints/screens/community/community_profile_screen.dart';
 import 'package:pawprints/screens/community/community_write_screen.dart';
 
 class CommunityScreen extends StatefulWidget {
@@ -79,8 +80,11 @@ class CommunityScreenState extends State<CommunityScreen>
                   BlendMode.srcIn), // 아이콘 색상 적용
             ), // 또는 Icons.person_outline
             onPressed: () {
-              // 05.08 - TODO: 내 정보 화면으로 이동 또는 관련 기능 구현
-              AppLogger.d('내정보 아이콘 클릭');
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const CommunityProfileScreen()),
+              );
             },
           ),
         ],
@@ -91,7 +95,7 @@ class CommunityScreenState extends State<CommunityScreen>
             decoration: BoxDecoration(
               color: Theme.of(context).scaffoldBackgroundColor,
               border: Border(
-                bottom: BorderSide(color: Colors.grey[300]!, width: 0.5), // 구분선
+                bottom: BorderSide(color: Colors.grey[300]!, width: 0.2), // 구분선
               ),
             ),
             child: TabBar(
@@ -104,7 +108,7 @@ class CommunityScreenState extends State<CommunityScreen>
               labelColor: primaryColor,
               unselectedLabelColor: greyColor,
               indicatorColor: primaryColor,
-              indicatorWeight: 3.0,
+              indicatorWeight: 1.0,
               indicatorSize: TabBarIndicatorSize.tab,
               labelStyle: const TextStyle(
                 fontFamily: pretendardFontFamily,
