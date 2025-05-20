@@ -335,13 +335,3 @@ class _ArticleItemState extends State<ArticleItem> {
     );
   }
 }
-
-// 05.19 - TODO: 전역화 리팩토링
-// 구분 막대기를 반환하는 함수
-Widget getSectionDivider() {
-  return Container(
-    width: double.infinity,
-    height: 12.0,
-    color: const Color(0xFFF5F5F9),
-  );
-}
