@@ -187,12 +187,10 @@ class CreatePostScreen extends StatefulWidget {
 }
 
 class _CreatePostScreenState extends State<CreatePostScreen> {
-  final TextEditingController _titleController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
 
   @override
   void dispose() {
-    _titleController.dispose();
     _contentController.dispose();
     super.dispose();
   }
@@ -200,48 +198,105 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('글 작성하기'),
-        actions: [
-          TextButton(
-            onPressed: () {
-              // 글 작성 완료 로직
-              AppLogger.d('글 작성 완료: ${_titleController.text}');
-              Navigator.pop(context);
-            },
-            child: const Text('완료'),
-          ),
-        ],
+      appBar: buildCustomAppBar(
+        title: '게시글',
+        leadingItem: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _titleController,
-              decoration: const InputDecoration(
-                hintText: '제목을 입력하세요',
-                border: InputBorder.none,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // 이미지 업로드 영역
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+            child: Container(
+              height: 120,
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey[300]!),
+                borderRadius: BorderRadius.circular(8.0),
               ),
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
+              child: Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.add_photo_alternate_outlined,
+                        size: 40, color: Colors.grey[600]),
+                    SizedBox(height: 8),
+                    Text('이미지 업로드하기',
+                        style: TextStyle(color: Colors.grey[600])),
+                  ],
+                ),
               ),
             ),
-            const Divider(),
-            Expanded(
+          ),
+
+          // 게시물 내용 작성 영역
+          Expanded(
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               child: TextField(
                 controller: _contentController,
-                decoration: const InputDecoration(
-                  hintText: '내용을 입력하세요',
-                  border: InputBorder.none,
+                decoration: InputDecoration(
+                  hintText: '게시물 내용을 입력하세요',
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey[300]!),
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  filled: true,
+                  fillColor: Theme.of(context).scaffoldBackgroundColor,
                 ),
                 maxLines: null,
                 keyboardType: TextInputType.multiline,
               ),
             ),
-          ],
-        ),
+          ),
+
+          // 위치정보 지정하기 영역
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              children: [
+                Icon(Icons.location_on_outlined, color: Colors.grey[600]),
+                SizedBox(width: 8),
+                Text('위치정보 지정하기', style: TextStyle(color: Colors.grey[600])),
+              ],
+            ),
+          ),
+
+          // 업로드하기 버튼 영역
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  AppLogger.d('게시물 업로드: ${_contentController.text}');
+                  Navigator.pop(context);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  padding: EdgeInsets.symmetric(vertical: 16.0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                ),
+                child: Text(
+                  '업로드하기',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 24.0),
+        ],
       ),
     );
   }

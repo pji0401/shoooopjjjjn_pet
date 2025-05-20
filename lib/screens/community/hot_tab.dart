@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 // local imports
-import 'package:pawprints/screens/community/common.dart';
+// import 'package:pawprints/screens/community/common.dart';
 
 class HotTabBody extends StatelessWidget {
   const HotTabBody({super.key});
