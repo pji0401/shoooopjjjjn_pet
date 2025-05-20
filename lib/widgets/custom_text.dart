@@ -71,6 +71,14 @@ class BlueColoredText extends StatelessWidget {
   }
 }
 
+/// 홈 섹션 헤더 위젯.
+///
+/// 섹션 제목 표시.
+///
+/// Args:
+///
+///     text (String):
+///          표시할 제목 문자열.
 class HomeSectionHeader extends StatelessWidget {
   const HomeSectionHeader(this.text, {super.key});
 

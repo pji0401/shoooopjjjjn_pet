@@ -18,6 +18,7 @@ import 'package:flutter/material.dart';
 ///          모달 시트 상단 모서리 둥근 정도. 기본값 20.
 ///
 /// Returns:
+///
 ///      Future<void>:
 ///          모달 시트 닫힐 때 완료되는 Future.
 class ModalSheet {
