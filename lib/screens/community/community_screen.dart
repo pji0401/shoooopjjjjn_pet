@@ -233,39 +233,62 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             ),
           ),
 
+          const SizedBox(height: 16.0),
+
           // 게시물 내용 작성 영역
-          Expanded(
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              child: TextField(
-                controller: _contentController,
-                decoration: InputDecoration(
-                  hintText: '게시물 내용을 입력하세요',
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey[300]!),
-                    borderRadius: BorderRadius.circular(8.0),
+          SizedBox(
+            height: 220,
+            child: TextField(
+              controller: _contentController,
+              decoration: InputDecoration(
+                hintText: '게시물 내용을 입력하세요',
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.all(12.0),
+                filled: true,
+                fillColor: Theme.of(context).scaffoldBackgroundColor,
+              ),
+              maxLines: null,
+              keyboardType: TextInputType.multiline,
+            ),
+          ),
+          getSectionDivider(),
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(vertical: 24.0, horizontal: 20.0),
+            child: InkWell(
+              onTap: () {
+                // 위치 정보 수정 화면으로 이동
+                AppLogger.d('위치 정보 수정 클릭');
+              },
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.location_on,
+                    color: Colors.blue, // 강조 색상
+                    size: 28, // 아이콘 크기 증가
                   ),
-                  filled: true,
-                  fillColor: Theme.of(context).scaffoldBackgroundColor,
-                ),
-                maxLines: null,
-                keyboardType: TextInputType.multiline,
+                  SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      '안산 호수공원',
+                      style: TextStyle(
+                        fontSize: 18, // 글자 크기 증가
+                        fontWeight: FontWeight.w600, // 세미볼드로 변경
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                  Icon(
+                    Icons.chevron_right,
+                    color: Colors.grey,
+                    size: 26, // 아이콘 크기 증가
+                  ),
+                ],
               ),
             ),
           ),
 
-          // 위치정보 지정하기 영역
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              children: [
-                Icon(Icons.location_on_outlined, color: Colors.grey[600]),
-                SizedBox(width: 8),
-                Text('위치정보 지정하기', style: TextStyle(color: Colors.grey[600])),
-              ],
-            ),
-          ),
+          Spacer(),
 
           // 업로드하기 버튼 영역
           Padding(
