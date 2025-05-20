@@ -7,6 +7,7 @@ import 'package:pawprints/services/app_logger.dart';
 import 'package:pawprints/screens/community/whole_tab.dart';
 // import 'package:pawprints/screens/community/hot_tab.dart';
 import 'package:pawprints/screens/community/qna_tab.dart';
+import 'package:pawprints/screens/community/community_write_screen.dart';
 
 class CommunityScreen extends StatefulWidget {
   const CommunityScreen({super.key});
@@ -14,11 +15,11 @@ class CommunityScreen extends StatefulWidget {
   final String title = '커뮤니티';
 
   @override
-  _CommunityScreenState createState() => _CommunityScreenState();
+  CommunityScreenState createState() => CommunityScreenState();
 }
 
 // 05.08 - NOTE: SingleTickerProviderStateMixin가 뭐지 : 위젯에 단일 애니메이션 컨트롤러를 효율적으로 관리하고 동기화할 수 있는 기능을 제공하는 믹스인
-class _CommunityScreenState extends State<CommunityScreen>
+class CommunityScreenState extends State<CommunityScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
@@ -132,7 +133,7 @@ class _CommunityScreenState extends State<CommunityScreen>
       floatingActionButton: CreatePostButton(
         onPressed: () {
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => CreatePostScreen()));
+              MaterialPageRoute(builder: (context) => WritePostScreen()));
         },
         backgroundColor: primaryColor,
       ),
@@ -173,153 +174,6 @@ class CreatePostButton extends StatelessWidget {
           Icons.edit,
           color: Colors.white,
         ),
-      ),
-    );
-  }
-}
-
-// 05.09 - WIP: 임시 레이아웃, 레퍼런스 디자인 적용 중
-class CreatePostScreen extends StatefulWidget {
-  const CreatePostScreen({super.key});
-
-  @override
-  State<CreatePostScreen> createState() => _CreatePostScreenState();
-}
-
-class _CreatePostScreenState extends State<CreatePostScreen> {
-  final TextEditingController _contentController = TextEditingController();
-
-  @override
-  void dispose() {
-    _contentController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: buildCustomAppBar(
-        title: '게시글',
-        leadingItem: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // 이미지 업로드 영역
-          Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-            child: Container(
-              height: 120,
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey[300]!),
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              child: Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.add_photo_alternate_outlined,
-                        size: 40, color: Colors.grey[600]),
-                    SizedBox(height: 8),
-                    Text('이미지 업로드하기',
-                        style: TextStyle(color: Colors.grey[600])),
-                  ],
-                ),
-              ),
-            ),
-          ),
-
-          const SizedBox(height: 16.0),
-
-          // 게시물 내용 작성 영역
-          SizedBox(
-            height: 220,
-            child: TextField(
-              controller: _contentController,
-              decoration: InputDecoration(
-                hintText: '게시물 내용을 입력하세요',
-                border: InputBorder.none,
-                contentPadding: EdgeInsets.all(12.0),
-                filled: true,
-                fillColor: Theme.of(context).scaffoldBackgroundColor,
-              ),
-              maxLines: null,
-              keyboardType: TextInputType.multiline,
-            ),
-          ),
-          getSectionDivider(),
-          Padding(
-            padding:
-                const EdgeInsets.symmetric(vertical: 24.0, horizontal: 20.0),
-            child: InkWell(
-              onTap: () {
-                // 위치 정보 수정 화면으로 이동
-                AppLogger.d('위치 정보 수정 클릭');
-              },
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.location_on,
-                    color: Colors.blue, // 강조 색상
-                    size: 28, // 아이콘 크기 증가
-                  ),
-                  SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      '안산 호수공원',
-                      style: TextStyle(
-                        fontSize: 18, // 글자 크기 증가
-                        fontWeight: FontWeight.w600, // 세미볼드로 변경
-                      ),
-                      textAlign: TextAlign.left,
-                    ),
-                  ),
-                  Icon(
-                    Icons.chevron_right,
-                    color: Colors.grey,
-                    size: 26, // 아이콘 크기 증가
-                  ),
-                ],
-              ),
-            ),
-          ),
-
-          Spacer(),
-
-          // 업로드하기 버튼 영역
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  AppLogger.d('게시물 업로드: ${_contentController.text}');
-                  Navigator.pop(context);
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  padding: EdgeInsets.symmetric(vertical: 16.0),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                ),
-                child: Text(
-                  '업로드하기',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(height: 24.0),
-        ],
       ),
     );
   }
