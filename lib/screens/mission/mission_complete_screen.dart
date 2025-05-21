@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:pawprints/config/index.dart';
 import 'package:pawprints/widgets/index.dart'; 
 
@@ -115,7 +116,10 @@ class _MissionCompleteScreenState extends State<MissionCompleteScreen> {
 
     return BaseScaffold(
       leadingItem: IconButton(
-        icon: const Icon(Icons.arrow_back_ios, color: primaryTextColor, size: 20),
+        icon: SvgPicture.asset(
+          'assets/icons/chevron_left.svg',
+          colorFilter: ColorFilter.mode(AppColors.black, BlendMode.srcIn),
+          ),
         onPressed: () => Navigator.of(context).pop(),
       ),
       body: SafeArea(

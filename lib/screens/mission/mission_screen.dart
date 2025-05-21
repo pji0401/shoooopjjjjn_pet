@@ -84,7 +84,10 @@ class _MissionScreenState extends State<MissionScreen> {
       // ---------------APP BAR------------------------
       title: '미션 인증',
       leadingItem: IconButton(
-        icon: const Icon(Icons.arrow_back_ios, size: 20, color: Colors.black),
+        icon: SvgPicture.asset(
+          'assets/icons/chevron_left.svg',
+          colorFilter: ColorFilter.mode(AppColors.black, BlendMode.srcIn),
+        ),
         onPressed: () => Navigator.of(context).pop(),
       ),
 
@@ -104,7 +107,7 @@ class _MissionScreenState extends State<MissionScreen> {
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.1), // Corrected: withOpacity
+                      color: Colors.black.withValues(alpha: 0.1), 
                       blurRadius: 10,
                       offset: const Offset(0, 4),
                     )
@@ -127,8 +130,9 @@ class _MissionScreenState extends State<MissionScreen> {
                             width: 90,
                           ),
                         ),
-                        SvgPicture.asset('assets/icons/mission_envelope.svg',
-                        width: 180,
+                        Image.asset('assets/datas/envelope.png',
+                        height: 150,
+                        width: 150,
                         )
                       ]
                     ),

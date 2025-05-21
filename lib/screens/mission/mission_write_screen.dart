@@ -76,7 +76,10 @@ class _MissionWriteScreenState extends State<MissionWriteScreen> {
     return BaseScaffold(
       title: '미션 인증',
       leadingItem: IconButton(
-        icon: const Icon(Icons.arrow_back_ios, size: 20, color: AppColors.black), 
+        icon: SvgPicture.asset(
+          'assets/icons/chevron_left.svg',
+          colorFilter: ColorFilter.mode(AppColors.black, BlendMode.srcIn),
+        ),
         onPressed: () => Navigator.of(context).pop(),
       ),
 

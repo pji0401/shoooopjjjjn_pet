@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:pawprints/widgets/index.dart'; 
 import 'package:pawprints/config/index.dart';
 
@@ -73,12 +74,18 @@ class _MemoryScreenState extends State<MemoryScreen> {
     return BaseScaffold(
       title: '추억 보관함',
       leadingItem: IconButton(
-        icon: const Icon(Icons.arrow_back_ios, color: AppColors.black, size: 20),
+        icon: SvgPicture.asset(
+          'assets/icons/chevron_left.svg',
+          colorFilter: ColorFilter.mode(AppColors.black, BlendMode.srcIn),
+          ),
         onPressed: () => Navigator.of(context).pop(),
       ),
       trailingItems: [
         IconButton(
-          icon: const Icon(Icons.search, color: AppColors.black, size: 24),
+           icon: SvgPicture.asset(
+          'assets/icons/search.svg',
+          colorFilter: ColorFilter.mode(AppColors.black, BlendMode.srcIn),
+          ),
           onPressed: _onSearchPressed,
         ),
       ],

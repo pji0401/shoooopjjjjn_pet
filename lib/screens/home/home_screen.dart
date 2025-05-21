@@ -86,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         BlueColoredText.toTextSpan('호준',
                                             fontSize: 26.0),
                                         const TextSpan(text: '님, '),
-                                        BlueColoredText.toTextSpan('봄이와와',
+                                        BlueColoredText.toTextSpan('봄이와',
                                             fontSize: 26.0),
                                         const TextSpan(text: '함께\n'),
                                         BlueColoredText.toTextSpan('32',
@@ -211,54 +211,59 @@ class _HomeScreenState extends State<HomeScreen> {
 
                               Padding(
                                   padding: EdgeInsets.symmetric(horizontal: 25),
-                                  child: Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey[100],
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      padding: const EdgeInsets.all(16),
-                                      child: Row(
-                                        children: [
-                                          // Left side - envelope icon
-                                          Container(
-                                              child: SvgPicture.asset(
-                                            'assets/icons/envelope_home.svg',
-                                            width: 70,
-                                            height: 70,
-                                          )),
-
-                                          // Add space between icon and text
-                                          const SizedBox(width: 16),
-
-                                          // Right side - text content
-                                          Expanded(
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: const [
-                                                Text(
-                                                  '봄 즐기기',
-                                                  style: TextStyle(
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: Colors.grey,
-                                                  ),
-                                                ),
-                                                SizedBox(height: 4),
-                                                Text(
-                                                  '벚꽃 아래서 반려견과 사진찍기',
-                                                  style: TextStyle(
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ],
+                                  child: InkWell(
+                                    onTap: () {
+                                      context.push(RoutePath.mission.value);
+                                    },
+                                    splashColor: AppColors.main,
+                                    highlightColor: AppColors.main,
+                                    child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey[100],
+                                          borderRadius: BorderRadius.circular(12),
+                                        ),
+                                        padding: const EdgeInsets.all(16),
+                                        child: Row(
+                                          children: [
+                                               Image.asset(
+                                              'assets/datas/envelope.png',
+                                              width: 70,
+                                              height: 70,
                                             ),
-                                          ),
-                                        ],
-                                      ))),
+                                    
+                                            // Add space between icon and text
+                                            const SizedBox(width: 16),
+                                    
+                                            // Right side - text content
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: const [
+                                                  Text(
+                                                    '봄 즐기기',
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                      fontWeight: FontWeight.w500,
+                                                      color: Colors.grey,
+                                                    ),
+                                                  ),
+                                                  SizedBox(height: 4),
+                                                  Text(
+                                                    '벚꽃 아래서 반려견과 사진찍기',
+                                                    style: TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        )),
+                                  )),
 
                               const SizedBox(height: 30),
 
@@ -331,7 +336,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     // 월 - not completed
                                     _buildPawDayStatus(true),
                                     // 화 - completed
-                                    _buildPawDayStatus(true),
+                                    _buildPawDayStatus(true), 
                                     // 수 - completed
                                     _buildPawDayStatus(false),
                                     // 목 - not completed
@@ -450,10 +455,10 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         const SizedBox(height: 4),
         Text(
-          isCompleted ? '완료' : '',
+          isCompleted ? '완료' : '실패',
           style: TextStyle(
             fontSize: 12,
-            color: isCompleted ? AppColors.main : Colors.transparent,
+            color: isCompleted ? AppColors.main : AppColors.black,
             fontWeight: FontWeight.w500,
           ),
         ),
