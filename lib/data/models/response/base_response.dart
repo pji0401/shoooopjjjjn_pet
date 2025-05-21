@@ -1,28 +1,27 @@
-import 'dart:ffi';
+// import 'package:pawprints/core/network/index.dart';
 
 class BaseResponse<T> {
-  Bool isSuccess;
+  bool isSuccess;
   String message;
   String code;
-  T data;
+  T? result;
 
   BaseResponse({
     required this.isSuccess,
     required this.code,
     required this.message,
-    required this.data,
+    required this.result,
   });
 
-  factory BaseResponse.fromJson(Map<String, dynamic> json, BaseObject target) {
+  factory BaseResponse.fromJson(
+      Map<String, dynamic> json,
+      T Function(dynamic) fromJson,
+      ) {
     return BaseResponse(
       isSuccess: json['isSuccess'],
       code: json['code'],
       message: json['message'],
-      data: target.fromJson(json['data']),
+      result: json.containsKey('result') ? fromJson(json['result']) : null,
     );
   }
-}
-
-abstract class BaseObject<T> {
-  T fromJson(json);
 }

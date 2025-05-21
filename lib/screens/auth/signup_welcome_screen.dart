@@ -11,12 +11,7 @@ class SignUpWelcomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BaseScaffold(
       body: Padding(
-        padding: EdgeInsets.only(
-          top: MediaQuery.of(context).padding.top + 34,
-          bottom: 83,
-          left: 24.0,
-          right: 24.0,
-        ),
+        padding: EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

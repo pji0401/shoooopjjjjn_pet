@@ -28,7 +28,6 @@ dependencies:
   get_it: ^8.0.0
   dio: ^5.8.0
   retrofit: ^4.4.2
-  chopper: ^8.1.0
   json_annotation: ^4.9.0
   flutter_riverpod: ^2.5.1
   riverpod_annotation: ^2.3.5
