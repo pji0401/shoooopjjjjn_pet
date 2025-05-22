@@ -19,7 +19,7 @@ class _MissionWriteScreenState extends State<MissionWriteScreen> {
   final TextEditingController _textController = TextEditingController();
   String _selectedDateString = "2025.04.17";
 
-// ImageAttachingSection의 상태에 접근하기 위한 GlobalKey
+  // ImageAttachingSection의 상태에 접근하기 위한 GlobalKey
   final GlobalKey<ImageAttachingSectionState> _imageSectionKey =
       GlobalKey<ImageAttachingSectionState>();
 
