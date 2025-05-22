@@ -1,7 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:pawprints/config/theme/colors.dart';
 
-// class that holds image data
+/// 이미지 카드 아이템 데이터 모델.
+///
+/// 각 카드의 고유 ID와 이미지 URL 정보를 저장.
+///
+/// 필드:
+///
+///      id (String):         고유 식별자. [UniqueKey]를 문자열로 변환하여 자동 생성.
+///      imageUrl (String):   표시할 이미지의 URL.
+///
+/// 생성자:
+///
+///      CardItem ({required String imageUrl}):
+///           [imageUrl]을 필수로 받아 객체 생성. [id]는 내부적으로 자동 할당.
 class CardItem {
   final String id;
   final String imageUrl;
@@ -9,13 +21,38 @@ class CardItem {
   CardItem({required this.imageUrl}) : id = UniqueKey().toString();
 }
 
+/// 이미지 첨부 UI 섹션.
+///
+/// 사용자가 이미지를 선택하여 첨부하고, 기존 이미지를 제거하는 기능을 제공.
+/// 상태 관리는 [ImageAttachingSectionState]에서 수행.
 class ImageAttachingSection extends StatefulWidget {
+  /// {@macro image_attaching_section}
   const ImageAttachingSection({super.key});
 
   @override
   State<ImageAttachingSection> createState() => ImageAttachingSectionState();
 }
 
+/// {@template image_attaching_section_state}
+/// [ImageAttachingSection] 위젯의 상태 관리 클래스.
+///
+/// 이미지 목록, 최대 이미지 수, 이미지 추가/제거 로직 및 UI 렌더링 담당.
+/// {@endtemplate}
+///
+/// 필드:
+///
+///      _imageItems (List<CardItem>):     내부 이미지 아이템 목록.
+///      maxImages (int):                  첨부 가능한 최대 이미지 개수.
+///
+/// 게터:
+///
+///      currentImages (List<CardItem>):   현재 첨부된 이미지 목록 반환.
+///
+/// 메서드:
+///
+///      _addImage ():                     새로운 샘플 이미지 추가.
+///      _removeImage (String id):         제공된 ID와 일치하는 이미지 제거.
+///      build (BuildContext context):     이미지 첨부 섹션 UI 구성 및 반환.
 class ImageAttachingSectionState extends State<ImageAttachingSection> {
   final List<CardItem> _imageItems = [
     CardItem(
