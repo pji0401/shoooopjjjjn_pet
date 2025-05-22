@@ -23,7 +23,7 @@ class MissionWriteScreen extends StatefulWidget {
 
 class _MissionWriteScreenState extends State<MissionWriteScreen> {
   final TextEditingController _textController = TextEditingController();
-  String _selectedDateString = "2025.04.17"; 
+  String _selectedDateString = ""; 
 
   // Sampe list of images
   final List<CardItem> _imageItems = [
@@ -47,19 +47,17 @@ class _MissionWriteScreenState extends State<MissionWriteScreen> {
     });
   }
 
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
-    );
-    if (picked != null) {
-      setState(() {
-        _selectedDateString = "${picked.year}.${picked.month.toString().padLeft(2, '0')}.${picked.day.toString().padLeft(2, '0')}";
-      });
-    }
+  void _setCurrentDate(){
+    final DateTime now = DateTime.now();
+    _selectedDateString = '${now.year}.${now.month.toString().padLeft(2, '0')}.${now.day.toString().padLeft(2, '0')}';
   }
+
+  @override 
+  void initState() {
+    super.initState();
+    _setCurrentDate();
+  }
+  
 
   @override
   void dispose() {
@@ -86,170 +84,177 @@ class _MissionWriteScreenState extends State<MissionWriteScreen> {
       // ----- BODY -----
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // --- Image Gallery Section ---
-              SizedBox(
-                height: imageHeight + 30, 
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // --- Add Button --- 
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        GestureDetector(
-                          onTap: _addImage,
-                          child: Container(
-                            width: 60,
-                            height: 60,
-                            decoration: BoxDecoration(
-                              color: AppColors.main,
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            child: const Icon(Icons.add, color: Colors.white, size: 35),
-                          ),
-                        ),
-
-                        const SizedBox(height: 8),
-                        
-                        Text(
-                          "${_imageItems.length}/$maxImages",
-                          style: const TextStyle(
-                            color: AppColors.main,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    const SizedBox(width: 16),
-
-                    // --- Horizontally Scrollable Images --- 
-
-                    Expanded(
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: _imageItems.length,
-                        itemBuilder: (context, index) {
-                          final item = _imageItems[index];
-                          return Padding(
-                            padding: const EdgeInsets.only(right: 12.0),
-                            child: Stack(
-                              children: [
-                                Container(
-                                  width: imageWidth,
-                                  height: imageHeight,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(18),
-                                    border: Border.all(color: Colors.grey.shade200, width: 4),
-                                  ),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: Image.network(
-                                      item.imageUrl,
-                                      fit: BoxFit.fill,
-                                      loadingBuilder: (context, child, progress) {
-                                        if (progress == null) return child;
-                                        return const Center(child: CircularProgressIndicator());
-                                      },
-                                      errorBuilder: (context, error, stackTrace) {
-                                        return Container(
-                                          color: Colors.grey.shade200,
-                                          child: const Icon(Icons.broken_image, color: Colors.grey),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                ),
-
-                                Positioned(
-                                  top: 8,
-                                  right: 8,
-                                  child: GestureDetector(
-                                    onTap: () => _removeImage(item.id),
-                                    child: Container(
-                                      padding: const EdgeInsets.all(4),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white.withValues(alpha: 0.6),
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: const Icon(Icons.close, color: AppColors.black, size: 14),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 24),
-
-              // ----- Date Picker Section ----- 
-              GestureDetector(
-                onTap: () => _selectDate(context),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
-                  decoration: BoxDecoration(
-                    color: AppColors.lightGrey, 
-                    borderRadius: BorderRadius.circular(12),
-                  ),
+          padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // --- Image Gallery Section ---
+                SizedBox(
+                  height: imageHeight + 30, 
                   child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SvgPicture.asset('assets/icons/schedule.svg'),
-                      const SizedBox(width: 12),
-                      Text(
-                        _selectedDateString,
-                        style: const TextStyle(fontSize: 16, color: AppColors.black),
+                      // --- Add Button --- 
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          GestureDetector(
+                            onTap: _addImage,
+                            child: Container(
+                              width: 60,
+                              height: 60,
+                              decoration: BoxDecoration(
+                                color: AppColors.main,
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: const Icon(Icons.add, color: Colors.white, size: 35),
+                            ),
+                          ),
+            
+                          const SizedBox(height: 8),
+                          
+                          RichText(
+                            text: TextSpan(
+                              text: '${_imageItems.length}',
+                              style: TextStyle(fontSize: 14, color: AppColors.main, fontWeight: FontWeight.w500),
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: '/$maxImages',
+                                  style: TextStyle(fontSize: 14, color: AppColors.black, fontWeight: FontWeight.w500),
+                                ),
+                              ]
+                            ),
+                          ),
+                        ],
+                      ),
+            
+                      const SizedBox(width: 16),
+            
+                      // --- Horizontally Scrollable Images --- 
+            
+                      Expanded(
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: _imageItems.length,
+                          itemBuilder: (context, index) {
+                            final item = _imageItems[index];
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 12.0),
+                              child: Stack(
+                                children: [
+                                  Container(
+                                    width: imageWidth,
+                                    height: imageHeight,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(18),
+                                      border: Border.all(color: Colors.grey.shade200, width: 4),
+                                    ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: Image.network(
+                                        item.imageUrl,
+                                        fit: BoxFit.fill,
+                                        loadingBuilder: (context, child, progress) {
+                                          if (progress == null) return child;
+                                          return const Center(child: CircularProgressIndicator());
+                                        },
+                                        errorBuilder: (context, error, stackTrace) {
+                                          return Container(
+                                            color: Colors.grey.shade200,
+                                            child: const Icon(Icons.broken_image, color: Colors.grey),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ),
+            
+                                  Positioned(
+                                    top: 8,
+                                    right: 8,
+                                    child: GestureDetector(
+                                      onTap: () => _removeImage(item.id),
+                                      child: Container(
+                                        padding: const EdgeInsets.all(4),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white.withValues(alpha: 0.6),
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: const Icon(Icons.close, color: AppColors.black, size: 14),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
                       ),
                     ],
                   ),
                 ),
-              ),
-
-              const SizedBox(height: 20),
-
-              // Text Input Section
-              Container(
-                height: 250, 
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                decoration: BoxDecoration(
-                  color: AppColors.lightGrey, 
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: TextField(
-                  controller: _textController,
-                  maxLines: null, // Allows for multi-line input
-                  expands: true, // Makes TextField fill the container
-                  textAlignVertical: TextAlignVertical.top,
-                  decoration: const InputDecoration(
-                    hintText: '텍스트를 남기세요~',
-                    border: InputBorder.none,
-                    hintStyle: TextStyle(color: AppColors.grey), 
+            
+                const SizedBox(height: 24),
+            
+                // ----- Date  Section ----- 
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+                    decoration: BoxDecoration(
+                      color: AppColors.lightGrey, 
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Row(
+                      children: [
+                        SvgPicture.asset('assets/icons/schedule.svg'),
+                        const SizedBox(width: 12),
+                        Text(
+                          _selectedDateString,
+                          style: const TextStyle(fontSize: 16, color: AppColors.black),
+                        ),
+                      ],
+                    ),
+                  ),
+            
+            
+                const SizedBox(height: 20),
+            
+                // Text Input Section
+                Container(
+                  height: 250, 
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: AppColors.lightGrey, 
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: TextField(
+                    controller: _textController,
+                    maxLines: null, // Allows for multi-line input
+                    expands: true, // Makes TextField fill the container
+                    textAlignVertical: TextAlignVertical.top,
+                    decoration: const InputDecoration(
+                      hintText: '텍스트를 남기세요~',
+                      border: InputBorder.none,
+                      hintStyle: TextStyle(color: AppColors.grey), 
+                    ),
                   ),
                 ),
-              ),
+            
+                const SizedBox(height: 40), 
+            
+                // Submit Button
+                CustomElevatedButton(
+                  text: '인증하기',
+                  onPressed: () {
+                    FocusScope.of(context).unfocus();
+                    context.push(RoutePath.mission_complete.value);
+                  },
+                  backgroundColor: AppColors.main, 
+                  height: 56,
+                ),
 
-              const Spacer(), 
-
-              // Submit Button
-              CustomElevatedButton(
-                text: '인증하기',
-                onPressed: () {
-                  context.push(RoutePath.mission_complete.value);
-                },
-                backgroundColor: const Color(0xFF4A80F0), 
-                height: 56,
-              ),
-            ],
+                SizedBox(height: MediaQuery.of(context).viewInsets.bottom + 20),
+              ],
+            ),
           ),
         ),
       ),
