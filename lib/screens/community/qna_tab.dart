@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 // local imports
 import 'package:pawprints/widgets/index.dart';
-import 'package:pawprints/screens/community/common.dart';
 
 // 05.18 - TODO: 아이콘 적용
 

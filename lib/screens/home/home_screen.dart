@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:pawprints/data/models/request/mission_create_request.dart';
 import 'package:pawprints/widgets/index.dart';
 import 'package:pawprints/config/index.dart';
 import 'package:pawprints/viewmodels/index.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

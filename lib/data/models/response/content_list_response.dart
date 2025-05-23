@@ -1,4 +1,38 @@
-class ContentListResponse {
+class MemberContentResponse {
+  final String name;
+  final String? profile;
+  final String statusNote;
+  final List<ContentListItem> contents;
+
+  MemberContentResponse({
+    required this.name,
+    required this.profile,
+    required this.statusNote,
+    required this.contents,
+  });
+
+  factory MemberContentResponse.fromJson(Map<String, dynamic> json) {
+    return MemberContentResponse(
+      name: json['name'],
+      profile: json['profile'],
+      statusNote: json['statusNote'],
+      contents: (json['contents'] as List<dynamic>)
+          .map((e) => ContentListItem.fromJson(e))
+          .toList(),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'profile': profile,
+      'statusNote': statusNote,
+      'contents': contents.map((e) => e.toJson()).toList(),
+    };
+  }
+}
+
+class ContentListItem {
   final int contentId;
   final List<String> images;
   final String body;
@@ -6,7 +40,7 @@ class ContentListResponse {
   final int likesCount;
   final int commentsCount;
 
-  ContentListResponse({
+  ContentListItem({
     required this.contentId,
     required this.images,
     required this.body,
@@ -15,8 +49,8 @@ class ContentListResponse {
     required this.commentsCount,
   });
 
-  factory ContentListResponse.fromJson(Map<String, dynamic> json) {
-    return ContentListResponse(
+  factory ContentListItem.fromJson(Map<String, dynamic> json) {
+    return ContentListItem(
       contentId: json['contentId'] ?? 0,
       images: List<String>.from(json['images'] ?? []),
       body: json['body'] ?? '',

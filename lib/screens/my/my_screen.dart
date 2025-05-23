@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pawprints/widgets/index.dart';
 
 class MyScreen extends StatefulWidget {

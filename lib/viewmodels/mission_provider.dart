@@ -4,8 +4,9 @@ import 'package:pawprints/core/network/index.dart';
 import 'package:pawprints/data/models/index.dart';
 import 'package:pawprints/data/models/request/mission_create_request.dart';
 import 'package:pawprints/data/repositories/index.dart';
+import 'package:pawprints/viewmodels/index.dart';
 
-class MissionProvider with ChangeNotifier {
+class MissionProvider with ChangeNotifier implements ImageAttachProvider {
   late final MissionRepository _repository;
 
   MissionProvider(this._repository);

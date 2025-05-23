@@ -32,7 +32,7 @@ final router = GoRouter(
     GoRoute(path: RoutePath.community.value, builder: (context, state) => const CommunityScreen()),
     GoRoute(path: RoutePath.community_write.value, builder: (context, state) => const WritePostScreen()),
     // GoRoute(path: RoutePath.community_search.value, builder: (context, state) => const CommunitySearchScreen()),
-    GoRoute(path: RoutePath.community_profile.value, builder: (context, state) => const CommunityProfileScreen()),
+    GoRoute(path: RoutePath.community_profile.value, builder: (context, state) => CommunityProfileScreen(memberId: state.extra as int)),
     // WIP: GoRoute(path: RoutePath.community_detail.value, builder: (context, state) => const CommunityDetailScreen()),
 
     // Care

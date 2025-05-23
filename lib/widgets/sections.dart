@@ -28,31 +28,29 @@ class CardItem {
 ///
 /// 사용자가 이미지를 선택하여 첨부하고, 기존 이미지를 제거하는 기능을 제공.
 /// 상태 관리는 [ImageAttachingSectionState]에서 수행.
-class ImageAttachingSection extends StatefulWidget {
-  /// {@macro image_attaching_section}
+class ImageAttachingSection<T extends ImageAttachProvider> extends StatefulWidget {
   const ImageAttachingSection({super.key});
 
   @override
-  State<ImageAttachingSection> createState() => ImageAttachingSectionState();
+  State<ImageAttachingSection<T>> createState() => ImageAttachingSectionState<T>();
 }
-
-class ImageAttachingSectionState extends State<ImageAttachingSection> {
+class ImageAttachingSectionState<T extends ImageAttachProvider> extends State<ImageAttachingSection<T>> {
   final ImagePicker picker = ImagePicker();
 
-  Future<void> _getImage(ImageSource imageSource, MissionProvider provider) async {
+  Future<void> _getImage(ImageSource imageSource, T provider) async {
     final XFile? pickedFile = await picker.pickImage(source: imageSource);
     if (pickedFile != null) {
       provider.addImage(File(pickedFile.path));
     }
   }
 
-  void _removeImage(File? item, MissionProvider provider) {
+  void _removeImage(File? item, T provider) {
     provider.removeImage(item);
   }
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<MissionProvider>(context);
+    final provider = Provider.of<T>(context);
     // dynamic height for images, [screen height / 3.5 or 4]
     final double imageHeight =
         MediaQuery.of(context).size.height / 3.4; // Adjust this ratio as needed
