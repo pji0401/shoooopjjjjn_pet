@@ -155,7 +155,7 @@ class CreatePostButton extends StatelessWidget {
     this.onPressed,
     this.backgroundColor = Colors.blue,
     this.elevation = 4.0,
-    this.bottomMargin = 64.0,
+    this.bottomMargin = 111.0,
   });
 
   @override

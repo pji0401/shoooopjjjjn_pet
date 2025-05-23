@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pawprints/widgets/index.dart';
 import 'package:pawprints/core/network/index.dart';
 import 'package:pawprints/config/index.dart';
+import 'package:pawprints/widgets/sections.dart';
 
 class WritePostScreen extends StatefulWidget {
   const WritePostScreen({super.key});
@@ -12,6 +13,9 @@ class WritePostScreen extends StatefulWidget {
 
 class _WritePostScreenState extends State<WritePostScreen> {
   final TextEditingController _contentController = TextEditingController();
+
+  final GlobalKey<ImageAttachingSectionState> _imageSectionKey =
+  GlobalKey<ImageAttachingSectionState>();
 
   @override
   void dispose() {
@@ -36,24 +40,8 @@ class _WritePostScreenState extends State<WritePostScreen> {
           Padding(
             padding:
                 const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-            child: Container(
-              height: 120,
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey[300]!),
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              child: Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.add_photo_alternate_outlined,
-                        size: 40, color: Colors.grey[600]),
-                    SizedBox(height: 8),
-                    Text('이미지 업로드하기',
-                        style: TextStyle(color: Colors.grey[600])),
-                  ],
-                ),
-              ),
+            child: ImageAttachingSection(
+              key: _imageSectionKey, // GlobalKey 할당
             ),
           ),
 
@@ -121,7 +109,6 @@ class _WritePostScreenState extends State<WritePostScreen> {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  AppLogger.d('게시물 업로드: ${_contentController.text}');
                   Navigator.pop(context);
                 },
                 style: ElevatedButton.styleFrom(
