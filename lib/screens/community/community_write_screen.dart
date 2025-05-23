@@ -19,8 +19,9 @@ class WritePostScreen extends StatefulWidget {
 class _WritePostScreenState extends State<WritePostScreen> {
   final TextEditingController _contentController = TextEditingController();
 
-  final GlobalKey<ImageAttachingSectionState<CommunityProvider>> _imageSectionKey =
-  GlobalKey<ImageAttachingSectionState<CommunityProvider>>();
+  final GlobalKey<ImageAttachingSectionState<CommunityProvider>>
+      _imageSectionKey =
+      GlobalKey<ImageAttachingSectionState<CommunityProvider>>();
 
   @override
   void dispose() {
@@ -46,7 +47,7 @@ class _WritePostScreenState extends State<WritePostScreen> {
           Padding(
             padding:
                 const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-            child: ImageAttachingSection(
+            child: ImageAttachingSection<MissionProvider>(
               key: _imageSectionKey, // GlobalKey 할당
             ),
           ),
@@ -113,11 +114,20 @@ class _WritePostScreenState extends State<WritePostScreen> {
             child: CustomElevatedButton(
               text: '업로드하기',
               onPressed: () async {
-                final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-                if (!_contentController.text.isEmpty && !(provider.imageItemCount == 0)) {
-                  provider.createContent(request: ContentCreateRequest(memberId: sharedPreferences.getInt('memberId') ?? 1, body: _contentController.text)).then((_) {
+                final SharedPreferences sharedPreferences =
+                    await SharedPreferences.getInstance();
+                if (!_contentController.text.isEmpty &&
+                    !(provider.imageItemCount == 0)) {
+                  provider
+                      .createContent(
+                          request: ContentCreateRequest(
+                              memberId:
+                                  sharedPreferences.getInt('memberId') ?? 1,
+                              body: _contentController.text))
+                      .then((_) {
                     if (provider.contentId.uiState == UIState.COMPLETED) {
-                      AppLogger.d("✅ createContent: ${provider.contentId.data?.id}");
+                      AppLogger.d(
+                          "✅ createContent: ${provider.contentId.data?.id}");
                       _showPostModal();
                     } else {
                       AppLogger.d("⚠️ data is null or wrong type");
@@ -158,7 +168,8 @@ class _WritePostScreenState extends State<WritePostScreen> {
             return const SizedBox(
               width: 184,
               height: 170,
-              child: Center(child: Text('이미지 로드 실패', style: TextStyle(fontSize: 12))),
+              child: Center(
+                  child: Text('이미지 로드 실패', style: TextStyle(fontSize: 12))),
             );
           },
         ),
@@ -173,7 +184,6 @@ class _WritePostScreenState extends State<WritePostScreen> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),
-
           ),
           child: const Text(
             '확인',
