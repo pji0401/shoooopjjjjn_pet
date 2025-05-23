@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pawprints/widgets/index.dart';
 import 'package:pawprints/core/network/index.dart';
 import 'package:pawprints/config/index.dart';
-import 'package:pawprints/widgets/sections.dart';
 
 class WritePostScreen extends StatefulWidget {
   const WritePostScreen({super.key});
@@ -15,7 +15,7 @@ class _WritePostScreenState extends State<WritePostScreen> {
   final TextEditingController _contentController = TextEditingController();
 
   final GlobalKey<ImageAttachingSectionState> _imageSectionKey =
-  GlobalKey<ImageAttachingSectionState>();
+      GlobalKey<ImageAttachingSectionState>();
 
   @override
   void dispose() {
@@ -74,10 +74,9 @@ class _WritePostScreenState extends State<WritePostScreen> {
                   const EdgeInsets.symmetric(vertical: 24.0, horizontal: 20.0),
               child: Row(
                 children: [
-                  Icon(
-                    Icons.location_on,
-                    color: Colors.blue, // 강조 색상
-                    size: 28, // 아이콘 크기 증가
+                  SvgPicture.asset(
+                    'assets/icons/location.svg',
+                    width: 22,
                   ),
                   SizedBox(width: 12),
                   Expanded(
@@ -105,28 +104,12 @@ class _WritePostScreenState extends State<WritePostScreen> {
           // 업로드하기 버튼 영역
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  padding: EdgeInsets.symmetric(vertical: 16.0),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                ),
-                child: Text(
-                  '업로드하기',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-              ),
+            child: CustomElevatedButton(
+              text: '업로드하기',
+              onPressed: () {
+                AppLogger.d('게시물 업로드: ${_contentController.text}');
+                Navigator.pop(context);
+              }, // 기존 버튼의 배경색 적용
             ),
           ),
           const SizedBox(height: 24.0),
