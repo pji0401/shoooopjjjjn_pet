@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pawprints/config/index.dart';
-import 'package:pawprints/config/route/route_path.dart';
-import 'package:pawprints/config/theme/colors.dart';
 import 'package:pawprints/widgets/base_scaffold.dart';
 import 'package:pawprints/widgets/elevated_button.dart';
 import 'package:pawprints/widgets/sections.dart';
@@ -41,7 +39,10 @@ class _MissionWriteScreenState extends State<MissionWriteScreen> {
     return BaseScaffold(
       title: '미션 인증',
       leadingItem: IconButton(
-        icon: const Icon(Icons.arrow_back_ios, size: 20, color: AppColors.black), 
+        icon: SvgPicture.asset(
+          'assets/icons/chevron_left.svg',
+          colorFilter: ColorFilter.mode(AppColors.black, BlendMode.srcIn),
+        ),
         onPressed: () => Navigator.of(context).pop(),
       ),
 
