@@ -15,7 +15,7 @@ dependencies:
   permission_handler: ^12.0.0+1
   flutter_screenutil: ^5.9.3
   cached_network_image: ^3.0.0
-  image_picker: ^1.0.0
+  image_picker: ^1.1.2
   flutter_image_compress: ^2.4.0
   image: ^4.2.0
   compressor: ^1.0.0
@@ -89,12 +89,15 @@ flutter:
 flutter_launcher_icons:
   android: 'launcher_icon'
   ios: true
-  image_path: 'assets/icons/app_icon.png'
+  image_path_ios: 'assets/icons/app_icon.png'
+  image_path_android: 'assets/datas/splash_icon.png'
 # 04.29 - NOTE: flutter pub run flutter_launcher_icons
 
 flutter_native_splash:
   background_image: assets/datas/splash_background.png
   image: assets/datas/splash_image.png
+#  android_12:
+#    image: 'assets/datas/splash_icon.png'
   android: true
   ios: true
   fullscreen: true

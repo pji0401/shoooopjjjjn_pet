@@ -1,20 +1,20 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:pawprints/config/index.dart';
 import 'package:pawprints/config/route/route_path.dart';
 import 'package:pawprints/config/theme/colors.dart';
+import 'package:pawprints/data/models/index.dart';
+import 'package:pawprints/utils/index.dart';
+import 'package:pawprints/viewmodels/index.dart';
 import 'package:pawprints/widgets/base_scaffold.dart';
 import 'package:pawprints/widgets/elevated_button.dart';
-
-// class that holds image data
-class CardItem {
-  final String id;
-  final String imageUrl;
-
-  CardItem({required this.imageUrl}) : id = UniqueKey().toString();
-}
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:pawprints/core/network/index.dart';
 
 class MissionWriteScreen extends StatefulWidget {
+
   const MissionWriteScreen({super.key});
 
   @override
@@ -23,42 +23,17 @@ class MissionWriteScreen extends StatefulWidget {
 
 class _MissionWriteScreenState extends State<MissionWriteScreen> {
   final TextEditingController _textController = TextEditingController();
-  String _selectedDateString = "2025.04.17"; 
+  final ImagePicker picker = ImagePicker();
 
-  // Sampe list of images
-  final List<CardItem> _imageItems = [
-    CardItem(imageUrl: 'https://images.unsplash.com/photo-1541451563641-c2bdc370f58a?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
-    CardItem(imageUrl: 'https://images.unsplash.com/photo-1505628346881-b72b27e84530?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fGNhdCUyMGZsb3dlcnxlbnwwfHx8fHw%3D&auto=format&fit=crop&w=500&q=60'),
-  ];
-
-  final int maxImages = 10;
-
-  void _addImage() {
-    if (_imageItems.length < 10) {
-      setState(() {
-        _imageItems.add(CardItem(imageUrl: 'https://images.unsplash.com/photo-1517423440428-a5a00ad493e8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZnVubnklMjBkb2d8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60'));
-      });
+  Future<void> _getImage(ImageSource imageSource, MissionProvider provider) async {
+    final XFile? pickedFile = await picker.pickImage(source: imageSource);
+    if (pickedFile != null) {
+      provider.addImage(File(pickedFile.path));
     }
   }
 
-  void _removeImage(String id) {
-    setState(() {
-      _imageItems.removeWhere((item) => item.id == id);
-    });
-  }
-
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
-    );
-    if (picked != null) {
-      setState(() {
-        _selectedDateString = "${picked.year}.${picked.month.toString().padLeft(2, '0')}.${picked.day.toString().padLeft(2, '0')}";
-      });
-    }
+  void _removeImage(File? item, MissionProvider provider) {
+    provider.removeImage(item);
   }
 
   @override
@@ -69,6 +44,7 @@ class _MissionWriteScreenState extends State<MissionWriteScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<MissionProvider>(context);
     // dynamic height for images, [screen height / 3.5 or 4] 
     final double imageHeight = MediaQuery.of(context).size.height / 3.4; // Adjust this ratio as needed
     final double imageWidth = imageHeight * 0.8; // To make it slightly portrait
@@ -98,7 +74,7 @@ class _MissionWriteScreenState extends State<MissionWriteScreen> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         GestureDetector(
-                          onTap: _addImage,
+                          onTap: () => _getImage(ImageSource.gallery, provider),
                           child: Container(
                             width: 60,
                             height: 60,
@@ -111,63 +87,104 @@ class _MissionWriteScreenState extends State<MissionWriteScreen> {
                         ),
 
                         const SizedBox(height: 8),
-                        
-                        Text(
-                          "${_imageItems.length}/$maxImages",
-                          style: const TextStyle(
-                            color: AppColors.main,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ),
+
+                        RichText(
+                            text: TextSpan(
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: "${provider.imageItemCount}",
+                                  style: const TextStyle(
+                                    color: AppColors.black,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: "/",
+                                  style: const TextStyle(
+                                    color: AppColors.black,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: "${provider.maxImageCount}",
+                                  style: const TextStyle(
+                                    color: AppColors.main,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ]
+                            )
                         ),
+                        // Text(
+                        //   "${_imageItems.length}/$maxImages",
+                        //   style: const TextStyle(
+                        //     color: AppColors.main,
+                        //     fontSize: 14,
+                        //     fontWeight: FontWeight.w500,
+                        //   ),
+                        // ),
                       ],
                     ),
 
                     const SizedBox(width: 16),
 
                     // --- Horizontally Scrollable Images --- 
-
                     Expanded(
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: _imageItems.length,
+                        itemCount: provider.imageItemCount,
                         itemBuilder: (context, index) {
-                          final item = _imageItems[index];
+                          final item = provider.images[index];
                           return Padding(
                             padding: const EdgeInsets.only(right: 12.0),
                             child: Stack(
                               children: [
-                                Container(
-                                  width: imageWidth,
-                                  height: imageHeight,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(18),
-                                    border: Border.all(color: Colors.grey.shade200, width: 4),
-                                  ),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: Image.network(
-                                      item.imageUrl,
-                                      fit: BoxFit.fill,
-                                      loadingBuilder: (context, child, progress) {
-                                        if (progress == null) return child;
-                                        return const Center(child: CircularProgressIndicator());
-                                      },
-                                      errorBuilder: (context, error, stackTrace) {
-                                        return Container(
-                                          color: Colors.grey.shade200,
-                                          child: const Icon(Icons.broken_image, color: Colors.grey),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                ),
-
+                                item != null
+                                    ? Container(
+                                        width: imageWidth,
+                                        height: imageHeight,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(18),
+                                          border: Border.all(
+                                              color: Colors.grey.shade200,
+                                              width: 4),
+                                        ),
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          child: Image.file(
+                                            File(item.path),
+                                            fit: BoxFit.fill,
+                                            // loadingBuilder: (context, child, progress) {
+                                            //   if (progress == null) return child;
+                                            //   return const Center(child: CircularProgressIndicator());
+                                            // },
+                                            errorBuilder:
+                                                (context, error, stackTrace) {
+                                              return Container(
+                                                color: Colors.grey.shade200,
+                                                child: const Icon(
+                                                    Icons.broken_image,
+                                                    color: Colors.grey),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      )
+                                    : Container(
+                                        color: Colors.grey.shade200,
+                                        child: const Icon(Icons.broken_image,
+                                            color: Colors.grey),
+                                      ),
                                 Positioned(
                                   top: 8,
                                   right: 8,
                                   child: GestureDetector(
-                                    onTap: () => _removeImage(item.id),
+                                    onTap: () => _removeImage(item, provider),
                                     child: Container(
                                       padding: const EdgeInsets.all(4),
                                       decoration: BoxDecoration(
@@ -190,25 +207,22 @@ class _MissionWriteScreenState extends State<MissionWriteScreen> {
 
               const SizedBox(height: 24),
 
-              // ----- Date Picker Section ----- 
-              GestureDetector(
-                onTap: () => _selectDate(context),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
-                  decoration: BoxDecoration(
-                    color: AppColors.lightGrey, 
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Row(
-                    children: [
-                      SvgPicture.asset('assets/icons/schedule.svg'),
-                      const SizedBox(width: 12),
-                      Text(
-                        _selectedDateString,
-                        style: const TextStyle(fontSize: 16, color: AppColors.black),
-                      ),
-                    ],
-                  ),
+              // ----- Date Picker Section -----
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+                decoration: BoxDecoration(
+                  color: AppColors.lightGrey,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Row(
+                  children: [
+                    SvgPicture.asset('assets/icons/schedule.svg'),
+                    const SizedBox(width: 12),
+                    Text(
+                      getCurrentDate(),
+                      style: const TextStyle(fontSize: 16, color: AppColors.black),
+                    ),
+                  ],
                 ),
               ),
 
@@ -240,8 +254,18 @@ class _MissionWriteScreenState extends State<MissionWriteScreen> {
               // Submit Button
               CustomElevatedButton(
                 text: '인증하기',
-                onPressed: () {
-                  context.push(RoutePath.mission_complete.value);
+                onPressed: () async {
+                  final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                  if (!_textController.text.isEmpty && !(provider.imageItemCount == 0)) {
+                    provider.completeMission(request: MissionCompleteRequest(missionId: provider.mission.data?.id ?? 1, memberId: sharedPreferences.getInt('memberId') ?? 1, body: "success", date: "2025-05-22")).then((_) {
+                      if (provider.compeltedMissionId.uiState == UIState.COMPLETED) {
+                        AppLogger.d("✅ missionComplete: ${provider.compeltedMissionId.data?.id}");
+                        context.go(RoutePath.mission_complete.value, extra: provider.compeltedMissionId.data?.id);
+                      } else {
+                        AppLogger.d("⚠️ data is null or wrong type");
+                      }
+                    });
+                  }
                 },
                 backgroundColor: const Color(0xFF4A80F0), 
                 height: 56,

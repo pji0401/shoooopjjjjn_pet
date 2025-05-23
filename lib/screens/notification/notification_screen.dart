@@ -59,8 +59,7 @@ class _NotificationScreenState extends State<NotificationScreen>
     return BaseScaffold(
       title: widget.title,
       leadingItem: IconButton(
-          icon: SvgPicture.asset('assets/icons/chevron_left.svg',
-              width: 24, height: 24),
+          icon: const Icon(Icons.arrow_back_ios, size: 20, color: Colors.black),
           onPressed: () {
             context.pop();
           }),

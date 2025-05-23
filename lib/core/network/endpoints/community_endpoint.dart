@@ -20,7 +20,7 @@ class CommunityEndpoint {
       );
 
   static ApiRequest getMemberContent(int id) => ApiRequest(
-    path: '$_communityPath/members/:id',
-    pathParams: {'id': id},
-  );
+        path: '$_communityPath/members/:id',
+        pathParams: {'id': id},
+      );
 }

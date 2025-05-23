@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:pawprints/config/index.dart';
 import 'package:pawprints/widgets/index.dart';
+import 'package:pawprints/utils/index.dart';
+import 'package:pawprints/core/network/index.dart';
+import 'package:pawprints/data/models/index.dart';
+import 'package:pawprints/viewmodels/index.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -16,6 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<UserProvider>(context);
     return BaseScaffold(
       body: SafeArea(
         child: Padding(
@@ -122,8 +128,21 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {
-                    context.go(RoutePath.root.value);
+                  onPressed: () async {
+                    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                    if (!_idController.text.isEmpty && !_passwordController.text.isEmpty) {
+                      provider.login(request: LoginRequest(userId: _idController.text, password: _passwordController.text)).then((_) {
+                        if (provider.id.uiState == UIState.COMPLETED) {
+                          AppLogger.d("✅ login: ${provider.id.data}");
+                          if (provider.id.data != null)
+                          sharedPreferences.setInt("memberId", provider.id.data!.id);
+                          // context.push(RoutePath.root.value);
+                        } else {
+                          AppLogger.d("⚠️ data is null or wrong type");
+                        }
+                      });
+                    }
+                    context.push(RoutePath.root.value);
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,

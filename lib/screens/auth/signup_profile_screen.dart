@@ -10,7 +10,7 @@ class SignUpProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BaseScaffold(
       leadingItem: IconButton(
-          icon: SvgPicture.asset('assets/icons/chevron_left.svg', width: 24, height: 24),
+          icon: const Icon(Icons.arrow_back_ios, size: 20, color: Colors.black),
           onPressed: () {
             context.pop();
           }
