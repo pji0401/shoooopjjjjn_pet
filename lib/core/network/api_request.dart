@@ -15,9 +15,8 @@ class ApiRequest {
 
   String get fullPath {
     if (pathParams == null || pathParams!.isEmpty) return path;
-
     String result = path;
-    pathParams!.forEach((key, value) {
+    pathParams?.forEach((key, value) {
       result = result.replaceAll(':$key', value.toString());
     });
     return result;

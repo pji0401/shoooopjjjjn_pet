@@ -1,14 +1,14 @@
-class CreateContentRequest {
+class ContentCreateRequest {
   final int memberId;
   final String body;
 
-  CreateContentRequest({
+  ContentCreateRequest({
     required this.memberId,
     required this.body,
   });
 
-  factory CreateContentRequest.fromJson(Map<String, dynamic> json) {
-    return CreateContentRequest(
+  factory ContentCreateRequest.fromJson(Map<String, dynamic> json) {
+    return ContentCreateRequest(
       memberId: json['memberId'] ?? 0,
       body: json['body'] ?? '',
     );

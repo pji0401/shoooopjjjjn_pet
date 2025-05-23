@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pawprints/widgets/index.dart';
-import 'package:pawprints/services/app_logger.dart';
+import 'package:pawprints/core/network/index.dart';
+import 'package:pawprints/config/index.dart';
 import 'package:pawprints/widgets/sections.dart';
 
 class WritePostScreen extends StatefulWidget {
@@ -14,7 +15,7 @@ class _WritePostScreenState extends State<WritePostScreen> {
   final TextEditingController _contentController = TextEditingController();
 
   final GlobalKey<ImageAttachingSectionState> _imageSectionKey =
-      GlobalKey<ImageAttachingSectionState>();
+  GlobalKey<ImageAttachingSectionState>();
 
   @override
   void dispose() {
@@ -28,8 +29,8 @@ class _WritePostScreenState extends State<WritePostScreen> {
       appBar: buildCustomAppBar(
         title: '게시글',
         leadingItem: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
+          icon: const Icon(Icons.arrow_back_ios, size: 20, color: Colors.black),
+          onPressed: () => context.pop(),
         ),
       ),
       body: Column(
@@ -108,12 +109,6 @@ class _WritePostScreenState extends State<WritePostScreen> {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  final List<CardItem> attachedImages =
-                      _imageSectionKey.currentState?.currentImages ?? [];
-                  final String postContent = _contentController.text;
-                  AppLogger.d('게시물 업로드: $postContent');
-                  AppLogger.d('첨부된 이미지 수: ${attachedImages.length}');
-
                   Navigator.pop(context);
                 },
                 style: ElevatedButton.styleFrom(

@@ -1,5 +1,8 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:pawprints/config/theme/colors.dart';
+import 'package:pawprints/viewmodels/index.dart';
 
 /// 이미지 카드 아이템 데이터 모델.
 ///
@@ -33,58 +36,23 @@ class ImageAttachingSection extends StatefulWidget {
   State<ImageAttachingSection> createState() => ImageAttachingSectionState();
 }
 
-/// {@template image_attaching_section_state}
-/// [ImageAttachingSection] 위젯의 상태 관리 클래스.
-///
-/// 이미지 목록, 최대 이미지 수, 이미지 추가/제거 로직 및 UI 렌더링 담당.
-/// {@endtemplate}
-///
-/// 필드:
-///
-///      _imageItems (List<CardItem>):     내부 이미지 아이템 목록.
-///      maxImages (int):                  첨부 가능한 최대 이미지 개수.
-///
-/// 게터:
-///
-///      currentImages (List<CardItem>):   현재 첨부된 이미지 목록 반환.
-///
-/// 메서드:
-///
-///      _addImage ():                     새로운 샘플 이미지 추가.
-///      _removeImage (String id):         제공된 ID와 일치하는 이미지 제거.
-///      build (BuildContext context):     이미지 첨부 섹션 UI 구성 및 반환.
 class ImageAttachingSectionState extends State<ImageAttachingSection> {
-  final List<CardItem> _imageItems = [
-    CardItem(
-        imageUrl:
-            'https://images.unsplash.com/photo-1541451563641-c2bdc370f58a?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
-    CardItem(
-        imageUrl:
-            'https://images.unsplash.com/photo-1505628346881-b72b27e84530?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fGNhdCUyMGZsb3dlcnxlbnwwfHx8fHw%3D&auto=format&fit=crop&w=500&q=60'),
-  ];
+  final ImagePicker picker = ImagePicker();
 
-  final int maxImages = 10;
-
-  List<CardItem> get currentImages => _imageItems;
-
-  void _addImage() {
-    if (_imageItems.length < maxImages) {
-      setState(() {
-        _imageItems.add(CardItem(
-            imageUrl:
-                'https://images.unsplash.com/photo-1517423440428-a5a00ad493e8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZnVubnklMjBkb2d8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60'));
-      });
+  Future<void> _getImage(ImageSource imageSource, MissionProvider provider) async {
+    final XFile? pickedFile = await picker.pickImage(source: imageSource);
+    if (pickedFile != null) {
+      provider.addImage(File(pickedFile.path));
     }
   }
 
-  void _removeImage(String id) {
-    setState(() {
-      _imageItems.removeWhere((item) => item.id == id);
-    });
+  void _removeImage(File? item, MissionProvider provider) {
+    provider.removeImage(item);
   }
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<MissionProvider>(context);
     // dynamic height for images, [screen height / 3.5 or 4]
     final double imageHeight =
         MediaQuery.of(context).size.height / 3.4; // Adjust this ratio as needed
@@ -100,7 +68,7 @@ class ImageAttachingSectionState extends State<ImageAttachingSection> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               GestureDetector(
-                onTap: _addImage,
+                onTap: () => _getImage(ImageSource.gallery, provider),
                 child: Container(
                   width: 60,
                   height: 60,
@@ -112,14 +80,33 @@ class ImageAttachingSectionState extends State<ImageAttachingSection> {
                 ),
               ),
               const SizedBox(height: 8),
-              Text(
-                "${_imageItems.length}/$maxImages",
-                style: const TextStyle(
-                  color: AppColors.main,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
+              RichText(
+                  text: TextSpan(children: <TextSpan>[
+                TextSpan(
+                  text: "${provider.imageItemCount}",
+                  style: const TextStyle(
+                    color: AppColors.black,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-              ),
+                TextSpan(
+                  text: "/",
+                  style: const TextStyle(
+                    color: AppColors.black,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                TextSpan(
+                  text: "${provider.maxImageCount}",
+                  style: const TextStyle(
+                    color: AppColors.main,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ])),
             ],
           ),
           const SizedBox(width: 16),
@@ -127,9 +114,9 @@ class ImageAttachingSectionState extends State<ImageAttachingSection> {
           Expanded(
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: _imageItems.length,
+              itemCount: provider.imageItemCount,
               itemBuilder: (context, index) {
-                final item = _imageItems[index];
+                final item = provider.images[index];
                 return Padding(
                   padding: const EdgeInsets.only(right: 12.0),
                   child: Stack(
@@ -144,14 +131,13 @@ class ImageAttachingSectionState extends State<ImageAttachingSection> {
                         ),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
-                          child: Image.network(
-                            item.imageUrl,
+                          child: Image.file(
+                            File(item.path),
                             fit: BoxFit.fill,
-                            loadingBuilder: (context, child, progress) {
-                              if (progress == null) return child;
-                              return const Center(
-                                  child: CircularProgressIndicator());
-                            },
+                            // loadingBuilder: (context, child, progress) {
+                            //   if (progress == null) return child;
+                            //   return const Center(child: CircularProgressIndicator());
+                            // },
                             errorBuilder: (context, error, stackTrace) {
                               return Container(
                                 color: Colors.grey.shade200,
@@ -166,7 +152,7 @@ class ImageAttachingSectionState extends State<ImageAttachingSection> {
                         top: 8,
                         right: 8,
                         child: GestureDetector(
-                          onTap: () => _removeImage(item.id),
+                          onTap: () => _removeImage(item, provider),
                           child: Container(
                             padding: const EdgeInsets.all(4),
                             decoration: BoxDecoration(

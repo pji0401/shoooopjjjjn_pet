@@ -18,7 +18,7 @@ class _RootViewState extends State<RootScreen> {
     CommunityScreen(),
     ChatScreen(),
     CareScreen(),
-    LoginScreen() // MyScreen(),
+    MyScreen(),
   ];
 
   void _onItemTapped(int index) {

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 
 // local imports
 import 'package:pawprints/widgets/index.dart';
-import 'package:pawprints/services/app_logger.dart';
 import 'package:pawprints/screens/community/whole_tab.dart';
 // import 'package:pawprints/screens/community/hot_tab.dart';
 import 'package:pawprints/screens/community/qna_tab.dart';
-import 'package:pawprints/screens/community/community_profile_screen.dart';
-import 'package:pawprints/screens/community/community_write_screen.dart';
+import 'package:pawprints/core/network/index.dart';
+import 'package:pawprints/config/index.dart';
 
 class CommunityScreen extends StatefulWidget {
   const CommunityScreen({super.key});
@@ -50,7 +50,6 @@ class CommunityScreenState extends State<CommunityScreen>
     const pretendardFontFamily = 'Pretendard';
 
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: buildCustomAppBar(
         title: '커뮤니티',
         trailingItems: <Widget>[
@@ -80,64 +79,64 @@ class CommunityScreenState extends State<CommunityScreen>
                   BlendMode.srcIn), // 아이콘 색상 적용
             ), // 또는 Icons.person_outline
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const CommunityProfileScreen()),
-              );
+              context.push(RoutePath.community_profile.value);
             },
           ),
         ],
       ),
-      body: Column(
-        children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).scaffoldBackgroundColor,
-              border: Border(
-                bottom: BorderSide(color: Colors.grey[300]!, width: 0.2), // 구분선
+      body: Padding(
+        padding: EdgeInsets.only(
+          bottom: 83,
+        ),
+        child: Column(
+          children: <Widget>[
+            Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).scaffoldBackgroundColor,
+                border: Border(
+                  bottom: BorderSide(color: Colors.grey[300]!, width: 0.2), // 구분선
+                ),
+              ),
+              child: TabBar(
+                controller: _tabController,
+                tabs: _tabs,
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                isScrollable: true,
+                tabAlignment: TabAlignment.start,
+                labelPadding: const EdgeInsets.symmetric(horizontal: 30.0),
+                labelColor: primaryColor,
+                unselectedLabelColor: greyColor,
+                indicatorColor: primaryColor,
+                indicatorWeight: 1.0,
+                indicatorSize: TabBarIndicatorSize.tab,
+                labelStyle: const TextStyle(
+                  fontFamily: pretendardFontFamily,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16.0,
+                ),
+                unselectedLabelStyle: const TextStyle(
+                  fontFamily: pretendardFontFamily,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 16.0,
+                ),
               ),
             ),
-            child: TabBar(
-              controller: _tabController,
-              tabs: _tabs,
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              isScrollable: true,
-              tabAlignment: TabAlignment.start,
-              labelPadding: const EdgeInsets.symmetric(horizontal: 30.0),
-              labelColor: primaryColor,
-              unselectedLabelColor: greyColor,
-              indicatorColor: primaryColor,
-              indicatorWeight: 1.0,
-              indicatorSize: TabBarIndicatorSize.tab,
-              labelStyle: const TextStyle(
-                fontFamily: pretendardFontFamily,
-                fontWeight: FontWeight.w600,
-                fontSize: 16.0,
-              ),
-              unselectedLabelStyle: const TextStyle(
-                fontFamily: pretendardFontFamily,
-                fontWeight: FontWeight.w400,
-                fontSize: 16.0,
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: <Widget>[
+                  const WholeTabBody(),
+                  // const HotTabBody(),
+                  const QnaTabBody(),
+                ],
               ),
             ),
-          ),
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: <Widget>[
-                const WholeTabBody(),
-                // const HotTabBody(),
-                const QnaTabBody(),
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
       floatingActionButton: CreatePostButton(
         onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => WritePostScreen()));
+          context.push(RoutePath.community_write.value);
         },
         backgroundColor: primaryColor,
       ),

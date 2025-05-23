@@ -43,7 +43,7 @@ class _ChatScreenState extends State<ChatScreen> {
           Container(
             padding: EdgeInsets.only(
               top: MediaQuery.of(context).padding.top + 34,
-              bottom: 83,
+              // bottom: 83,
             ),
             decoration: const BoxDecoration(
               gradient: LinearGradient(

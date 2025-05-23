@@ -50,8 +50,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     return BaseScaffold(
       title: widget.title,
       leadingItem: IconButton(
-          icon: SvgPicture.asset('assets/icons/chevron_left.svg',
-              width: 24, height: 24),
+          icon: const Icon(Icons.arrow_back_ios, size: 20, color: Colors.black),
           onPressed: () {
             context.pop();
           }),
@@ -241,7 +240,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
           ),
           Positioned(
             right: 24,
-            bottom: MediaQuery.of(context).padding.bottom,
+            bottom: MediaQuery.of(context).padding.bottom + 30,
             child: GestureDetector(
               onTap: () {
                 context.push(RoutePath.schedule_write.value);

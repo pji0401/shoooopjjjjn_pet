@@ -31,16 +31,15 @@ class DioClient {
     // return connectivityResult.contains(ConnectivityResult.mobile) || connectivityResult.contains(ConnectivityResult.wifi);
   }
 
-  Future<BaseResponse<T>> get<T>(
-    String path, {
-    Map<String, dynamic>? queryParameters,
+  Future<BaseResponse<T>> get<T>({
+    required ApiRequest request,
     required T Function(dynamic json) fromJson,
   }) async {
     try {
       await _ensureInternet();
       final response = await _dio.get(
-          path,
-          queryParameters: queryParameters,
+        request.fullPath,
+        queryParameters: request.queryParams,
         options: Options(contentType: 'application/json'),
       );
       return _handleBaseResponse<T>(response, fromJson);
@@ -49,18 +48,16 @@ class DioClient {
     }
   }
 
-  Future<BaseResponse<T>> post<T>(
-    String path, {
-    dynamic data,
-    Map<String, dynamic>? queryParameters,
+  Future<BaseResponse<T>> post<T>({
+    required ApiRequest request,
     required T Function(dynamic json) fromJson,
   }) async {
     try {
       await _ensureInternet();
       final response = await _dio.post(
-        path,
-        data: data,
-        queryParameters: queryParameters,
+        request.fullPath,
+        data: request.body,
+        queryParameters: request.queryParams,
         options: Options(contentType: 'application/json'),
       );
       return _handleBaseResponse<T>(response, fromJson);
@@ -69,18 +66,16 @@ class DioClient {
     }
   }
 
-  Future<BaseResponse<T>> put<T>(
-    String path, {
-    dynamic data,
-    Map<String, dynamic>? queryParameters,
+  Future<BaseResponse<T>> put<T>({
+    required ApiRequest request,
     required T Function(dynamic json) fromJson,
   }) async {
     try {
       await _ensureInternet();
       final response = await _dio.put(
-        path,
-        data: data,
-        queryParameters: queryParameters,
+        request.fullPath,
+        data: request.body,
+        queryParameters: request.queryParams,
         options: Options(contentType: 'application/json'),
       );
       return _handleBaseResponse<T>(response, fromJson);
@@ -89,39 +84,35 @@ class DioClient {
     }
   }
 
-  Future<BaseResponse<T>> patch<T>(
-      String path, {
-        dynamic data,
-        Map<String, dynamic>? queryParameters,
-        required T Function(dynamic json) fromJson,
-      }) async {
-    try {
-      await _ensureInternet();
-      final response = await _dio.patch(
-        path,
-        data: data,
-        queryParameters: queryParameters,
-        options: Options(contentType: 'application/json'),
-      );
-      return _handleBaseResponse<T>(response, fromJson);
-    } on DioException catch (e) {
-      return _handleDioError<T>(e, fromJson);
-    }
-  }
-
-  Future<BaseResponse<T>> delete<T>(
-    String path, {
-    Map<String, dynamic>? queryParameters,
+  Future<BaseResponse<T>> patch<T>({
+    required ApiRequest request,
     required T Function(dynamic json) fromJson,
   }) async {
     try {
       await _ensureInternet();
-      final response =
-          await _dio.delete(
-              path,
-              queryParameters: queryParameters,
-              options: Options(contentType: 'application/json'),
-          );
+      final response = await _dio.patch(
+        request.fullPath,
+        data: request.body,
+        queryParameters: request.queryParams,
+        options: Options(contentType: 'application/json'),
+      );
+      return _handleBaseResponse<T>(response, fromJson);
+    } on DioException catch (e) {
+      return _handleDioError<T>(e, fromJson);
+    }
+  }
+
+  Future<BaseResponse<T>> delete<T>({
+    required ApiRequest request,
+    required T Function(dynamic json) fromJson,
+  }) async {
+    try {
+      await _ensureInternet();
+      final response = await _dio.delete(
+        request.fullPath,
+        queryParameters: request.queryParams,
+        options: Options(contentType: 'application/json'),
+      );
       return _handleBaseResponse<T>(response, fromJson);
     } on DioException catch (e) {
       return _handleDioError<T>(e, fromJson);
@@ -219,7 +210,6 @@ extension DioClientMultipart on DioClient {
       final response = await _dio.post(
         request.fullPath,
         data: formData,
-        queryParameters: request.queryParams,
         options: Options(
           contentType: 'multipart/form-data',
         ),
