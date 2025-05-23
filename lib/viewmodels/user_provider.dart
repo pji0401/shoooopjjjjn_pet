@@ -13,19 +13,20 @@ class UserProvider with ChangeNotifier {
   ApiResponse<IdResponse> id = ApiResponse.loading();
   ApiResponse<IdResponse> userId = ApiResponse.loading();
 
+  final File _image = File("");
+
   Future<void> register({
     required RegisterRequest request,
-    required File imageFile,
   }) async {
-    id = ApiResponse.loading();
+    userId = ApiResponse.loading();
     notifyListeners();
-    _repository.register(
+    await _repository.register(
       requestBody: request,
-      imageFile: imageFile,
+      imageFile: _image,
     ).then((response) {
-      id = ApiResponse.completed(response.result);
+      userId = ApiResponse.completed(response.result);
     }).onError((error, stackTrace) {
-      id = ApiResponse.error(error.toString());
+      userId = ApiResponse.error(error.toString());
     }).whenComplete(() {
       notifyListeners();
     });
@@ -34,14 +35,14 @@ class UserProvider with ChangeNotifier {
   Future<void> login({
     required LoginRequest request,
   }) async {
-    userId = ApiResponse.loading();
+    id = ApiResponse.loading();
     notifyListeners();
-    _repository.login(
+    await _repository.login(
       requestBody: request,
     ).then((response) {
-      userId = ApiResponse.completed(response.result);
+      id = ApiResponse.completed(response.result);
     }).onError((error, stackTrace) {
-      userId = ApiResponse.error(error.toString());
+      id = ApiResponse.error(error.toString());
     }).whenComplete(() {
       notifyListeners();
     });

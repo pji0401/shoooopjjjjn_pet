@@ -14,12 +14,12 @@ class CommunityProvider with ChangeNotifier {
   ApiResponse<ContentListResponse> contentList = ApiResponse.loading();
 
   Future<void> createContent({
-    required CreateContentRequest request,
+    required ContentCreateRequest request,
     required File imageFile,
   }) async {
     contentId = ApiResponse.loading();
     notifyListeners();
-    _repository.createContent(
+    await _repository.createContent(
       requestBody: request,
       imageFile: imageFile,
     ).then((response) {

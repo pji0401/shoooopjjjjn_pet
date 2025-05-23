@@ -6,7 +6,7 @@ class MissionEndpoint {
 
   static ApiRequest completeMission({
     required Map<String, dynamic> requestBody,
-    required Map<String, dynamic> formData,
+    Map<String, dynamic>? formData,
   }) =>
       ApiRequest(
         path: '$_missionPath/complete',
@@ -17,5 +17,13 @@ class MissionEndpoint {
   static ApiRequest getMission(int id) => ApiRequest(
         path: '$_missionPath/:id',
         pathParams: {'id': id},
+      );
+
+  static ApiRequest createMission({
+    required Map<String, dynamic> requestBody,
+  }) =>
+      ApiRequest(
+        path: '$_missionPath',
+        body: requestBody,
       );
 }

@@ -9,8 +9,7 @@ class MemoryRepository {
   Future<BaseResponse<MemberMemoryResponse>> getMemory(int id) async {
     final request = MemoryEndpoint.getMemory(id);
     return _dioClient.get<MemberMemoryResponse>(
-      request.fullPath,
-      queryParameters: request.queryParams,
+      request: request,
       fromJson: (json) => MemberMemoryResponse.fromJson(json as Map<String, dynamic>),
     );
   }
@@ -18,8 +17,7 @@ class MemoryRepository {
   Future<BaseResponse<MemoryListResponse>> getMemoryList(int id) async {
     final request = MemoryEndpoint.getMemoryList(id);
     return _dioClient.get<MemoryListResponse>(
-      request.fullPath,
-      queryParameters: request.queryParams,
+      request: request,
       fromJson: (json) => MemoryListResponse.fromJson(json as Map<String, dynamic>),
     );
   }

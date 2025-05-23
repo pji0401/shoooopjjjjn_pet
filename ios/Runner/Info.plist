@@ -49,12 +49,16 @@
 		<true/>
 		<key>UIViewControllerBasedStatusBarAppearance</key>
 		<false/>
-        <key>UIBackgroundModes</key>
-        <array>
-            <string>fetch</string>
-            <string>remote-notification</string>
-        </array>
-        <key>NSLocalNotificationUsageDescription</key>
-        <string>앱에서 알림을 요청하기 위해 권한이 필요합니다.</string>
+		<key>UIBackgroundModes</key>
+		<array>
+			<string>fetch</string>
+			<string>remote-notification</string>
+		</array>
+		<key>NSLocalNotificationUsageDescription</key>
+		<string>앱에서 알림을 요청하기 위해 알림 권한 허용이 필요합니다.</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>갤러리 이미지를 불러오기 위해 갤러리 권한 허용이 필요합니다.</string>
+		<key>NSCameraUsageDescription</key>
+		<string>카메라로 이미지를 찍기 위해 카메라 권한 허용이 필요합니다.</string>
 	</dict>
 </plist>

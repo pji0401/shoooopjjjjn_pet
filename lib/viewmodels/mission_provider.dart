@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:pawprints/core/network/index.dart';
 import 'package:pawprints/data/models/index.dart';
+import 'package:pawprints/data/models/request/mission_create_request.dart';
 import 'package:pawprints/data/repositories/index.dart';
 
 class MissionProvider with ChangeNotifier {
@@ -9,8 +10,46 @@ class MissionProvider with ChangeNotifier {
 
   MissionProvider(this._repository);
 
+  ApiResponse<IdResponse> createdMission = ApiResponse.loading();
   ApiResponse<MissionGetResponse> mission = ApiResponse.loading();
   ApiResponse<IdResponse> compeltedMissionId = ApiResponse.loading();
+
+  final List<File> _imageItems = [];
+
+  List<File> get images => List.unmodifiable(_imageItems);
+  int get imageItemCount => _imageItems.length;
+  int get maxImageCount => 10;
+
+  void addImage(File imageFile) {
+    if (maxImageCount >= imageItemCount) {
+      _imageItems.add(imageFile);
+      notifyListeners();
+    }
+  }
+
+  void removeImage(File? imageFile) {
+    _imageItems.remove(imageFile);
+    notifyListeners();
+  }
+
+  void clearImages() {
+    _imageItems.clear();
+    notifyListeners();
+  }
+
+  Future<void> createMission({
+    required MissionCreateRequest request,
+  }) async {
+    createdMission = ApiResponse.loading();
+    notifyListeners();
+    await _repository.createMission(requestBody: request).then((response) {
+      createdMission = ApiResponse.completed(response.result);
+    }).onError((error, stackTrace) {
+      createdMission = ApiResponse.error(error.toString());
+    }).whenComplete(() {
+      notifyListeners();
+    });
+  }
 
   Future<void> getMission(int id) async {
     mission = ApiResponse.loading();
@@ -25,14 +64,13 @@ class MissionProvider with ChangeNotifier {
   }
 
   Future<void> completeMission({
-    required MissionCompleteRequest request,
-    required File imageFile,
+    required MissionCompleteRequest request
   }) async {
     compeltedMissionId = ApiResponse.loading();
     notifyListeners();
-    _repository.completeMission(
+    await _repository.completeMission(
       requestBody: request,
-      imageFile: imageFile,
+      imageFiles: _imageItems,
     ).then((response) {
       compeltedMissionId = ApiResponse.completed(response.result);
     }).onError((error, stackTrace) {

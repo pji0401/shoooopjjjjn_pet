@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pawprints/config/index.dart'; 
 import 'package:pawprints/widgets/elevated_button.dart'; 
-import 'package:pawprints/widgets/index.dart'; 
+import 'package:pawprints/widgets/index.dart';
+import 'package:pawprints/viewmodels/index.dart';
 
 class MissionScreen extends StatefulWidget {
   const MissionScreen({super.key});
@@ -80,12 +81,13 @@ class _MissionScreenState extends State<MissionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<MissionProvider>(context);
     return BaseScaffold(
       // ---------------APP BAR------------------------
       title: '미션 인증',
       leadingItem: IconButton(
         icon: const Icon(Icons.arrow_back_ios, size: 20, color: Colors.black),
-        onPressed: () => Navigator.of(context).pop(),
+        onPressed: () => context.pop(),
       ),
 
       body: SafeArea(
@@ -123,13 +125,9 @@ class _MissionScreenState extends State<MissionScreen> {
                         Positioned(
                           left: -30,
                           bottom: -5,
-                          child: SvgPicture.asset('assets/icons/mission_paw.svg',
-                            width: 90,
-                          ),
+                          child: SvgPicture.asset('assets/icons/mission_paw.svg', width: 90),
                         ),
-                        SvgPicture.asset('assets/icons/mission_envelope.svg',
-                        width: 180,
-                        )
+                        Image.asset('assets/datas/mission_envelope.png', width: 180, height: 150,),
                       ]
                     ),
 
@@ -145,8 +143,8 @@ class _MissionScreenState extends State<MissionScreen> {
                           color: const Color(0xFF4285F4)
                         )
                       ),
-                      child: const Text(
-                        '33번째 미션', 
+                      child: Text(
+                        '${provider.mission.data?.order ?? ""}번째 미션',
                         style: TextStyle(
                           color: Color(0xFF135DB2),
                           fontSize: 12,
@@ -158,8 +156,8 @@ class _MissionScreenState extends State<MissionScreen> {
                     const SizedBox(height: 20),
 
                     // --------------- MISSION TEXT ----------------------
-                    const Text(
-                      '벚꽃 아래서 반려견과 사진찍기', 
+                    Text(
+                      '${provider.mission.data?.title ?? ""}',
                       style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.w600,

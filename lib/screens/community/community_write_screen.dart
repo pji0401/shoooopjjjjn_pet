@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pawprints/widgets/index.dart';
-import 'package:pawprints/services/app_logger.dart';
+import 'package:pawprints/core/network/index.dart';
+import 'package:pawprints/config/index.dart';
 
 class WritePostScreen extends StatefulWidget {
   const WritePostScreen({super.key});
@@ -24,8 +25,8 @@ class _WritePostScreenState extends State<WritePostScreen> {
       appBar: buildCustomAppBar(
         title: '게시글',
         leadingItem: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
+          icon: const Icon(Icons.arrow_back_ios, size: 20, color: Colors.black),
+          onPressed: () => context.pop(),
         ),
       ),
       body: Column(

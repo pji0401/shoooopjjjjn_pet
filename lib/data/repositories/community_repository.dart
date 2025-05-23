@@ -9,7 +9,7 @@ class CommunityRepository {
   CommunityRepository(this._dioClient);
 
   Future<BaseResponse<IdResponse>> createContent({
-    required CreateContentRequest requestBody,
+    required ContentCreateRequest requestBody,
     required File imageFile,
   }) async {
     final multipartFile = await MultipartFile.fromFile(
@@ -32,8 +32,7 @@ class CommunityRepository {
   Future<BaseResponse<ContentDetailResponse>> getDetailContent(int id) async {
     final request = CommunityEndpoint.getDetailContent(id);
     return _dioClient.get<ContentDetailResponse>(
-      request.fullPath,
-      queryParameters: request.queryParams,
+      request: request,
       fromJson: (json) => ContentDetailResponse.fromJson(json as Map<String, dynamic>),
     );
   }
@@ -41,8 +40,7 @@ class CommunityRepository {
   Future<BaseResponse<ContentListResponse>> getMemberContent(int id) async {
     final request = CommunityEndpoint.getMemberContent(id);
     return _dioClient.get<ContentListResponse>(
-      request.fullPath,
-      queryParameters: request.queryParams,
+      request: request,
       fromJson: (json) => ContentListResponse.fromJson(json as Map<String, dynamic>),
     );
   }

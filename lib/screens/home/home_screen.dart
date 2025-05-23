@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:pawprints/data/models/request/mission_create_request.dart';
 import 'package:pawprints/widgets/index.dart';
 import 'package:pawprints/config/index.dart';
+import 'package:pawprints/viewmodels/index.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -12,25 +15,27 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
+  void initState() {
+    super.initState();
+    Provider.of<MissionProvider>(context, listen: false).getMission(19); // FIXME: Test
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final missionProvider = Provider.of<MissionProvider>(context); // FIXME: HomeProvider
+
     return BaseScaffold(
         // appbar
         leadingWidth: 100,
         leadingItem: SvgPicture.asset('assets/icons/pawprint.svg'),
         trailingItems: [
-          InkWell(
-            onTap: () {
-              context.push(RoutePath.notification.value);
-            },
-            child: SvgPicture.asset('assets/icons/notification_on.svg',
-                width: 24, height: 24),
+          IconButton(
+            icon: SvgPicture.asset('assets/icons/notification_on.svg'),
+            onPressed: () => context.push(RoutePath.notification.value),
           ),
-          InkWell(
-            onTap: () {
-              context.push(RoutePath.schedule.value);
-            },
-            child: SvgPicture.asset('assets/icons/schedule.svg',
-                width: 24, height: 24),
+          IconButton(
+            icon: SvgPicture.asset('assets/icons/schedule.svg', width: 24, height: 24),
+            onPressed: () => context.push(RoutePath.schedule.value),
           ),
         ],
 
@@ -38,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
         body: Stack(
           children: [
             // Gradient background
-            Positioned.fill(
+            Positioned(
               child: Container(
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
@@ -86,9 +91,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                         BlueColoredText.toTextSpan('호준',
                                             fontSize: 26.0),
                                         const TextSpan(text: '님, '),
-                                        BlueColoredText.toTextSpan('봄이와와',
+                                        BlueColoredText.toTextSpan('봄이',
                                             fontSize: 26.0),
-                                        const TextSpan(text: '함께\n'),
+                                        const TextSpan(text: '와 함께\n'),
                                         BlueColoredText.toTextSpan('32',
                                             fontSize: 26.0),
                                         const TextSpan(text: '개의 추억을\n쌓았어요!'),
@@ -190,8 +195,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         HomeSectionHeader('오늘의 미션'),
                                         InkWell(
                                             onTap: () {
-                                              context.push(
-                                                  RoutePath.mission.value);
+                                              context.push(RoutePath.mission.value, extra: missionProvider.mission.data?.id);
                                             },
                                             child: Row(children: [
                                               Text('미션 수행하기',
@@ -219,13 +223,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                       padding: const EdgeInsets.all(16),
                                       child: Row(
                                         children: [
-                                          // Left side - envelope icon
                                           Container(
-                                              child: SvgPicture.asset(
-                                            'assets/icons/envelope_home.svg',
-                                            width: 70,
-                                            height: 70,
-                                          )),
+                                              child: Image.asset(
+                                                'assets/datas/envelop.png',
+                                                width: 70,
+                                                height: 70,
+                                              )),
 
                                           // Add space between icon and text
                                           const SizedBox(width: 16),
@@ -237,9 +240,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   CrossAxisAlignment.start,
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
-                                              children: const [
+                                              children: [
                                                 Text(
-                                                  '봄 즐기기',
+                                                  '${missionProvider.mission.data?.description ?? ""}',
                                                   style: TextStyle(
                                                     fontSize: 14,
                                                     fontWeight: FontWeight.w500,
@@ -248,7 +251,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 ),
                                                 SizedBox(height: 4),
                                                 Text(
-                                                  '벚꽃 아래서 반려견과 사진찍기',
+                                                  '${missionProvider.mission.data?.title ?? ""}',
                                                   style: TextStyle(
                                                     fontSize: 16,
                                                     fontWeight: FontWeight.bold,
@@ -433,7 +436,8 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ],
-        ));
+        )
+    );
   }
 
   Widget _buildPawDayStatus(bool isCompleted) {
@@ -450,10 +454,10 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         const SizedBox(height: 4),
         Text(
-          isCompleted ? '완료' : '',
+          isCompleted ? '완료' : '실패',
           style: TextStyle(
             fontSize: 12,
-            color: isCompleted ? AppColors.main : Colors.transparent,
+            color: isCompleted ? AppColors.main : Colors.black,
             fontWeight: FontWeight.w500,
           ),
         ),

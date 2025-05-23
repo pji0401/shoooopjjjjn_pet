@@ -6,7 +6,7 @@ class UserEndpoint {
 
   static ApiRequest register({
     required Map<String, dynamic> requestBody,
-    required Map<String, dynamic> formData,
+    Map<String, dynamic>? formData,
   }) =>
       ApiRequest(
         path: '$_userPath/join',

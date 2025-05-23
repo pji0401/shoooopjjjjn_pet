@@ -5,7 +5,7 @@ import 'package:pawprints/screens/index.dart';
 import 'package:pawprints/config/index.dart';
 
 final router = GoRouter(
-  initialLocation: RoutePath.root.value,
+  initialLocation: RoutePath.login.value,
   routes: [
     // Auth
     GoRoute(path: RoutePath.login.value, builder: (context, state) => const LoginScreen()),
@@ -23,16 +23,16 @@ final router = GoRouter(
     // WIP: GoRoute(path: RoutePath.mission_today.value, builder: (context, state) => const MissionTodayScreen()),
     // GoRoute(path: RoutePath.mission_weekly.value, builder: (context, state) => const MissionWeeklyScreen()),
     GoRoute(path: RoutePath.mission_write.value, builder: (context, state) => const MissionWriteScreen()),
-    GoRoute(path: RoutePath.mission_complete.value, builder: (context, state) => const MissionCompleteScreen()),
+    GoRoute(path: RoutePath.mission_complete.value, builder: (context, state) => MissionCompleteScreen(memoryId: state.extra as int)),
 
     // Memory
     // GoRoute(path: RoutePath.memory.value, builder: (context, state) => const MemoryScreen()),
 
     // Community
     GoRoute(path: RoutePath.community.value, builder: (context, state) => const CommunityScreen()),
-    // GoRoute(path: RoutePath.community_write.value, builder: (context, state) => const CommunityWriteScreen()),
+    GoRoute(path: RoutePath.community_write.value, builder: (context, state) => const WritePostScreen()),
     // GoRoute(path: RoutePath.community_search.value, builder: (context, state) => const CommunitySearchScreen()),
-    // GoRoute(path: RoutePath.community_profile.value, builder: (context, state) => const CommunityProfileScreen()),
+    GoRoute(path: RoutePath.community_profile.value, builder: (context, state) => const CommunityProfileScreen()),
     // WIP: GoRoute(path: RoutePath.community_detail.value, builder: (context, state) => const CommunityDetailScreen()),
 
     // Care
