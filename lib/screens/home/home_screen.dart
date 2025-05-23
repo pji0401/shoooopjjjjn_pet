@@ -17,12 +17,14 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    Provider.of<MissionProvider>(context, listen: false).getMission(19); // FIXME: Test
+    Provider.of<MissionProvider>(context, listen: false)
+        .getMission(19); // FIXME: Test
   }
 
   @override
   Widget build(BuildContext context) {
-    final missionProvider = Provider.of<MissionProvider>(context); // FIXME: HomeProvider
+    final missionProvider =
+        Provider.of<MissionProvider>(context); // FIXME: HomeProvider
 
     return BaseScaffold(
         // appbar
@@ -34,7 +36,8 @@ class _HomeScreenState extends State<HomeScreen> {
             onPressed: () => context.push(RoutePath.notification.value),
           ),
           IconButton(
-            icon: SvgPicture.asset('assets/icons/schedule.svg', width: 24, height: 24),
+            icon: SvgPicture.asset('assets/icons/schedule.svg',
+                width: 24, height: 24),
             onPressed: () => context.push(RoutePath.schedule.value),
           ),
         ],
@@ -195,7 +198,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                         HomeSectionHeader('오늘의 미션'),
                                         InkWell(
                                             onTap: () {
-                                              context.push(RoutePath.mission.value, extra: missionProvider.mission.data?.id);
+                                              context.push(
+                                                  RoutePath.mission.value,
+                                                  extra: missionProvider
+                                                      .mission.data?.id);
                                             },
                                             child: Row(children: [
                                               Text('미션 수행하기',
@@ -225,10 +231,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                         children: [
                                           Container(
                                               child: Image.asset(
-                                                'assets/datas/envelop.png',
-                                                width: 70,
-                                                height: 70,
-                                              )),
+                                            'assets/datas/envelop.png',
+                                            width: 70,
+                                            height: 70,
+                                          )),
 
                                           // Add space between icon and text
                                           const SizedBox(width: 16),
@@ -348,7 +354,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           )),
 
-                      const SizedBox(height: 10),
+                      getSectionDivider(), // 05.23 - MEMO: section divider 대체 (작성자 정태영)
 
                       // Mission Feed Section
 
@@ -436,8 +442,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ],
-        )
-    );
+        ));
   }
 
   Widget _buildPawDayStatus(bool isCompleted) {
