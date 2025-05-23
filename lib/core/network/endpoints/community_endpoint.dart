@@ -4,7 +4,7 @@ import 'package:pawprints/config/config.dart';
 class CommunityEndpoint {
   static const String _communityPath = '${Constants.baseUrl}/contents';
 
-  static ApiRequest createMission({
+  static ApiRequest createContent({
     required Map<String, dynamic> requestBody,
     required Map<String, dynamic> formData,
   }) =>

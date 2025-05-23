@@ -3,25 +3,48 @@ import 'package:flutter/material.dart';
 import 'package:pawprints/core/network/index.dart';
 import 'package:pawprints/data/models/index.dart';
 import 'package:pawprints/data/repositories/index.dart';
+import 'package:pawprints/viewmodels/index.dart';
 
-class CommunityProvider with ChangeNotifier {
+class CommunityProvider with ChangeNotifier implements ImageAttachProvider {
   late final CommunityRepository _repository;
 
   CommunityProvider(this._repository);
 
   ApiResponse<IdResponse> contentId = ApiResponse.loading();
   ApiResponse<ContentDetailResponse> contentDetail = ApiResponse.loading();
-  ApiResponse<ContentListResponse> contentList = ApiResponse.loading();
+  ApiResponse<MemberContentResponse> contentList = ApiResponse.loading();
+
+  final List<File> _imageItems = [];
+
+  List<File> get images => List.unmodifiable(_imageItems);
+  int get imageItemCount => _imageItems.length;
+  int get maxImageCount => 10;
+
+  void addImage(File imageFile) {
+    if (maxImageCount >= imageItemCount) {
+      _imageItems.add(imageFile);
+      notifyListeners();
+    }
+  }
+
+  void removeImage(File? imageFile) {
+    _imageItems.remove(imageFile);
+    notifyListeners();
+  }
+
+  void clearImages() {
+    _imageItems.clear();
+    notifyListeners();
+  }
 
   Future<void> createContent({
     required ContentCreateRequest request,
-    required File imageFile,
   }) async {
     contentId = ApiResponse.loading();
     notifyListeners();
     await _repository.createContent(
       requestBody: request,
-      imageFile: imageFile,
+      imageFiles: _imageItems,
     ).then((response) {
       contentId = ApiResponse.completed(response.result);
     }).onError((error, stackTrace) {
@@ -48,6 +71,7 @@ class CommunityProvider with ChangeNotifier {
     notifyListeners();
     await _repository.getMemberContent(id).then((response) {
       contentList = ApiResponse.completed(response.result);
+      notifyListeners();
     }).onError((error, stackTrace) {
       contentList = ApiResponse.error(error.toString());
     }).whenComplete(() {

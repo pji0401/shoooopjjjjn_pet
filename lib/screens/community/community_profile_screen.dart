@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:pawprints/utils/enums/ui_state.dart';
+import 'package:pawprints/viewmodels/index.dart';
 import 'package:pawprints/widgets/index.dart';
 
 class CommunityProfileScreen extends StatefulWidget {
-  const CommunityProfileScreen({super.key});
+  final int memberId;
+
+  const CommunityProfileScreen({Key? key, required this.memberId}) : super(key: key);
 
   @override
   CommunityProfileScreenState createState() => CommunityProfileScreenState();
 }
 
 class CommunityProfileScreenState extends State<CommunityProfileScreen> {
-  // 05.20 - TODO: 게시글 이미지 예시 데이터 교체
-  final List<String> _postImages = [
-    'https://images.unsplash.com/photo-1583512603805-3cc6b41f3edb',
-    'https://images.unsplash.com/photo-1596854407944-bf87f6fdd49e',
-    'https://images.unsplash.com/photo-1574158622682-e40e69881006',
-    'https://images.unsplash.com/photo-1533738363-b7f9aef128ce',
-    'https://images.unsplash.com/photo-1598133894008-61f7fdb8cc3a',
+  late TabController _tabController;
+
+  final List<Tab> _tabs = <Tab>[
+    const Tab(text: '게시글'),
+    const Tab(text: '작성 댓글'),
+    const Tab(text: '관심글'),
   ];
 
   late final List<TabConfig> _profileTabs;
@@ -55,6 +58,16 @@ class CommunityProfileScreenState extends State<CommunityProfileScreen> {
         ),
       ),
     ];
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   Provider.of<CommunityProvider>(context, listen: false).getMemberContent(widget.memberId);
+    // });
+    Provider.of<CommunityProvider>(context, listen: false).getMemberContent(widget.memberId);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 
   @override
@@ -74,14 +87,14 @@ class CommunityProfileScreenState extends State<CommunityProfileScreen> {
         children: [
           Padding(
             padding:
-                const EdgeInsets.symmetric(vertical: 28.0, horizontal: 32.0),
+            const EdgeInsets.symmetric(vertical: 28.0, horizontal: 32.0),
             child: Row(
               children: [
                 // 프로필 이미지
                 CircleAvatar(
                   radius: 40,
                   backgroundImage:
-                      AssetImage('assets/images/default_profile.png'),
+                  AssetImage('assets/images/default_profile.png'),
                 ),
                 const SizedBox(width: 16),
 
@@ -124,30 +137,33 @@ class CommunityProfileScreenState extends State<CommunityProfileScreen> {
 
   // 그리드형 이미지 목록뷰 위젯
   Widget _buildPostsGridView() {
-    // 게시글이 없는 경우
-    if (_postImages.isEmpty) {
-      return Center(
-        child: Text(
-          '게시한 글이 없습니다',
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.grey[500],
-          ),
-        ),
-      );
-    }
+    return Consumer<CommunityProvider>(
+      builder: (context, provider, child) {
+        final contents = provider.contentList.data?.contents ?? [];
 
-    return GridView.builder(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3, // 가로로 3개 배치
-        crossAxisSpacing: 4.0, // 가로 간격
-        mainAxisSpacing: 4.0, // 세로 간격
-        childAspectRatio: 1.0, // 정사각형 비율
-      ),
-      itemCount: _postImages.length,
-      itemBuilder: (context, index) {
-        return _buildGridItem(_postImages[index]);
+        // 게시글이 없는 경우
+        if (contents.isEmpty) {
+          return const Center(
+            child: Text(
+              '게시한 글이 없습니다',
+              style: TextStyle(fontSize: 16, color: Colors.grey),
+            ),
+          );
+        }
+
+        return GridView.builder(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            crossAxisSpacing: 4.0,
+            mainAxisSpacing: 4.0,
+            childAspectRatio: 1.0,
+          ),
+          itemCount: contents.length,
+          itemBuilder: (context, index) {
+            return _buildGridItem(contents[index].images[0]);
+          },
+        );
       },
     );
   }

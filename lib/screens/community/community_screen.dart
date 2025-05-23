@@ -9,6 +9,8 @@ import 'package:pawprints/screens/community/whole_tab.dart';
 import 'package:pawprints/screens/community/qna_tab.dart';
 import 'package:pawprints/core/network/index.dart';
 import 'package:pawprints/config/index.dart';
+import 'package:pawprints/viewmodels/index.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CommunityScreen extends StatefulWidget {
   const CommunityScreen({super.key});
@@ -28,6 +30,7 @@ class CommunityScreenState extends State<CommunityScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<CommunityProvider>(context);
     // 05.08 - TODO: 글로벌 색상과 연결 필요
     const primaryColor = Colors.blue;
 
@@ -60,8 +63,9 @@ class CommunityScreenState extends State<CommunityScreen> {
                       Colors.black,
                   BlendMode.srcIn), // 아이콘 색상 적용
             ), // 또는 Icons.person_outline
-            onPressed: () {
-              context.push(RoutePath.community_profile.value);
+            onPressed: () async {
+              final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+              context.push(RoutePath.community_profile.value, extra: sharedPreferences.getInt("memberId"));
             },
           ),
         ],

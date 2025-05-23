@@ -29,7 +29,7 @@ class _MissionCompleteScreenState extends State<MissionCompleteScreen> {
     Provider.of<MemoryProvider>(context, listen: false).getMemory(widget.memoryId);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) { 
-        _showMissionCompletionModal(context);
+        _showMissionCompletionModal;
       }
     });
   }
@@ -254,9 +254,9 @@ class _MissionCompleteScreenState extends State<MissionCompleteScreen> {
     );
   }
 
-  void _showMissionCompletionModal(BuildContext buildContext) {
+  void _showMissionCompletionModal() {
     ModalSheet.showModalSheetView(
-      context: buildContext,
+      context: context,
       children: [
         const Text(
           '오늘의 미션을 완료했어요.',
@@ -286,7 +286,7 @@ class _MissionCompleteScreenState extends State<MissionCompleteScreen> {
         const SizedBox(height: 30),
         ElevatedButton(
           onPressed: () {
-            Navigator.of(buildContext).pop(); // Close the modal
+            context.pop(); // Close the modal
           },
           style: ElevatedButton.styleFrom(
             minimumSize: const Size(double.infinity, 50),

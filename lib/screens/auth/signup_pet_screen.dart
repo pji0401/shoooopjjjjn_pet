@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:pawprints/config/index.dart';
 import 'package:pawprints/widgets/index.dart';
 

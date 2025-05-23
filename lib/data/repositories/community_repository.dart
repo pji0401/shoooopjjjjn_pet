@@ -10,17 +10,22 @@ class CommunityRepository {
 
   Future<BaseResponse<IdResponse>> createContent({
     required ContentCreateRequest requestBody,
-    required File imageFile,
+    required List<File> imageFiles,
   }) async {
-    final multipartFile = await MultipartFile.fromFile(
-      imageFile.path,
-      filename: imageFile.path.split('/').last,
-      contentType: MediaType('image', 'png'),
+    final List<MultipartFile> multipartFiles = await Future.wait(
+      imageFiles.map((file) async {
+        return await MultipartFile.fromFile(
+          file.path,
+          filename: file.path.split('/').last,
+          contentType: MediaType('image', 'png'),
+        );
+      }).toList(),
     );
+    final formDatas = {'images': multipartFiles};
 
-    final request = MissionEndpoint.completeMission(
+    final request = CommunityEndpoint.createContent(
       requestBody: requestBody.toJson(),
-      formData: {'images': multipartFile},
+      formData: formDatas,
     );
 
     return _dioClient.uploadFiles<IdResponse>(
@@ -37,11 +42,11 @@ class CommunityRepository {
     );
   }
 
-  Future<BaseResponse<ContentListResponse>> getMemberContent(int id) async {
+  Future<BaseResponse<MemberContentResponse>> getMemberContent(int id) async {
     final request = CommunityEndpoint.getMemberContent(id);
-    return _dioClient.get<ContentListResponse>(
+    return _dioClient.get<MemberContentResponse>(
       request: request,
-      fromJson: (json) => ContentListResponse.fromJson(json as Map<String, dynamic>),
+      fromJson: (json) => MemberContentResponse.fromJson(json as Map<String, dynamic>),
     );
   }
 }

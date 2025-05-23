@@ -13,71 +13,6 @@ class MissionScreen extends StatefulWidget {
 }
 
 class _MissionScreenState extends State<MissionScreen> {
-  void _showSkipMissionModal() {
-    ModalSheet.showModalSheetView(
-      context: context,
-      height: 300,
-      children: [
-        const Padding(
-          padding: EdgeInsets.only(top: 6.0, bottom: 6.0),
-          child: Text(
-            '미션 건너뛰기',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w700,
-              color: AppColors.black,
-              fontFamily: 'Pretendard',
-            ),
-          ),
-        ),
-        const Padding(
-          padding: EdgeInsets.only(top: 4.0, bottom: 29.0),
-          child: Text(
-            '이번 미션을 건너뛰고 다른 미션을 제공해 드려요.',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 16,
-              color: AppColors.black,
-              fontFamily: 'Pretendard',
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 0),
-          child: CustomElevatedButton(
-            text: '건너뛰고 다음에 하기',
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            height: 50,
-          ),
-        ),
-        const SizedBox(height: 10),
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-            // logic
-          },
-          style: TextButton.styleFrom(
-            minimumSize: const Size(double.infinity, 40),
-            padding: EdgeInsets.zero,
-          ),
-          child: const Text(
-            '이번 미션 다시 보지 않기',
-            style: TextStyle(
-              color: AppColors.grey,
-              fontSize: 16,
-              fontFamily: 'Pretendard',
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<MissionProvider>(context);
@@ -190,5 +125,70 @@ class _MissionScreenState extends State<MissionScreen> {
                             fontWeight: FontWeight.w400,
                           )))
                 ]))));
+  }
+
+  void _showSkipMissionModal() {
+    ModalSheet.showModalSheetView(
+      context: context,
+      height: 300,
+      children: [
+        const Padding(
+          padding: EdgeInsets.only(top: 6.0, bottom: 6.0),
+          child: Text(
+            '미션 건너뛰기',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+              color: AppColors.black,
+              fontFamily: 'Pretendard',
+            ),
+          ),
+        ),
+        const Padding(
+          padding: EdgeInsets.only(top: 4.0, bottom: 29.0),
+          child: Text(
+            '이번 미션을 건너뛰고 다른 미션을 제공해 드려요.',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 16,
+              color: AppColors.black,
+              fontFamily: 'Pretendard',
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 0),
+          child: CustomElevatedButton(
+            text: '건너뛰고 다음에 하기',
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            height: 50,
+          ),
+        ),
+        const SizedBox(height: 10),
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+            // logic
+          },
+          style: TextButton.styleFrom(
+            minimumSize: const Size(double.infinity, 40),
+            padding: EdgeInsets.zero,
+          ),
+          child: const Text(
+            '이번 미션 다시 보지 않기',
+            style: TextStyle(
+              color: AppColors.grey,
+              fontSize: 16,
+              fontFamily: 'Pretendard',
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
