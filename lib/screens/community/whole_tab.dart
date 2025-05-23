@@ -94,7 +94,6 @@ class _WholeTabBodyState extends State<WholeTabBody> {
           contentText: "안녕하세요 디벨로퍼입니다.\n#반려동물 #사료추천 #펫푸드",
           likeCount: 0,
           commentCount: 0,
-          isBookmarked: false,
         ),
         Article(
           authorProfileImageUrl:
@@ -108,7 +107,6 @@ class _WholeTabBodyState extends State<WholeTabBody> {
           contentText: "우리집 고양이 좀 보세요! 세상에서 제일 귀여워요 🥰\n#냥스타그램 #집사그램 #귀요미",
           likeCount: 128,
           commentCount: 12,
-          isBookmarked: true,
         ),
         Article(
           authorProfileImageUrl:
@@ -122,7 +120,6 @@ class _WholeTabBodyState extends State<WholeTabBody> {
               "산책하다 만난 귀여운 댕댕이! 사진 찍어도 되냐고 허락받고 찍었어요. 너무 순하고 착해요. 오늘 하루 힐링 제대로 했네요. 강아지는 사랑입니다 ❤️",
           likeCount: 256,
           commentCount: 34,
-          isBookmarked: false,
         ),
         Article(
           authorProfileImageUrl:
@@ -134,7 +131,6 @@ class _WholeTabBodyState extends State<WholeTabBody> {
               "반려동물 사료 선택, 어떤 기준으로 하시나요? 영양 성분, 기호성, 알러지 유무 등 고려해야 할 점이 많죠. 궁금한 점이 있다면 댓글로 질문해주세요! #반려동물 #사료추천 #펫푸드",
           likeCount: 77,
           commentCount: 5,
-          isBookmarked: false,
         ),
       ];
     });
