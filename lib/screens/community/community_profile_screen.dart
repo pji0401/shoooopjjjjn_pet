@@ -8,16 +8,7 @@ class CommunityProfileScreen extends StatefulWidget {
   CommunityProfileScreenState createState() => CommunityProfileScreenState();
 }
 
-class CommunityProfileScreenState extends State<CommunityProfileScreen>
-    with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-
-  final List<Tab> _tabs = <Tab>[
-    const Tab(text: '게시글'),
-    const Tab(text: '작성 댓글'),
-    const Tab(text: '관심글'),
-  ];
-
+class CommunityProfileScreenState extends State<CommunityProfileScreen> {
   // 05.20 - TODO: 게시글 이미지 예시 데이터 교체
   final List<String> _postImages = [
     'https://images.unsplash.com/photo-1583512603805-3cc6b41f3edb',
@@ -27,22 +18,47 @@ class CommunityProfileScreenState extends State<CommunityProfileScreen>
     'https://images.unsplash.com/photo-1598133894008-61f7fdb8cc3a',
   ];
 
+  late final List<TabConfig> _profileTabs;
+
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: _tabs.length, vsync: this);
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
+    // initState에서 _profileTabs 초기화
+    _profileTabs = [
+      TabConfig(label: '게시글', content: _buildPostsGridView()), // 게시글 탭 내용
+      TabConfig(
+        label: '작성 댓글',
+        content: Center(
+          // 작성 댓글 탭 내용
+          child: Text(
+            '작성한 댓글이 없습니다',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w400,
+              fontFamily: 'Pretendard', // 폰트 패밀리 적용
+            ),
+          ),
+        ),
+      ),
+      TabConfig(
+        label: '관심글',
+        content: Center(
+          // 관심글 탭 내용
+          child: Text(
+            '관심글이 없습니다',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w400,
+              fontFamily: 'Pretendard', // 폰트 패밀리 적용
+            ),
+          ),
+        ),
+      ),
+    ];
   }
 
   @override
   Widget build(BuildContext context) {
-    const primaryColor = Colors.blue;
-    const greyColor = Colors.grey;
     const pretendardFontFamily = 'Pretendard';
 
     return Scaffold(
@@ -96,67 +112,9 @@ class CommunityProfileScreenState extends State<CommunityProfileScreen>
               ],
             ),
           ),
-          Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).scaffoldBackgroundColor,
-              border: Border(
-                bottom: BorderSide(color: Colors.grey[300]!, width: 0.2), // 구분선
-              ),
-            ),
-            child: TabBar(
-              controller: _tabController,
-              tabs: _tabs,
-              padding: const EdgeInsets.symmetric(horizontal: 0.0),
-              labelColor: primaryColor,
-              unselectedLabelColor: greyColor,
-              indicatorColor: primaryColor,
-              indicatorWeight: 1.0,
-              indicatorSize: TabBarIndicatorSize.label,
-              indicatorPadding: EdgeInsets.symmetric(horizontal: -20.0),
-              labelStyle: const TextStyle(
-                fontFamily: pretendardFontFamily,
-                fontWeight: FontWeight.w600,
-                fontSize: 16.0,
-              ),
-              unselectedLabelStyle: const TextStyle(
-                fontFamily: pretendardFontFamily,
-                fontWeight: FontWeight.w400,
-                fontSize: 16.0,
-              ),
-            ),
-          ),
           Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: <Widget>[
-                // 게시글 탭
-                // 05.20 - TODO: 파일 분리 리팩토링
-                _buildPostsGridView(),
-
-                // 작성 댓글 탭
-                Center(
-                  child: Text(
-                    '작성한 댓글이 없습니다',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                      fontFamily: pretendardFontFamily,
-                    ),
-                  ),
-                ),
-
-                // 관심글 탭
-                Center(
-                  child: Text(
-                    '관심글이 없습니다',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                      fontFamily: pretendardFontFamily,
-                    ),
-                  ),
-                ),
-              ],
+            child: CenterFitTabViewSection(
+              tabConfigs: _profileTabs,
             ),
           ),
         ],
