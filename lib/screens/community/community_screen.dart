@@ -19,35 +19,17 @@ class CommunityScreen extends StatefulWidget {
   CommunityScreenState createState() => CommunityScreenState();
 }
 
-// 05.08 - NOTE: SingleTickerProviderStateMixin가 뭐지 : 위젯에 단일 애니메이션 컨트롤러를 효율적으로 관리하고 동기화할 수 있는 기능을 제공하는 믹스인
-class CommunityScreenState extends State<CommunityScreen>
-    with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-
-  final List<Tab> _tabs = <Tab>[
-    const Tab(text: '커뮤니티'),
-    // const Tab(text: '인기'),
-    const Tab(text: 'QnA'),
+class CommunityScreenState extends State<CommunityScreen> {
+  final List<TabConfig> _communityTabs = [
+    TabConfig(label: '커뮤니티', content: const WholeTabBody()),
+    // TabConfig(label: '인기', content: const HotTabBody()),
+    TabConfig(label: 'QnA', content: const QnaTabBody()),
   ];
-
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: _tabs.length, vsync: this);
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     // 05.08 - TODO: 글로벌 색상과 연결 필요
     const primaryColor = Colors.blue;
-    const greyColor = Colors.grey;
-    const pretendardFontFamily = 'Pretendard';
 
     return Scaffold(
       appBar: buildCustomAppBar(
@@ -88,52 +70,7 @@ class CommunityScreenState extends State<CommunityScreen>
         padding: EdgeInsets.only(
           bottom: 83,
         ),
-        child: Column(
-          children: <Widget>[
-            Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).scaffoldBackgroundColor,
-                border: Border(
-                  bottom:
-                      BorderSide(color: Colors.grey[300]!, width: 0.2), // 구분선
-                ),
-              ),
-              child: TabBar(
-                controller: _tabController,
-                tabs: _tabs,
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                isScrollable: true,
-                tabAlignment: TabAlignment.start,
-                labelPadding: const EdgeInsets.symmetric(horizontal: 30.0),
-                labelColor: primaryColor,
-                unselectedLabelColor: greyColor,
-                indicatorColor: primaryColor,
-                indicatorWeight: 1.0,
-                indicatorSize: TabBarIndicatorSize.tab,
-                labelStyle: const TextStyle(
-                  fontFamily: pretendardFontFamily,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16.0,
-                ),
-                unselectedLabelStyle: const TextStyle(
-                  fontFamily: pretendardFontFamily,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 16.0,
-                ),
-              ),
-            ),
-            Expanded(
-              child: TabBarView(
-                controller: _tabController,
-                children: <Widget>[
-                  const WholeTabBody(),
-                  // const HotTabBody(),
-                  const QnaTabBody(),
-                ],
-              ),
-            ),
-          ],
-        ),
+        child: LeftStackTabViewSection(tabConfigs: _communityTabs),
       ),
       floatingActionButton: CreatePostButton(
         onPressed: () {
@@ -156,7 +93,7 @@ class CreatePostButton extends StatelessWidget {
     this.onPressed,
     this.backgroundColor = Colors.blue,
     this.elevation = 4.0,
-    this.bottomMargin = 111.0,
+    this.bottomMargin = 74.0,
   });
 
   @override
