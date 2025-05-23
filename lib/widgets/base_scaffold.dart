@@ -55,7 +55,7 @@ class BaseScaffold extends StatelessWidget {
 ///     trailingItems (List<Widget>?):
 ///         앱바 우측 위젯 목록.
 ///     toolBarHeight (double?):
-///         앱바 높이. 기본값 34.
+///         앱바 높이. 기본값 52.
 ///     leadingWidth (double?):
 ///         앱바 좌측 영역 너비.
 ///
@@ -76,44 +76,44 @@ PreferredSizeWidget? buildCustomAppBar({
   }
 
   return AppBar(
-    backgroundColor: Colors.transparent,
-    foregroundColor: Colors.black,
-    elevation: 0,
-    shadowColor: Colors.transparent,
-    surfaceTintColor: Colors.transparent,
-    centerTitle: true,
-    automaticallyImplyLeading: false,
-    leadingWidth: leadingWidth,
-    toolbarHeight: toolBarHeight ?? 34,
-    leading: leadingItem != null
-        ? Padding(
-            padding: const EdgeInsets.only(left: 14),
-            child: leadingItem,
-            // 05.02 - FIXME: leadingItem
-            // 05.21 - MEMO: 무슨 문제라도 있는 건지? 지워도 될까요? - 태영
-            // child: Row(
-            //   children: [leadingItem],
-            // ),
-          )
-        : null,
-    title: title != null ? Text(title) : null,
-    titleTextStyle: titleTextStyle ??
-        TextStyle(
-          color: Colors.black,
-          fontSize: 20,
-          fontWeight: FontWeight.w600,
-          height: 34 / 20,
-          fontFamily: 'Pretendard',
-        ),
-    actions: trailingItems ?? null // != null
-        // ? [
-        //     Padding(
-        //       padding: const EdgeInsets.only(right: 14),
-        //       child: Row(
-        //         children: trailingItems,
-        //       ),
-        //     ),
-        //   ]
-        // : null,
-  );
+      backgroundColor: Colors.transparent,
+      foregroundColor: Colors.black,
+      elevation: 0,
+      shadowColor: Colors.transparent,
+      surfaceTintColor: Colors.transparent,
+      centerTitle: true,
+      automaticallyImplyLeading: false,
+      leadingWidth: leadingWidth,
+      toolbarHeight: toolBarHeight ?? 52,
+      leading: leadingItem != null
+          ? Padding(
+              padding: const EdgeInsets.only(left: 14),
+              child: leadingItem,
+              // 05.02 - FIXME: leadingItem
+              // 05.21 - MEMO: 무슨 문제라도 있는 건지? 지워도 될까요? - 태영
+              // child: Row(
+              //   children: [leadingItem],
+              // ),
+            )
+          : null,
+      title: title != null ? Text(title) : null,
+      titleTextStyle: titleTextStyle ??
+          TextStyle(
+            color: Colors.black,
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+            height: 34 / 20,
+            fontFamily: 'Pretendard',
+          ),
+      actions: trailingItems ?? null // != null
+      // ? [
+      //     Padding(
+      //       padding: const EdgeInsets.only(right: 14),
+      //       child: Row(
+      //         children: trailingItems,
+      //       ),
+      //     ),
+      //   ]
+      // : null,
+      );
 }
