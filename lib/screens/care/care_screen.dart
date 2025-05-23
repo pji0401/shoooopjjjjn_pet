@@ -23,7 +23,6 @@ class _CareScreenState extends State<CareScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildCustomAppBar(
-        // community_screen.dart와 동일한 AppBar 사용
         title: widget.title,
         trailingItems: <Widget>[
           IconButton(
