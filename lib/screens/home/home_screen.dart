@@ -340,7 +340,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     // 월 - not completed
                                     _buildPawDayStatus(true),
                                     // 화 - completed
-                                    _buildPawDayStatus(true),
+                                    _buildPawDayStatus(true), 
                                     // 수 - completed
                                     _buildPawDayStatus(false),
                                     // 목 - not completed
@@ -459,6 +459,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         const SizedBox(height: 4),
         Text(
+          isCompleted ? '완료' : '실패',
           isCompleted ? '완료' : '실패',
           style: TextStyle(
             fontSize: 12,
