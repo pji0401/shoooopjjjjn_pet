@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 // 05.08 - TODO: 리팩토링 (Article 모델 관리)
 // lib/models/article.dart (예시 경로)
@@ -22,8 +23,6 @@ import 'package:flutter/material.dart';
 ///         좋아요 수.
 ///     commentCount (int):
 ///         댓글 수.
-///     isBookmarked (bool, optional):
-///         북마크 여부. 기본값 `false`.
 class Article {
   final String authorProfileImageUrl;
   final String authorName;
@@ -32,7 +31,6 @@ class Article {
   final String contentText;
   final int likeCount;
   final int commentCount;
-  final bool isBookmarked; // 북마크 여부 (임의 추가)
 
   Article({
     required this.authorProfileImageUrl,
@@ -42,7 +40,6 @@ class Article {
     required this.contentText,
     required this.likeCount,
     required this.commentCount,
-    this.isBookmarked = false,
   });
 
   factory Article.fromJson(Map<String, dynamic> json) {
@@ -55,7 +52,6 @@ class Article {
       contentText: json['contentText'] ?? '',
       likeCount: json['likeCount'] ?? 0,
       commentCount: json['commentCount'] ?? 0,
-      isBookmarked: json['isBookmarked'] ?? false,
     );
   }
 }
@@ -131,15 +127,16 @@ class _ArticleItemState extends State<ArticleItem> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           CircleAvatar(
-            radius: 20,
+            radius: 29,
             backgroundColor: Colors.grey[200],
             child: ClipOval(
               child: Image.network(
                 article.authorProfileImageUrl,
-                width: 40,
-                height: 40,
+                width: 58,
+                height: 58,
                 fit: BoxFit.cover,
                 loadingBuilder: (context, child, loadingProgress) {
                   if (loadingProgress == null) return child;
@@ -156,8 +153,8 @@ class _ArticleItemState extends State<ArticleItem> {
                 errorBuilder: (context, error, stackTrace) {
                   return Image.asset(
                     'assets/images/default_profile.png', // 05.08 - TODO: 기본 프로필 이미지 경로 추가 필요
-                    width: 40,
-                    height: 40,
+                    width: 58,
+                    height: 58,
                     fit: BoxFit.cover,
                   );
                 },
@@ -178,23 +175,17 @@ class _ArticleItemState extends State<ArticleItem> {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                Text(
-                  article.timeAgo,
-                  style: const TextStyle(
-                    color: Color(0xFF8C8C8C),
-                    fontSize: 12,
-                    fontFamily: 'Pretendard',
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
               ],
             ),
           ),
-          IconButton(
-            icon: const Icon(Icons.more_horiz, color: Color(0xFF8C8C8C)),
-            onPressed: () {
-              // TODO: 메뉴 액션 구현
-            },
+          Text(
+            article.timeAgo,
+            style: const TextStyle(
+              color: Color(0xFF8C8C8C),
+              fontSize: 14,
+              fontFamily: 'Pretendard',
+              fontWeight: FontWeight.w400,
+            ),
           ),
         ],
       ),
@@ -261,7 +252,7 @@ class _ArticleItemState extends State<ArticleItem> {
         article.contentText,
         style: const TextStyle(
           color: Color(0xFF070707),
-          fontSize: 15,
+          fontSize: 16,
           fontFamily: 'Pretendard',
           fontWeight: FontWeight.w400,
           height: 1.5,
@@ -278,53 +269,45 @@ class _ArticleItemState extends State<ArticleItem> {
       child: Row(
         children: [
           _buildActionButton(
-              icon: Icons.favorite_border, // TODO: 좋아요 상태에 따라 아이콘 변경
+              iconWidget: SvgPicture.asset(
+                'assets/icons/like.svg',
+              ),
               label: article.likeCount.toString(),
               onPressed: () {
                 // TODO: 좋아요 액션
               }),
           const SizedBox(width: 16),
           _buildActionButton(
-              icon: Icons.chat_bubble_outline,
+              iconWidget: SvgPicture.asset(
+                'assets/icons/comment.svg',
+              ),
               label: article.commentCount.toString(),
               onPressed: () {
                 // TODO: 댓글 액션
               }),
           const Spacer(),
-          IconButton(
-            icon: Icon(
-              article.isBookmarked ? Icons.bookmark : Icons.bookmark_border,
-              color: article.isBookmarked
-                  ? const Color(0xFF4A9BF6)
-                  : const Color(0xFF8C8C8C),
-            ),
-            onPressed: () {
-              // TODO: 북마크 액션
-            },
-          ),
         ],
       ),
     );
   }
 
   Widget _buildActionButton(
-      {required IconData icon,
+      {required Widget iconWidget, // IconData 대신 Widget을 받도록 변경
       required String label,
       VoidCallback? onPressed}) {
     return InkWell(
       onTap: onPressed,
       borderRadius: BorderRadius.circular(4),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 4.0),
+        padding: const EdgeInsets.symmetric(horizontal: 1.0, vertical: 4.0),
         child: Row(
           children: [
-            Icon(icon, size: 20, color: const Color(0xFF505050)),
+            iconWidget, // 전달받은 위젯 사용
             const SizedBox(width: 4),
             Text(
               label,
               style: const TextStyle(
-                color: Color(0xFF505050),
-                fontSize: 14,
+                fontSize: 16,
                 fontFamily: 'Pretendard',
                 fontWeight: FontWeight.w400,
               ),

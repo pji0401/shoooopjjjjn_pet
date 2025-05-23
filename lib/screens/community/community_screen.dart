@@ -94,7 +94,8 @@ class CommunityScreenState extends State<CommunityScreen>
               decoration: BoxDecoration(
                 color: Theme.of(context).scaffoldBackgroundColor,
                 border: Border(
-                  bottom: BorderSide(color: Colors.grey[300]!, width: 0.2), // 구분선
+                  bottom:
+                      BorderSide(color: Colors.grey[300]!, width: 0.2), // 구분선
                 ),
               ),
               child: TabBar(
@@ -161,23 +162,27 @@ class CreatePostButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(bottom: bottomMargin), // 버튼을 위로 올리기 위한 패딩
-      child: FloatingActionButton(
-        onPressed: onPressed ??
-            () {
-              AppLogger.d('글 작성하기 버튼 클릭');
-              // 기본 동작 구현
-            },
-        backgroundColor: backgroundColor,
-        elevation: elevation,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(30.0)),
-        ),
-        child: const Icon(
-          Icons.edit,
-          color: Colors.white,
-        ),
-      ),
-    );
+        padding: EdgeInsets.only(bottom: bottomMargin), // 버튼을 위로 올리기 위한 패딩
+        child: // FloatingActionButton을 SizedBox로 감싸서 크기 지정
+            SizedBox(
+          width: 56,
+          height: 56,
+          child: FloatingActionButton(
+            onPressed: onPressed ??
+                () {
+                  AppLogger.d('글 작성하기 버튼 클릭');
+                },
+            backgroundColor: backgroundColor,
+            elevation: elevation,
+            shape: const RoundedRectangleBorder(
+              borderRadius:
+                  BorderRadius.all(Radius.circular(56.0)), // 크기에 맞춰 반경 조정
+            ),
+            child: SvgPicture.asset(
+              'assets/icons/pen.svg',
+              width: 48,
+            ),
+          ),
+        ));
   }
 }
