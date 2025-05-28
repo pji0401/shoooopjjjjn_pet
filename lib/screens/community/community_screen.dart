@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:go_router/go_router.dart';
 
 // local imports
 import 'package:pawprints/widgets/index.dart';
@@ -10,7 +9,7 @@ import 'package:pawprints/screens/community/qna_tab.dart';
 import 'package:pawprints/core/network/index.dart';
 import 'package:pawprints/config/index.dart';
 import 'package:pawprints/viewmodels/index.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:pawprints/utils/index.dart';
 
 class CommunityScreen extends StatefulWidget {
   const CommunityScreen({super.key});
@@ -22,15 +21,16 @@ class CommunityScreen extends StatefulWidget {
 }
 
 class CommunityScreenState extends State<CommunityScreen> {
-  final List<TabConfig> _communityTabs = [
-    TabConfig(label: '커뮤니티', content: const WholeTabBody()),
-    // TabConfig(label: '인기', content: const HotTabBody()),
-    TabConfig(label: 'QnA', content: const QnaTabBody()),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<CommunityProvider>(context, listen: false).getContentList();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<CommunityProvider>(context);
     // 05.08 - TODO: 글로벌 색상과 연결 필요
     const primaryColor = Colors.blue;
 
@@ -63,9 +63,8 @@ class CommunityScreenState extends State<CommunityScreen> {
                       Colors.black,
                   BlendMode.srcIn), // 아이콘 색상 적용
             ), // 또는 Icons.person_outline
-            onPressed: () async {
-              final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-              context.push(RoutePath.community_profile.value, extra: sharedPreferences.getInt("memberId"));
+            onPressed: () {
+              context.push(RoutePath.community_profile.value, extra: SharedPreferencesHelper().memberId);
             },
           ),
         ],
@@ -74,7 +73,11 @@ class CommunityScreenState extends State<CommunityScreen> {
         padding: EdgeInsets.only(
           bottom: 83,
         ),
-        child: LeftStackTabViewSection(tabConfigs: _communityTabs),
+        child: LeftStackTabViewSection(tabConfigs: [
+          TabConfig(label: '커뮤니티', content: WholeTabBody()),
+          // TabConfig(label: '인기', content: HotTabBody()),
+          TabConfig(label: 'QnA', content: QnaTabBody()),
+        ]),
       ),
       floatingActionButton: CreatePostButton(
         onPressed: () {

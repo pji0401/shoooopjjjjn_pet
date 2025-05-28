@@ -11,32 +11,17 @@ dependencies:
   flutter:
     sdk: flutter
 
-  cupertino_icons: ^1.0.8
   permission_handler: ^12.0.0+1
-  flutter_screenutil: ^5.9.3
-  cached_network_image: ^3.0.0
   image_picker: ^1.1.2
-  flutter_image_compress: ^2.4.0
-  image: ^4.2.0
-  compressor: ^1.0.0
   flutter_svg: ^2.0.7
-  asset_fill: ^2.0.0
-  get: ^4.7.0
-  flutter_bloc: ^9.1.0
   provider: ^6.1.4
-  riverpod: ^2.6.1
-  get_it: ^8.0.0
   dio: ^5.8.0
   retrofit: ^4.4.2
-  json_annotation: ^4.9.0
-  flutter_riverpod: ^2.5.1
-  riverpod_annotation: ^2.3.5
   go_router: ^15.1.1
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   logger: ^2.5.0
   flutter_local_notifications : ^19.1.0
-  timezone: ^0.10.1
   connectivity_plus: ^6.1.4
   shared_preferences: ^2.5.3
   flutter_secure_storage: ^9.2.4
@@ -48,19 +33,14 @@ dev_dependencies:
   # 05.02 - NOTE: flutter packages pub run build_runner build
   build_runner: ^2.4.15
   flutter_lints: ^5.0.0
-  riverpod_lint: ^2.3.12
   custom_lint: ^0.6.0
-  json_serializable: ^6.9.0
   flutter_launcher_icons: ^0.14.3
   flutter_native_splash: ^2.4.6
-  riverpod_generator: ^2.4.2
   hive_generator: ^2.0.1
-  retrofit_generator: ^9.1.9
 
 flutter:
   uses-material-design: true
 
-  # 04.29 - NOTE: figma export 시 SVG 사용 권장
   # 05.08 - NOTE: images <- 커뮤니티용 기본 프로필 사진 png 등록 필요로 생성
   assets: 
     - assets/datas/

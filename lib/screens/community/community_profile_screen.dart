@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pawprints/utils/enums/ui_state.dart';
 import 'package:pawprints/viewmodels/index.dart';
 import 'package:pawprints/widgets/index.dart';
 
@@ -14,12 +13,6 @@ class CommunityProfileScreen extends StatefulWidget {
 
 class CommunityProfileScreenState extends State<CommunityProfileScreen> {
   late TabController _tabController;
-
-  final List<Tab> _tabs = <Tab>[
-    const Tab(text: '게시글'),
-    const Tab(text: '작성 댓글'),
-    const Tab(text: '관심글'),
-  ];
 
   late final List<TabConfig> _profileTabs;
 
@@ -58,10 +51,10 @@ class CommunityProfileScreenState extends State<CommunityProfileScreen> {
         ),
       ),
     ];
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   Provider.of<CommunityProvider>(context, listen: false).getMemberContent(widget.memberId);
-    // });
-    Provider.of<CommunityProvider>(context, listen: false).getMemberContent(widget.memberId);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<CommunityProvider>(context, listen: false).getMemberContent(
+          widget.memberId);
+    });
   }
 
   @override
@@ -139,7 +132,7 @@ class CommunityProfileScreenState extends State<CommunityProfileScreen> {
   Widget _buildPostsGridView() {
     return Consumer<CommunityProvider>(
       builder: (context, provider, child) {
-        final contents = provider.contentList.data?.contents ?? [];
+        final contents = provider.memberContentList.data?.contents ?? [];
 
         // 게시글이 없는 경우
         if (contents.isEmpty) {
@@ -173,7 +166,7 @@ class CommunityProfileScreenState extends State<CommunityProfileScreen> {
     return Container(
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: NetworkImage(imageUrl),
+          image: NetworkImage(imageUrl), // FIXME: Image.network
           fit: BoxFit.cover,
         ),
       ),

@@ -7,7 +7,6 @@ import 'package:pawprints/widgets/sections.dart';
 import 'package:pawprints/viewmodels/index.dart';
 import 'package:pawprints/data/models/index.dart';
 import 'package:pawprints/utils/index.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class WritePostScreen extends StatefulWidget {
   const WritePostScreen({super.key});
@@ -47,7 +46,7 @@ class _WritePostScreenState extends State<WritePostScreen> {
           Padding(
             padding:
                 const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-            child: ImageAttachingSection<MissionProvider>(
+            child: ImageAttachingSection<CommunityProvider>(
               key: _imageSectionKey, // GlobalKey 할당
             ),
           ),
@@ -113,16 +112,14 @@ class _WritePostScreenState extends State<WritePostScreen> {
             padding: const EdgeInsets.all(16.0),
             child: CustomElevatedButton(
               text: '업로드하기',
-              onPressed: () async {
-                final SharedPreferences sharedPreferences =
-                    await SharedPreferences.getInstance();
+              onPressed: () {
                 if (!_contentController.text.isEmpty &&
                     !(provider.imageItemCount == 0)) {
                   provider
                       .createContent(
                           request: ContentCreateRequest(
                               memberId:
-                                  sharedPreferences.getInt('memberId') ?? 1,
+                                  SharedPreferencesHelper().memberId,
                               body: _contentController.text))
                       .then((_) {
                     if (provider.contentId.uiState == UIState.COMPLETED) {

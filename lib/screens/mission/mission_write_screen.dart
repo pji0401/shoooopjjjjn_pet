@@ -4,7 +4,6 @@ import 'package:pawprints/config/index.dart';
 import 'package:pawprints/widgets/base_scaffold.dart';
 import 'package:pawprints/widgets/elevated_button.dart';
 import 'package:pawprints/widgets/sections.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pawprints/data/models/index.dart';
 import 'package:pawprints/utils/index.dart';
 import 'package:pawprints/viewmodels/index.dart';
@@ -104,11 +103,9 @@ class _MissionWriteScreenState extends State<MissionWriteScreen> {
               // Submit Button
               CustomElevatedButton(
                 text: '인증하기',
-                onPressed: () async {
-                  // API 호출
-                  final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                onPressed: () {
                   if (!_textController.text.isEmpty && !(provider.imageItemCount == 0)) {
-                    provider.completeMission(request: MissionCompleteRequest(missionId: provider.mission.data?.id ?? 1, memberId: sharedPreferences.getInt('memberId') ?? 1, body: "success", date: "2025-05-22")).then((_) {
+                    provider.completeMission(request: MissionCompleteRequest(missionId: provider.mission.data?.id ?? 1, memberId: SharedPreferencesHelper().memberId, body: "success", date: "2025-05-22")).then((_) {
                       if (provider.compeltedMissionId.uiState == UIState.COMPLETED) {
                         AppLogger.d("✅ missionComplete: ${provider.compeltedMissionId.data?.id}");
                         context.go(RoutePath.mission_complete.value, extra: provider.compeltedMissionId.data?.id);

@@ -214,7 +214,7 @@ class _ArticleItemState extends State<ArticleItem> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
                   image: DecorationImage(
-                    image: NetworkImage(article.contentImageUrls[index]),
+                    image: NetworkImage(article.contentImageUrls[index]), // FIXME: Image.network
                     fit: BoxFit.cover,
                   ),
                 ),
