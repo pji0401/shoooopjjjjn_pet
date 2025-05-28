@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:pawprints/data/models/index.dart';
+import 'package:pawprints/utils/index.dart';
 import 'package:pawprints/widgets/index.dart';
 import 'package:pawprints/config/index.dart';
+import 'package:pawprints/viewmodels/index.dart';
 
 class ScheduleScreen extends StatefulWidget {
   const ScheduleScreen({super.key});
@@ -12,8 +15,8 @@ class ScheduleScreen extends StatefulWidget {
 }
 
 class _ScheduleScreenState extends State<ScheduleScreen> {
+  // FIXME: 현재로 변경
   int selectedDayIndex = 4;
-
   int currentMonth = 4;
 
   final List<Map<String, dynamic>> days = [
@@ -38,6 +41,16 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
       {'title': '사료랑 간식 구매', 'subtitle': '병원갔다 펫마트 들르기', 'done': false},
     ],
   };
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<PlanProvider>(context, listen: false).getPlanList(
+          request: PlanListRequest(memberId: SharedPreferencesHelper().memberId,
+              date: getCurrentDateForRequest()));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

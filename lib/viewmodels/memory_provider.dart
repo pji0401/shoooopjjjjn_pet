@@ -10,7 +10,7 @@ class MemoryProvider with ChangeNotifier {
   MemoryProvider(this._repository);
 
   ApiResponse<MemberMemoryResponse> memory = ApiResponse.loading();
-  ApiResponse<MemoryListResponse> memoryList = ApiResponse.loading();
+  ApiResponse<List<MemoryListResponse>> memoryList = ApiResponse.loading();
 
   Future<void> getMemory(int id) async {
     memory = ApiResponse.loading();

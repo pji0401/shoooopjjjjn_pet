@@ -15,7 +15,6 @@ class MissionScreen extends StatefulWidget {
 class _MissionScreenState extends State<MissionScreen> {
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<MissionProvider>(context);
     return BaseScaffold(
       // ---------------APP BAR------------------------
       title: '미션 인증',
@@ -51,63 +50,67 @@ class _MissionScreenState extends State<MissionScreen> {
                 ),
 
                 // --------------- ICON --------------
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // ----- SVG ------
-                    Stack(
-                      alignment: Alignment.center,
-                      clipBehavior: Clip.none,
-                      children: [
-                        Positioned(
-                          left: -30,
-                          bottom: -5,
-                          child: SvgPicture.asset('assets/icons/mission_paw.svg', width: 90),
-                        ),
-                        Image.asset('assets/datas/envelope.png',
-                        height: 150,
-                        width: 150,
-                        )
-                      ]
-                    ),
+                child: Consumer<HomeProvider>(
+                  builder: (context, provider, child) {
+                    return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // ----- SVG ------
+                          Stack(
+                              alignment: Alignment.center,
+                              clipBehavior: Clip.none,
+                              children: [
+                                Positioned(
+                                  left: -30,
+                                  bottom: -5,
+                                  child: SvgPicture.asset('assets/icons/mission_paw.svg', width: 90),
+                                ),
+                                Image.asset('assets/datas/envelope.png',
+                                  height: 150,
+                                  width: 150,
+                                )
+                              ]
+                          ),
 
-                    const SizedBox(height: 40),
+                          const SizedBox(height: 40),
 
-                    // ---------- MISSION DAY BADGE ----------------
-                    Container(
-                      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFF0F4FF),
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(
-                          color: const Color(0xFF4285F4)
-                        )
-                      ),
-                      child: Text(
-                        '${provider.mission.data?.order ?? ""}번째 미션',
-                        style: TextStyle(
-                          color: Color(0xFF135DB2),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                        )
-                      )
-                    ),
+                          // ---------- MISSION DAY BADGE ----------------
+                          Container(
+                              padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
+                              decoration: BoxDecoration(
+                                  color: const Color(0xFFF0F4FF),
+                                  borderRadius: BorderRadius.circular(5),
+                                  border: Border.all(
+                                      color: const Color(0xFF4285F4)
+                                  )
+                              ),
+                              child: Text(
+                                  '${provider.mission.data?.order ?? ""}번째 미션',
+                                  style: TextStyle(
+                                    color: Color(0xFF135DB2),
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                  )
+                              )
+                          ),
 
-                    const SizedBox(height: 20),
+                          const SizedBox(height: 20),
 
-                    // --------------- MISSION TEXT ----------------------
-                    Text(
-                      '${provider.mission.data?.title ?? ""}',
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w600,
-                        height: 1.45,
-                        letterSpacing: -0.44,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ]
-                )
+                          // --------------- MISSION TEXT ----------------------
+                          Text(
+                            '${provider.mission.data?.title ?? ""}',
+                            style: TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.w600,
+                              height: 1.45,
+                              letterSpacing: -0.44,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ]
+                    );
+                  }
+                ),
               ),
 
               const SizedBox(height: 50),

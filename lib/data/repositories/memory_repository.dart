@@ -14,11 +14,11 @@ class MemoryRepository {
     );
   }
 
-  Future<BaseResponse<MemoryListResponse>> getMemoryList(int id) async {
+  Future<BaseResponse<List<MemoryListResponse>>> getMemoryList(int id) async {
     final request = MemoryEndpoint.getMemoryList(id);
-    return _dioClient.get<MemoryListResponse>(
+    return _dioClient.get<List<MemoryListResponse>>(
       request: request,
-      fromJson: (json) => MemoryListResponse.fromJson(json as Map<String, dynamic>),
+      fromJson: (json) => (json as List).map((e) => MemoryListResponse.fromJson(e as Map<String, dynamic>)).toList(),
     );
   }
 }

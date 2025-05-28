@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:pawprints/utils/index.dart';
 import 'package:pawprints/widgets/index.dart';
 import 'package:pawprints/config/index.dart';
 import 'package:pawprints/viewmodels/index.dart';
@@ -15,14 +16,17 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    Provider.of<MissionProvider>(context, listen: false)
-        .getMission(19); // FIXME: Test
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      final memberId = SharedPreferencesHelper().memberId;
+      Provider.of<HomeProvider>(context, listen: false).getMission(memberId);
+      Provider.of<HomeProvider>(context, listen: false).getTitle(memberId);
+      Provider.of<MemoryProvider>(context, listen: false).getMemoryList(memberId);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final missionProvider =
-        Provider.of<MissionProvider>(context); // FIXME: HomeProvider
+    final missionProvider = Provider.of<MissionProvider>(context); // FIXME: HomeProvider
 
     return BaseScaffold(
         // appbar
@@ -81,25 +85,32 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  RichText(
-                                    text: TextSpan(
-                                      style: const TextStyle(
-                                        fontSize: 26.0,
-                                        color: Colors.black,
-                                        height: 1.5,
-                                      ),
-                                      children: [
-                                        BlueColoredText.toTextSpan('호준',
-                                            fontSize: 26.0),
-                                        const TextSpan(text: '님, '),
-                                        BlueColoredText.toTextSpan('봄이',
-                                            fontSize: 26.0),
-                                        const TextSpan(text: '와 함께\n'),
-                                        BlueColoredText.toTextSpan('32',
-                                            fontSize: 26.0),
-                                        const TextSpan(text: '개의 추억을\n쌓았어요!'),
-                                      ],
-                                    ),
+                                  Consumer<HomeProvider>(
+                                      builder: (context, provider, child) {
+                                        return RichText(
+                                          text: TextSpan(
+                                            style: const TextStyle(
+                                              fontSize: 26.0,
+                                              color: Colors.black,
+                                              height: 1.5,
+                                            ),
+                                            children: [
+                                              BlueColoredText.toTextSpan(
+                                                  provider.title.data?.name ?? '',
+                                                  fontSize: 26.0),
+                                              const TextSpan(text: '님, '),
+                                              BlueColoredText.toTextSpan(
+                                                  provider.title.data?.pname ?? '',
+                                                  fontSize: 26.0),
+                                              const TextSpan(text: '와 함께\n'),
+                                              BlueColoredText.toTextSpan(
+                                                  '${provider.title.data?.memoryCount ?? ''}',
+                                                  fontSize: 26.0),
+                                              const TextSpan(text: '개의 추억을\n쌓았어요!'),
+                                            ],
+                                          ),
+                                        );
+                                      }
                                   ),
                                   const SizedBox(height: 20),
                                   // Memory button
@@ -196,10 +207,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         HomeSectionHeader('오늘의 미션'),
                                         InkWell(
                                             onTap: () {
-                                              context.push(
-                                                  RoutePath.mission.value,
-                                                  extra: missionProvider
-                                                      .mission.data?.id);
+                                              context.push(RoutePath.mission.value, extra: missionProvider.mission.data?.id);
                                             },
                                             child: Row(children: [
                                               Text('미션 수행하기',
@@ -238,32 +246,37 @@ class _HomeScreenState extends State<HomeScreen> {
                                           const SizedBox(width: 16),
 
                                           // Right side - text content
-                                          Expanded(
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  '${missionProvider.mission.data?.description ?? ""}',
-                                                  style: TextStyle(
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: Colors.grey,
+                                          Consumer<HomeProvider>(
+                                              builder: (context, provider, child) {
+                                            return Expanded(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    '${provider.mission.data?.description ?? ""}',
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color: Colors.grey,
+                                                    ),
                                                   ),
-                                                ),
-                                                SizedBox(height: 4),
-                                                Text(
-                                                  '${missionProvider.mission.data?.title ?? ""}',
-                                                  style: TextStyle(
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.bold,
+                                                  SizedBox(height: 4),
+                                                  Text(
+                                                    '${provider.mission.data?.title ?? ""}',
+                                                    style: TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
                                                   ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
+                                                ],
+                                              ),
+                                            );
+                                          }),
                                         ],
                                       ))),
 
@@ -403,35 +416,30 @@ class _HomeScreenState extends State<HomeScreen> {
                                 const SizedBox(height: 20),
 
                                 // Horizontal Scrollable mission cards
-                                SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 25, right: 10),
-                                    child: Row(
-                                      children: [
-                                        _buildMissionCard(
-                                          'assets/images/dog_home_test.jpg',
-                                          '최애 장난감으로\n하루종일 공놀이',
+                                Consumer<MemoryProvider>(
+                                    builder: (context, provider, child) {
+                                      final memory = provider.memoryList.data ?? [];
+                                      final length = provider.memoryList.data?.length ?? 1;
+                                      return SingleChildScrollView(
+                                        scrollDirection: Axis.horizontal,
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 25, right: 10),
+                                          child: Row(
+                                            children:
+                                            List.generate(length, (index) {
+                                              return Row(
+                                                children: [
+                                                  _buildMissionCard(memory[index].media, memory[index].body),
+                                                  if (index != length - 1)
+                                                    const SizedBox(width: 12),
+                                                ],
+                                              );
+                                            }),
+                                          ),
                                         ),
-                                        const SizedBox(width: 12),
-                                        _buildMissionCard(
-                                          'assets/images/dog_home_test.jpg',
-                                          '최애 장난감으로\n하루종일 공놀이',
-                                        ),
-                                        const SizedBox(width: 12),
-                                        _buildMissionCard(
-                                          'assets/images/dog_home_test.jpg',
-                                          '최애 장난감으로\n하루종일 공놀이',
-                                        ),
-                                        const SizedBox(width: 12),
-                                        _buildMissionCard(
-                                          'assets/images/dog_home_test.jpg',
-                                          '최애 장난감으로\n하루종일 공놀이',
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                                      );
+                                  }
                                 )
                               ])),
                     ],
@@ -475,7 +483,7 @@ class _HomeScreenState extends State<HomeScreen> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         image: DecorationImage(
-          image: AssetImage(imagePath),
+          image: AssetImage(imagePath), // FIXME: Image.network
           fit: BoxFit.cover,
         ),
       ),

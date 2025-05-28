@@ -20,7 +20,7 @@ class _MyScreenState extends State<MyScreen> {
       trailingItems: [],
       body: Center(
         child: CustomText(
-          '커뮤니티',
+          '',
           fontSize: 24,
           fontWeight: FontWeight.w600,
         ),

@@ -14,6 +14,8 @@ class App extends StatelessWidget {
     return MultiProvider(
       providers: [
         // NOTE: Dependency Injection (Provider default)
+        ChangeNotifierProvider(create: (context) => HomeProvider(HomeRepository(dioClient))),
+        ChangeNotifierProvider(create: (context) => PlanProvider(PlanRepository(dioClient))),
         ChangeNotifierProvider(create: (context) => UserProvider(UserRepository(dioClient))),
         ChangeNotifierProvider(create: (context) => MissionProvider(MissionRepository(dioClient))),
         ChangeNotifierProvider(create: (context) => MemoryProvider(MemoryRepository(dioClient))),

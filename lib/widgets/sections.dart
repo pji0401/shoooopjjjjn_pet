@@ -50,7 +50,6 @@ class ImageAttachingSectionState<T extends ImageAttachProvider> extends State<Im
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<T>(context);
     // dynamic height for images, [screen height / 3.5 or 4]
     final double imageHeight =
         MediaQuery.of(context).size.height / 3.4; // Adjust this ratio as needed
@@ -58,118 +57,122 @@ class ImageAttachingSectionState<T extends ImageAttachProvider> extends State<Im
 
     return SizedBox(
       height: imageHeight + 30,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // --- Add Button ---
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+      child: Consumer<T>(
+        builder: (context, provider, child) {
+          return Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              GestureDetector(
-                onTap: () => _getImage(ImageSource.gallery, provider),
-                child: Container(
-                  width: 60,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    color: AppColors.main,
-                    borderRadius: BorderRadius.circular(6),
+              // --- Add Button ---
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  GestureDetector(
+                    onTap: () => _getImage(ImageSource.gallery, provider),
+                    child: Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        color: AppColors.main,
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: const Icon(Icons.add, color: Colors.white, size: 35),
+                    ),
                   ),
-                  child: const Icon(Icons.add, color: Colors.white, size: 35),
+                  const SizedBox(height: 8),
+                  RichText(
+                      text: TextSpan(children: <TextSpan>[
+                        TextSpan(
+                          text: "${provider.imageItemCount}",
+                          style: const TextStyle(
+                            color: AppColors.black,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        TextSpan(
+                          text: "/",
+                          style: const TextStyle(
+                            color: AppColors.black,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        TextSpan(
+                          text: "${provider.maxImageCount}",
+                          style: const TextStyle(
+                            color: AppColors.main,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ])),
+                ],
+              ),
+              const SizedBox(width: 16),
+              // --- Horizontally Scrollable Images ---
+              Expanded(
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: provider.imageItemCount,
+                  itemBuilder: (context, index) {
+                    final item = provider.images[index];
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 12.0),
+                      child: Stack(
+                        children: [
+                          Container(
+                            width: imageWidth,
+                            height: imageHeight,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(18),
+                              border:
+                              Border.all(color: Colors.grey.shade200, width: 4),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Image.file(
+                                File(item.path),
+                                fit: BoxFit.fill,
+                                // loadingBuilder: (context, child, progress) {
+                                //   if (progress == null) return child;
+                                //   return const Center(child: CircularProgressIndicator());
+                                // },
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Container(
+                                    color: Colors.grey.shade200,
+                                    child: const Icon(Icons.broken_image,
+                                        color: Colors.grey),
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            top: 8,
+                            right: 8,
+                            child: GestureDetector(
+                              onTap: () => _removeImage(item, provider),
+                              child: Container(
+                                padding: const EdgeInsets.all(4),
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(0.6),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: const Icon(Icons.close,
+                                    color: AppColors.black, size: 14),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
                 ),
               ),
-              const SizedBox(height: 8),
-              RichText(
-                  text: TextSpan(children: <TextSpan>[
-                TextSpan(
-                  text: "${provider.imageItemCount}",
-                  style: const TextStyle(
-                    color: AppColors.black,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                TextSpan(
-                  text: "/",
-                  style: const TextStyle(
-                    color: AppColors.black,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                TextSpan(
-                  text: "${provider.maxImageCount}",
-                  style: const TextStyle(
-                    color: AppColors.main,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ])),
             ],
-          ),
-          const SizedBox(width: 16),
-          // --- Horizontally Scrollable Images ---
-          Expanded(
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: provider.imageItemCount,
-              itemBuilder: (context, index) {
-                final item = provider.images[index];
-                return Padding(
-                  padding: const EdgeInsets.only(right: 12.0),
-                  child: Stack(
-                    children: [
-                      Container(
-                        width: imageWidth,
-                        height: imageHeight,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(18),
-                          border:
-                              Border.all(color: Colors.grey.shade200, width: 4),
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image.file(
-                            File(item.path),
-                            fit: BoxFit.fill,
-                            // loadingBuilder: (context, child, progress) {
-                            //   if (progress == null) return child;
-                            //   return const Center(child: CircularProgressIndicator());
-                            // },
-                            errorBuilder: (context, error, stackTrace) {
-                              return Container(
-                                color: Colors.grey.shade200,
-                                child: const Icon(Icons.broken_image,
-                                    color: Colors.grey),
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        top: 8,
-                        right: 8,
-                        child: GestureDetector(
-                          onTap: () => _removeImage(item, provider),
-                          child: Container(
-                            padding: const EdgeInsets.all(4),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.6),
-                              shape: BoxShape.circle,
-                            ),
-                            child: const Icon(Icons.close,
-                                color: AppColors.black, size: 14),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
-      ),
+          );
+        }
+      )
     );
   }
 }

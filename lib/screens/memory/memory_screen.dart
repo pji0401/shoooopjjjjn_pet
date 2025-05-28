@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:pawprints/utils/index.dart';
 import 'package:pawprints/widgets/index.dart'; 
 import 'package:pawprints/config/index.dart';
+import 'package:pawprints/viewmodels/index.dart';
+import 'package:pawprints/data/models/index.dart';
 
 // Data model
 class MemoryArchiveItem {
@@ -26,34 +29,6 @@ class MemoryScreen extends StatefulWidget {
 }
 
 class _MemoryScreenState extends State<MemoryScreen> {
-  // Sample data
-  final List<MemoryArchiveItem> _memoryItems = [
-    const MemoryArchiveItem(
-      id: '1',
-      imageUrl: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZG9nJTIwZmxvd2VyfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60',
-      date: '25.03.28',
-      title: '함께 즐긴 잔디밭 피크닉',
-    ),
-    const MemoryArchiveItem(
-      id: '2',
-      imageUrl: 'https://images.unsplash.com/photo-1505628346881-b72b27e84530?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fGNhdCUyMGZsb3dlcnxlbnwwfHx8fHw%3D&auto=format&fit=crop&w=800&q=60',
-      date: '25.04.15',
-      title: '햇살 좋은 날 공원 산책',
-    ),
-    const MemoryArchiveItem(
-      id: '3',
-      imageUrl: 'https://images.unsplash.com/photo-1517423440428-a5a00ad493e8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZnVubnklMjBkb2d8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=800&q=60',
-      date: '25.05.01',
-      title: '첫 수영 도전 계곡 물놀이',
-    ),
-    const MemoryArchiveItem(
-      id: '3',
-      imageUrl: 'https://images.unsplash.com/photo-1517423440428-a5a00ad493e8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZnVubnklMjBkb2d8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=800&q=60',
-      date: '25.05.01',
-      title: '첫 수영 도전 계곡 물놀이',
-    ),
-  ];
-
   void _onSearchPressed() {
     // Search Icon Pressed Logic
     ScaffoldMessenger.of(context).showSnackBar(
@@ -61,13 +36,21 @@ class _MemoryScreenState extends State<MemoryScreen> {
     );
   }
 
-  void _onMemoryItemTap(MemoryArchiveItem item) {
+  void _onMemoryItemTap(MemoryListResponse item) {
     // Click on the Image Logic
      ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('${item.title}을(를) 선택했습니다.')),
+      SnackBar(content: Text('${item.body}을(를) 선택했습니다.')),
     );
   }
 
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<MemoryProvider>(context, listen: false).getMemoryList(
+          SharedPreferencesHelper().memberId);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -90,20 +73,23 @@ class _MemoryScreenState extends State<MemoryScreen> {
         ),
       ],
       body: SafeArea(
-        child: ListView.builder(
-          padding: const EdgeInsets.all(16.0),
-          itemCount: _memoryItems.length,
-          itemBuilder: (context, index) {
-            final item = _memoryItems[index];
-            return _buildMemoryCard(item);
-          },
-        ),
+        child: Consumer<MemoryProvider>(builder: (context, provider, child) {
+          final items = provider.memoryList.data ?? [];
+          return ListView.builder(
+            padding: const EdgeInsets.all(16.0),
+            itemCount: items.length,
+            itemBuilder: (context, index) {
+              final item = items[index];
+              return _buildMemoryCard(item);
+            },
+          );
+        }),
       ),
     );
   }
 
   // Widget for memory card
-  Widget _buildMemoryCard(MemoryArchiveItem item) {
+  Widget _buildMemoryCard(MemoryListResponse item) {
     return GestureDetector(
       onTap: () => _onMemoryItemTap(item),
       child: Card(
@@ -116,9 +102,9 @@ class _MemoryScreenState extends State<MemoryScreen> {
         child: Stack(
           children: [
             AspectRatio(
-              aspectRatio: 16 / 10, 
+              aspectRatio: 16 / 10,
               child: Image.network(
-                item.imageUrl,
+                item.media,
                 fit: BoxFit.cover,
                 loadingBuilder: (context, child, progress) {
                   if (progress == null) return child;
@@ -147,7 +133,7 @@ class _MemoryScreenState extends State<MemoryScreen> {
             Positioned(
               bottom: 12,
               left: 20,
-              right: 20, 
+              right: 20,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
@@ -162,24 +148,24 @@ class _MemoryScreenState extends State<MemoryScreen> {
                       item.date,
                       style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 16, 
-                        fontWeight: FontWeight.w500, 
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
                         fontFamily: 'Pretendard',
                       ),
                     ),
                   ),
-                  const SizedBox(height: 6), 
+                  const SizedBox(height: 6),
                   Text(
-                    item.title,
+                    item.body,
                     style: const TextStyle(
                       color: Colors.white,
-                      fontSize: 26, 
+                      fontSize: 26,
                       fontWeight: FontWeight.bold,
                       fontFamily: 'Pretendard',
                       shadows: [Shadow(blurRadius: 4, color: Colors.black38)],
                     ),
                     maxLines: 2, // title to wrap
-                    overflow: TextOverflow.ellipsis, 
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),
