@@ -58,17 +58,18 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 8),
               TextField(
                 controller: _idController,
+                style: const TextStyle(fontSize: 16),
                 decoration: const InputDecoration(
                   hintText: '영문 아이디를 입력하세요',
                   hintStyle: TextStyle(
                     fontSize: 16,
-                    color: Color(0xff626262),
+                    color: AppColors.grey,
                     fontWeight: FontWeight.w500,
                     fontFamily: 'Pretendard',
                   ),
                   filled: true,
                   fillColor: Color(0xfff5f5f9),
-                  border: OutlineInputBorder(borderSide: BorderSide.none),
+                  border: OutlineInputBorder(borderSide: BorderSide.none, borderRadius: BorderRadius.all(Radius.circular(12))),
                 ),
               ),
               const SizedBox(height: 20),
@@ -90,17 +91,18 @@ class _LoginScreenState extends State<LoginScreen> {
               TextField(
                 controller: _passwordController,
                 obscureText: true,
+                style: const TextStyle(fontSize: 16),
                 decoration: const InputDecoration(
                   hintText: '비밀번호를 입력하세요',
                   hintStyle: TextStyle(
                     fontSize: 16,
-                    color: Color(0xff626262),
+                    color: AppColors.grey,
                     fontWeight: FontWeight.w500,
                     fontFamily: 'Pretendard',
                   ),
                   filled: true,
-                  fillColor: Color(0xfff5f5f9),
-                  border: OutlineInputBorder(borderSide: BorderSide.none),
+                  fillColor: AppColors.lightGrey,
+                  border: OutlineInputBorder(borderSide: BorderSide.none, borderRadius: BorderRadius.all(Radius.circular(12))),
                 ),
               ),
               const SizedBox(height: 8),
@@ -143,7 +145,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
-                    backgroundColor: Color(0xFF3A8DFF),
+                    backgroundColor: AppColors.main,
                     padding: EdgeInsets.symmetric(vertical: 14),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),

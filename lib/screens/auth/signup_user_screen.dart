@@ -1,12 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:pawprints/config/index.dart';
+import 'package:pawprints/viewmodels/index.dart';
 import 'package:pawprints/widgets/index.dart';
 
-class SignUpUserScreen extends StatelessWidget {
+class SignUpUserScreen extends StatefulWidget {
   const SignUpUserScreen({super.key});
 
   @override
+  State<SignUpUserScreen> createState() => SignUpUserScreenState();
+}
+
+class SignUpUserScreenState extends State<SignUpUserScreen> {
+  final TextEditingController _idController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _passwordCheckController = TextEditingController();
+
+  @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<UserProvider>(context);
     return BaseScaffold(
       leadingItem: IconButton(
           icon: const Icon(Icons.arrow_back_ios, size: 20, color: Colors.black),
@@ -65,6 +76,7 @@ class SignUpUserScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: TextField(
+                    controller: _idController,
                     style: const TextStyle(fontSize: 15),
                     decoration: const InputDecoration(
                       hintText: '아이디 입력',
@@ -77,9 +89,8 @@ class SignUpUserScreen extends StatelessWidget {
                         letterSpacing: 0,
                       ),
                       filled: true,
-                      fillColor: Color(0xFFF4F4F4),
-                      border: OutlineInputBorder(borderSide: BorderSide.none, borderRadius: BorderRadius.all(Radius.circular(8))),
-                      contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                      fillColor: AppColors.lightGrey,
+                      border: OutlineInputBorder(borderSide: BorderSide.none, borderRadius: BorderRadius.all(Radius.circular(12))),
                     ),
                   ),
                 ),
@@ -127,6 +138,7 @@ class SignUpUserScreen extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             TextField(
+              controller: _passwordController,
               obscureText: true,
               style: const TextStyle(fontSize: 15),
               decoration: const InputDecoration(
@@ -140,9 +152,8 @@ class SignUpUserScreen extends StatelessWidget {
                   letterSpacing: 0,
                 ),
                 filled: true,
-                fillColor: Color(0xFFF4F4F4),
-                border: OutlineInputBorder(borderSide: BorderSide.none, borderRadius: BorderRadius.all(Radius.circular(8))),
-                contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                fillColor: AppColors.lightGrey,
+                border: OutlineInputBorder(borderSide: BorderSide.none, borderRadius: BorderRadius.all(Radius.circular(12))),
               ),
             ),
             const SizedBox(height: 6),
@@ -159,6 +170,7 @@ class SignUpUserScreen extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             TextField(
+              controller: _passwordCheckController,
               obscureText: true,
               style: const TextStyle(fontSize: 15),
               decoration: const InputDecoration(
@@ -172,9 +184,8 @@ class SignUpUserScreen extends StatelessWidget {
                   letterSpacing: 0,
                 ),
                 filled: true,
-                fillColor: Color(0xFFF4F4F4),
-                border: OutlineInputBorder(borderSide: BorderSide.none, borderRadius: BorderRadius.all(Radius.circular(8))),
-                contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                fillColor: AppColors.lightGrey,
+                border: OutlineInputBorder(borderSide: BorderSide.none, borderRadius: BorderRadius.all(Radius.circular(12))),
               ),
             ),
             const Spacer(),
@@ -183,10 +194,14 @@ class SignUpUserScreen extends StatelessWidget {
               height: 52,
               child: ElevatedButton(
                 onPressed: () {
-                  context.push(RoutePath.signup_profile.value);
+                  if (_passwordCheckController.text.isNotEmpty && _passwordController.text.isNotEmpty && _passwordCheckController.text == _passwordCheckController.text) {
+                    provider.userId = _idController.text;
+                    provider.password = _passwordController.text;
+                    context.push(RoutePath.signup_profile.value);
+                  }
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF3A8DFF),
+                  backgroundColor: AppColors.main,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                   textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
