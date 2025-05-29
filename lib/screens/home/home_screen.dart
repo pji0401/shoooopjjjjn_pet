@@ -187,9 +187,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       getSectionDivider(),
 
                       // Mission Feed Section
-                      _MissionFeedSection(
-                        buildMissionCard: _buildMissionCard,
-                      ),
+                      _MissionFeedSection(),
                     ],
                   ),
                 ),
@@ -409,12 +407,7 @@ class _TodayMissionSection extends StatelessWidget {
 }
 
 class _MissionFeedSection extends StatelessWidget {
-  final Widget Function(String imagePath, String title) buildMissionCard;
-
-  const _MissionFeedSection({
-    super.key,
-    required this.buildMissionCard,
-  });
+  const _MissionFeedSection({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -470,8 +463,10 @@ class _MissionFeedSection extends StatelessWidget {
                   children: List.generate(length, (index) {
                     return Row(
                       children: [
-                        _buildMissionCard(
-                            memory[index].media, memory[index].body),
+                        MissionCard(
+                          imagePath: memory[index].media,
+                          title: memory[index].body,
+                        ),
                         if (index != length - 1) const SizedBox(width: 12),
                       ],
                     );
@@ -484,53 +479,71 @@ class _MissionFeedSection extends StatelessWidget {
   }
 }
 
-Widget _buildMissionCard(String imagePath, String title) {
-  return Container(
-    width: 138,
-    height: 120,
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(10),
-      image: DecorationImage(
-        image: AssetImage(imagePath), // FIXME: Image.network
-        fit: BoxFit.cover,
+/// 미션 카드 UI 위젯.
+///
+/// 이미지 배경 위에 제목 텍스트를 오버레이로 표시하는 카드형 위젯.
+/// 하단에 그라디언트 효과를 적용하여 텍스트 가독성을 향상시킴.
+///
+/// Args:
+///
+///     imagePath:     표시할 이미지 파일 경로
+///     title:         카드 하단에 표시할 제목 텍스트
+class MissionCard extends StatelessWidget {
+  final String imagePath;
+  final String title;
+
+  const MissionCard({
+    super.key,
+    required this.imagePath,
+    required this.title,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 138,
+      height: 120,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        image: DecorationImage(
+          image: AssetImage(imagePath),
+          fit: BoxFit.cover,
+        ),
       ),
-    ),
-    child: Stack(
-      children: [
-        // Gradient overlay for better text readability
-        Positioned.fill(
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Colors.transparent,
-                  Colors.black.withValues(alpha: 0.6),
-                ],
-                stops: const [0.5, 1.0],
+      child: Stack(
+        children: [
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.transparent,
+                    Colors.black.withValues(alpha: 0.6),
+                  ],
+                  stops: const [0.5, 1.0],
+                ),
               ),
             ),
           ),
-        ),
-
-        // Text at the bottom
-        Positioned(
-          bottom: 10,
-          left: 10,
-          right: 10,
-          child: Text(
-            title,
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 14,
-              height: 1.4,
+          Positioned(
+            bottom: 10,
+            left: 10,
+            right: 10,
+            child: Text(
+              title,
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 14,
+                height: 1.4,
+              ),
             ),
           ),
-        ),
-      ],
-    ),
-  );
+        ],
+      ),
+    );
+  }
 }
