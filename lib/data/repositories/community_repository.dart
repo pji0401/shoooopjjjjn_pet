@@ -34,6 +34,14 @@ class CommunityRepository {
     );
   }
 
+  Future<BaseResponse<ContentListResponse>> getContentList() async {
+    final request = CommunityEndpoint.getContentList();
+    return _dioClient.get<ContentListResponse>(
+      request: request,
+      fromJson: (json) => ContentListResponse.fromJson(json as Map<String, dynamic>),
+    );
+  }
+
   Future<BaseResponse<ContentDetailResponse>> getDetailContent(int id) async {
     final request = CommunityEndpoint.getDetailContent(id);
     return _dioClient.get<ContentDetailResponse>(
@@ -42,11 +50,11 @@ class CommunityRepository {
     );
   }
 
-  Future<BaseResponse<MemberContentResponse>> getMemberContent(int id) async {
+  Future<BaseResponse<ContentMemberResponse>> getMemberContent(int id) async {
     final request = CommunityEndpoint.getMemberContent(id);
-    return _dioClient.get<MemberContentResponse>(
+    return _dioClient.get<ContentMemberResponse>(
       request: request,
-      fromJson: (json) => MemberContentResponse.fromJson(json as Map<String, dynamic>),
+      fromJson: (json) => ContentMemberResponse.fromJson(json as Map<String, dynamic>),
     );
   }
 }

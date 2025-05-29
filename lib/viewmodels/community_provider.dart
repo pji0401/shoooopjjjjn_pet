@@ -12,7 +12,8 @@ class CommunityProvider with ChangeNotifier implements ImageAttachProvider {
 
   ApiResponse<IdResponse> contentId = ApiResponse.loading();
   ApiResponse<ContentDetailResponse> contentDetail = ApiResponse.loading();
-  ApiResponse<MemberContentResponse> contentList = ApiResponse.loading();
+  ApiResponse<ContentListResponse> wholeContentList = ApiResponse.loading();
+  ApiResponse<ContentMemberResponse> memberContentList = ApiResponse.loading();
 
   final List<File> _imageItems = [];
 
@@ -54,6 +55,18 @@ class CommunityProvider with ChangeNotifier implements ImageAttachProvider {
     });
   }
 
+  Future<void> getContentList() async {
+    wholeContentList = ApiResponse.loading();
+    notifyListeners();
+    await _repository.getContentList().then((response) {
+      wholeContentList = ApiResponse.completed(response.result);
+    }).onError((error, stackTrace) {
+      wholeContentList = ApiResponse.error(error.toString());
+    }).whenComplete(() {
+      notifyListeners();
+    });
+  }
+
   Future<void> getDetailContent(int id) async {
     contentDetail = ApiResponse.loading();
     notifyListeners();
@@ -67,13 +80,13 @@ class CommunityProvider with ChangeNotifier implements ImageAttachProvider {
   }
 
   Future<void> getMemberContent(int id) async {
-    contentList = ApiResponse.loading();
+    memberContentList = ApiResponse.loading();
     notifyListeners();
     await _repository.getMemberContent(id).then((response) {
-      contentList = ApiResponse.completed(response.result);
+      memberContentList = ApiResponse.completed(response.result);
       notifyListeners();
     }).onError((error, stackTrace) {
-      contentList = ApiResponse.error(error.toString());
+      memberContentList = ApiResponse.error(error.toString());
     }).whenComplete(() {
       notifyListeners();
     });

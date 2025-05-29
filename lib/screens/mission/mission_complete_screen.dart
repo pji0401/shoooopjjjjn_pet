@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:pawprints/config/index.dart';
 import 'package:pawprints/widgets/index.dart'; 
 import 'package:pawprints/viewmodels/index.dart';
@@ -36,8 +35,6 @@ class _MissionCompleteScreenState extends State<MissionCompleteScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<MemoryProvider>(context);
-
     const Color primaryTextColor = AppColors.black;
     const Color highlightColor = AppColors.main;
 
@@ -47,70 +44,74 @@ class _MissionCompleteScreenState extends State<MissionCompleteScreen> {
         onPressed: () => context.go(RoutePath.root.value),
       ),
       body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10), 
-              sliver: SliverList(
-                delegate: SliverChildListDelegate(
-                  [
-                    const SizedBox(height: 8),
-                    Text(
-                      '${widget.pet}와 함께 쌓은',
-                      style: const TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w600,
-                        color: primaryTextColor,
-                        fontFamily: 'Pretendard',
-                      ),
-                    ),
-                    RichText(
-                      text: TextSpan(
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 22,
-                          color: primaryTextColor,
-                          fontFamily: 'Pretendard',
+        child: Consumer<MemoryProvider>(
+          builder: (context, provider, child) {
+            return CustomScrollView(
+              slivers: [
+                SliverPadding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  sliver: SliverList(
+                    delegate: SliverChildListDelegate(
+                      [
+                        const SizedBox(height: 8),
+                        Text(
+                          '${widget.pet}와 함께 쌓은',
+                          style: const TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w600,
+                            color: primaryTextColor,
+                            fontFamily: 'Pretendard',
+                          ),
                         ),
-                        children: [
-                          TextSpan(
-                            text: '${provider.memory.data?.count ?? ""}번째 ',
-                            style: const TextStyle(color: highlightColor, fontSize: 22, fontWeight: FontWeight.w600, fontFamily: 'Pretendard'),
+                        RichText(
+                          text: TextSpan(
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 22,
+                              color: primaryTextColor,
+                              fontFamily: 'Pretendard',
+                            ),
+                            children: [
+                              TextSpan(
+                                text: '${provider.memory.data?.count ?? ""}번째 ',
+                                style: const TextStyle(color: highlightColor, fontSize: 22, fontWeight: FontWeight.w600, fontFamily: 'Pretendard'),
+                              ),
+                              TextSpan(
+                                text: '추억',
+                              ),
+                            ],
                           ),
-                          TextSpan(
-                            text: '추억',
-                          ),
-                        ],
-                      ),
+                        ),
+                        const SizedBox(height: 24),
+                        _buildMainImageCard(context, MemoryItem(imageUrl: provider.memory.data?.images[0] ?? '', title: provider.memory.data?.body ?? '', subtitle: provider.memory.data?.date ?? '')),
+                        const SizedBox(height: 24),
+                      ],
                     ),
-                    const SizedBox(height: 24),
-                    _buildMainImageCard(context, MemoryItem(imageUrl: provider.memory.data?.images[0] ?? '', title: provider.memory.data?.body ?? '', subtitle: provider.memory.data?.date ?? '')),
-                    const SizedBox(height: 24),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-            SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              sliver: SliverGrid(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 12,
-                  mainAxisSpacing: 12,
-                  childAspectRatio: 1,
+                SliverPadding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  sliver: SliverGrid(
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 12,
+                      mainAxisSpacing: 12,
+                      childAspectRatio: 1,
+                    ),
+                    delegate: SliverChildBuilderDelegate(
+                          (BuildContext context, int index) {
+                        return _buildGridImageItem(MemoryItem(imageUrl: provider.memory.data?.images[index] ?? ""));
+                      },
+                      childCount: (provider.memory.data?.images.length ?? 1) - 1,
+                    ),
+                  ),
                 ),
-                delegate: SliverChildBuilderDelegate(
-                  (BuildContext context, int index) {
-                    return _buildGridImageItem(MemoryItem(imageUrl: provider.memory.data?.images[index] ?? ""));
-                  },
-                  childCount: (provider.memory.data?.images.length ?? 1) - 1,
+                const SliverToBoxAdapter(
+                  child: SizedBox(height: 20),
                 ),
-              ),
-            ),
-             const SliverToBoxAdapter(
-              child: SizedBox(height: 20),
-            ),
-          ],
+              ],
+            );
+          },
         ),
       ),
     );

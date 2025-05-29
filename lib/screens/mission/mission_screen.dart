@@ -15,7 +15,6 @@ class MissionScreen extends StatefulWidget {
 class _MissionScreenState extends State<MissionScreen> {
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<MissionProvider>(context);
     return BaseScaffold(
         // ---------------APP BAR------------------------
         title: '미션 인증',
@@ -36,21 +35,23 @@ class _MissionScreenState extends State<MissionScreen> {
 
                   // --------- WHITE CONTAINER ------------
                   Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(30),
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.1),
-                              blurRadius: 10,
-                              offset: const Offset(0, 4),
-                            )
-                          ]),
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(30),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.1),
+                            blurRadius: 10,
+                            offset: const Offset(0, 4),
+                          )
+                        ]),
 
-                      // --------------- ICON --------------
-                      child: Column(mainAxisSize: MainAxisSize.min, children: [
+                    // --------------- ICON --------------
+                    child: Consumer<HomeProvider>(
+                        builder: (context, provider, child) {
+                      return Column(mainAxisSize: MainAxisSize.min, children: [
                         // ----- SVG ------
                         Stack(
                             alignment: Alignment.center,
@@ -65,7 +66,7 @@ class _MissionScreenState extends State<MissionScreen> {
                               ),
                               Image.asset(
                                 'assets/datas/envelope.png',
-                                height: 180,
+                                height: 150,
                                 width: 150,
                               )
                             ]),
@@ -102,7 +103,9 @@ class _MissionScreenState extends State<MissionScreen> {
                           ),
                           textAlign: TextAlign.center,
                         ),
-                      ])),
+                      ]);
+                    }),
+                  ),
 
                   const SizedBox(height: 50),
 
