@@ -20,28 +20,7 @@ class UserRepository {
 
     final request = UserEndpoint.register(
       requestBody: requestBody.toJson(),
-      formData: {'images': multipartFile},
-    );
-
-    return _dioClient.post<IdResponse>(
-      request: request,
-      fromJson: (json) => IdResponse.fromJson(json as Map<String, dynamic>),
-    );
-  }
-
-  Future<BaseResponse<IdResponse>> createContent({
-    required ContentCreateRequest requestBody,
-    required File imageFile,
-  }) async {
-    final multipartFile = await MultipartFile.fromFile(
-      imageFile.path,
-      filename: imageFile.path.split('/').last,
-      contentType: MediaType('image', 'png'),
-    );
-
-    final request = MissionEndpoint.completeMission(
-      requestBody: requestBody.toJson(),
-      formData: {'images': multipartFile},
+      formData: {'profileImage': multipartFile},
     );
 
     return _dioClient.uploadFiles<IdResponse>(
