@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:pawprints/data/models/index.dart';
 import 'package:pawprints/utils/index.dart';
 import 'package:pawprints/widgets/index.dart';
 import 'package:pawprints/config/index.dart';
 import 'package:pawprints/viewmodels/index.dart';
+import 'package:pawprints/core/network/index.dart';
 
 class ScheduleScreen extends StatefulWidget {
   const ScheduleScreen({super.key});
-
   final String title = '일정';
 
   @override
@@ -15,57 +17,73 @@ class ScheduleScreen extends StatefulWidget {
 }
 
 class _ScheduleScreenState extends State<ScheduleScreen> {
-  // FIXME: 현재로 변경
-  int selectedDayIndex = 4;
-  int currentMonth = 4;
+  int selectedDayIndex = 0;
+  late int currentPage;
+  late PageController _pageController;
 
-  final List<Map<String, dynamic>> days = [
-    {'label': '일', 'date': 13},
-    {'label': '월', 'date': 14},
-    {'label': '화', 'date': 15},
-    {'label': '수', 'date': 16},
-    {'label': '목', 'date': 17},
-    {'label': '금', 'date': 18},
-    {'label': '토', 'date': 19},
-  ];
+  late final DateTime baseDate;
+  late final int initialPage;
+  late final int totalPages;
 
-  final Map<int, List<Map<String, dynamic>>> schedulesByDate = {
-    13: [
-      {'title': '일정 없음', 'subtitle': '', 'done': false},
-    ],
-    14: [
-      {'title': '월요일 일정', 'subtitle': '오전 9시', 'done': false},
-    ],
-    17: [
-      {'title': '세온 동물병원 검진', 'subtitle': '오전 11시', 'done': true},
-      {'title': '사료랑 간식 구매', 'subtitle': '병원갔다 펫마트 들르기', 'done': false},
-    ],
-  };
+  List<Map<String, dynamic>> generateWeek(DateTime weekStart) {
+    return List.generate(7, (dayIndex) {
+      final day = weekStart.add(Duration(days: dayIndex));
+      const labels = ['일', '월', '화', '수', '목', '금', '토'];
+      return {
+        'label': labels[dayIndex],
+        'date': day.day,
+        'fullDate': day,
+      };
+    });
+  }
+
+  void fetchPlansForSelectedDate(DateTime selectedDate) {
+    Provider.of<PlanProvider>(context, listen: false).getPlanList(
+      request: PlanListRequest(
+        memberId: SharedPreferencesHelper().memberId,
+        date: DateFormat('yyyy-MM-dd').format(selectedDate),
+      ),
+    );
+  }
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Provider.of<PlanProvider>(context, listen: false).getPlanList(
-          request: PlanListRequest(memberId: SharedPreferencesHelper().memberId,
-              date: getCurrentDateForRequest()));
+
+    final now = DateTime.now();
+    final yearStart = DateTime(now.year, 1, 1);
+    baseDate = yearStart.subtract(Duration(days: yearStart.weekday % 7));
+
+    final yearEnd = DateTime(now.year, 12, 31);
+    final totalDays = yearEnd.difference(baseDate).inDays;
+    totalPages = (totalDays ~/ 7) + 1;
+
+    initialPage = now.difference(baseDate).inDays ~/ 7;
+    currentPage = initialPage;
+
+    _pageController = PageController(initialPage: initialPage);
+    selectedDayIndex = now.weekday % 7;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      fetchPlansForSelectedDate(now);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final selectedDay = days[selectedDayIndex];
-    final selectedDate = selectedDay['date'] as int;
-    final selectedWeekday = selectedDay['label'] as String;
-    final schedules = schedulesByDate[selectedDate] ?? [];
+    final provider = Provider.of<PlanProvider>(context);
+
+    final weekStart = baseDate.add(Duration(days: currentPage * 7));
+    final currentWeek = generateWeek(weekStart);
+    final selectedDay = currentWeek[selectedDayIndex];
+    final selectedDateTime = selectedDay['fullDate'] as DateTime;
 
     return BaseScaffold(
       title: widget.title,
       leadingItem: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, size: 20, color: Colors.black),
-          onPressed: () {
-            context.pop();
-          }),
+        icon: const Icon(Icons.arrow_back_ios, size: 20, color: Colors.black),
+        onPressed: () => context.pop(),
+      ),
       body: Stack(
         children: [
           Container(
@@ -79,88 +97,111 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [
-                  Color(0xFFEFF8EA),
-                  Color(0xFFE1E9FD),
-                ],
+                colors: [Color(0xFFEFF8EA), Color(0xFFE1E9FD)],
               ),
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(
-              top: MediaQuery.of(context).padding.top + 34,
-            ),
+            padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 34),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 27),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 24),
-                        child: Text(
-                            '$currentMonth월 $selectedDate일 $selectedWeekday요일',
-                            style: const TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontWeight: FontWeight.w600,
-                                fontSize: 18,
-                                color: Color(0xFF070707))),
-                      ),
-                      const SizedBox(height: 16),
-                      SizedBox(
-                        height: 64,
-                        child: ListView.separated(
-                          scrollDirection: Axis.horizontal,
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          itemCount: days.length,
-                          separatorBuilder: (_, __) => const SizedBox(width: 8),
-                          itemBuilder: (context, idx) {
-                            final isSelected = idx == selectedDayIndex;
+                const SizedBox(height: 27),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Text(
+                    '${selectedDateTime.month}월 ${selectedDateTime.day}일 ${selectedDay['label']}요일',
+                    style: const TextStyle(
+                      fontFamily: 'Pretendard',
+                      fontWeight: FontWeight.w600,
+                      fontSize: 18,
+                      color: Color(0xFF070707),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: SizedBox(
+                    height: 64,
+                    child: PageView.builder(
+                      controller: _pageController,
+                      onPageChanged: (index) {
+                        setState(() {
+                          currentPage = index;
+                          selectedDayIndex = 0;
+                          fetchPlansForSelectedDate(
+                            generateWeek(baseDate.add(Duration(
+                                days: index * 7)))[0]['fullDate'] as DateTime,
+                          );
+                        });
+                      },
+                      itemCount: totalPages,
+                      itemBuilder: (context, index) {
+                        final weekStartForIndex = baseDate.add(Duration(days: index * 7));
+                        final week = generateWeek(weekStartForIndex);
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: List.generate(7, (dayIndex) {
+                            final isSelected = (index == currentPage) &&
+                                (dayIndex == selectedDayIndex);
+                            final day = week[dayIndex];
+                            final label = day['label'] as String;
+
+                            Color labelColor;
+                            if (label == '일') {
+                              labelColor = Colors.red;
+                            } else if (label == '토') {
+                              labelColor = Colors.blue;
+                            } else {
+                              labelColor = const Color(0xFF070707);
+                            }
+
                             return GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  selectedDayIndex = idx;
+                                  currentPage = index;
+                                  selectedDayIndex = dayIndex;
                                 });
+                                fetchPlansForSelectedDate(day['fullDate'] as DateTime);
                               },
                               child: Container(
                                 width: 43,
                                 height: 64,
                                 decoration: BoxDecoration(
-                                  color: isSelected
-                                      ? const Color(0xff4A9BF6)
-                                      : Colors.white,
+                                  color: isSelected ? const Color(0xff4A9BF6) : Colors.white,
                                   borderRadius: BorderRadius.circular(16),
                                 ),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text(days[idx]['label'],
-                                        style: TextStyle(
-                                            fontFamily: 'Pretendard',
-                                            fontWeight: FontWeight.w400,
-                                            fontSize: 14,
-                                            color: isSelected
-                                                ? Color(0xFFFFFFFF)
-                                                : Color(0xFF070707))),
+                                    Text(
+                                      label,
+                                      style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 14,
+                                        color: isSelected ? Colors.white : labelColor,
+                                      ),
+                                    ),
                                     const SizedBox(height: 4),
-                                    Text('${days[idx]['date']}',
-                                        style: TextStyle(
-                                            fontFamily: 'Pretendard',
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 16,
-                                            color: isSelected
-                                                ? Color(0xFFFFFFFF)
-                                                : Color(0xFF070707))),
+                                    Text(
+                                      '${day['date']}',
+                                      style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 16,
+                                        color: isSelected ? Colors.white : const Color(0xFF070707),
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),
                             );
-                          },
-                        ),
-                      ),
-                    ],
+                          }),
+                        );
+                      },
+                    ),
                   ),
                 ),
                 const SizedBox(height: 24),
@@ -170,71 +211,75 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 24),
-                        child: Text('오늘의 일정',
-                            style: const TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontWeight: FontWeight.w600,
-                                fontSize: 18,
-                                color: Color(0xFF070707))),
+                        child: Text(
+                          '오늘의 일정',
+                          style: const TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18,
+                            color: Color(0xFF070707),
+                          ),
+                        ),
                       ),
                       const SizedBox(height: 16),
-                      ...List.generate(schedules.length, (idx) {
-                        final s = schedules[idx];
-                        final isDone = s['done'] as bool;
+                      ...List.generate(provider.planList.data?.plans.length ?? 0, (idx) {
+                        final plan = provider.planList.data?.plans[idx];
+                        final isChecked = plan?.isChecked ?? false;;
                         return GestureDetector(
                           onTap: () {
-                            setState(() {
-                              schedules[idx]['done'] = !isDone;
+                            provider.check(plan?.id ?? 0).then((_) {
+                              if (provider.isCheck.uiState == UIState.COMPLETED) {
+                                AppLogger.d('✅ checkingPlan: ${provider.isCheck.data?.id}');
+                              } else {
+                                AppLogger.d('⚠️ data is null or wrong type');
+                              }
                             });
                           },
                           child: Container(
-                            margin: const EdgeInsets.only(
-                                left: 16, right: 16, bottom: 12),
+                            margin: const EdgeInsets.only(left: 16, right: 16, bottom: 12),
                             decoration: BoxDecoration(
-                              color: isDone
-                                  ? const Color(0xffe9f3ff)
-                                  : Color(0xffffffff),
+                              color: isChecked ? const Color(0xffe9f3ff) : Colors.white,
                               border: Border.all(
-                                  color: isDone
-                                      ? const Color(0xff4A9BF6)
-                                      : const Color(0xffD9D9D9),
-                                  width: 1),
+                                color: isChecked ? const Color(0xff4A9BF6) : const Color(0xffD9D9D9),
+                                width: 1,
+                              ),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Row(
                               children: [
                                 Container(
-                                  margin: const EdgeInsets.only(
-                                      left: 16, right: 12),
+                                  margin: const EdgeInsets.only(left: 16, right: 12),
                                   child: Icon(
                                     Icons.check_box,
-                                    color: isDone
-                                        ? const Color(0xff4A9BF6)
-                                        : const Color(0xffD9D9D9),
+                                    color: isChecked ? const Color(0xff4A9BF6) : const Color(0xffD9D9D9),
                                     size: 28,
                                   ),
                                 ),
                                 Expanded(
                                   child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 16),
+                                    padding: const EdgeInsets.symmetric(vertical: 16),
                                     child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Text(s['title'],
-                                            style: TextStyle(
-                                                fontFamily: 'Pretendard',
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 18,
-                                                color: Color(0xFF070707))),
+                                        Text(
+                                          plan?.title ?? '',
+                                          style: const TextStyle(
+                                            fontFamily: 'Pretendard',
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 18,
+                                            color: Color(0xFF070707),
+                                          ),
+                                        ),
                                         const SizedBox(height: 4),
-                                        Text(s['subtitle'],
-                                            style: const TextStyle(
-                                                fontFamily: 'Pretendard',
-                                                fontWeight: FontWeight.w400,
-                                                fontSize: 14,
-                                                color: Color(0xFF070707))),
+                                        Text(
+                                          plan?.date ?? '',
+                                          style: const TextStyle(
+                                            fontFamily: 'Pretendard',
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 14,
+                                            color: Color(0xFF070707),
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -254,9 +299,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
             right: 24,
             bottom: MediaQuery.of(context).padding.bottom + 30,
             child: GestureDetector(
-              onTap: () {
-                context.push(RoutePath.schedule_write.value);
-              },
+              onTap: () => context.push(RoutePath.schedule_write.value),
               child: Container(
                 width: 55,
                 height: 55,
@@ -265,18 +308,14 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.1),
+                      color: Colors.black.withOpacity(0.1),
                       blurRadius: 8,
                       offset: const Offset(0, 4),
                     ),
                   ],
                 ),
                 child: const Center(
-                  child: Icon(
-                    Icons.add,
-                    size: 30,
-                    color: Color(0xffffffff),
-                  ),
+                  child: Icon(Icons.add, size: 30, color: Colors.white),
                 ),
               ),
             ),

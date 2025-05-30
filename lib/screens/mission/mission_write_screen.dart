@@ -13,10 +13,10 @@ class MissionWriteScreen extends StatefulWidget {
   const MissionWriteScreen({super.key});
 
   @override
-  State<MissionWriteScreen> createState() => _MissionWriteScreenState();
+  State<MissionWriteScreen> createState() => MissionWriteScreenState();
 }
 
-class _MissionWriteScreenState extends State<MissionWriteScreen> {
+class MissionWriteScreenState extends State<MissionWriteScreen> {
   final TextEditingController _textController = TextEditingController();
 
   // ImageAttachingSection의 상태에 접근하기 위한 GlobalKey

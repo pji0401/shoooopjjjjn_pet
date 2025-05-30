@@ -10,23 +10,52 @@ class UserProvider with ChangeNotifier {
 
   UserProvider(this._repository);
 
+  ApiResponse<IdResponse> memberId = ApiResponse.loading();
   ApiResponse<IdResponse> id = ApiResponse.loading();
-  ApiResponse<IdResponse> userId = ApiResponse.loading();
 
-  final File _image = File("");
+  late File _image = File("");
+  String _selectedDateString = "생년월일 입력";
+
+  File get image => _image;
+  String get selectedDateString => _selectedDateString;
+
+  String userId = "";
+  String password = "";
+  String name = "";
+  String statusNote = "";
+  String petName = "";
+  String pbirthday = "";
+  String pgender = "";
+
+  void addImage(File imageFile) {
+    _image = imageFile;
+    notifyListeners();
+  }
+
+  void selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+    if (picked != null) {
+        _selectedDateString = "${picked.year}.${picked.month.toString().padLeft(2, '0')}.${picked.day.toString().padLeft(2, '0')}";
+    }
+  }
 
   Future<void> register({
     required RegisterRequest request,
   }) async {
-    userId = ApiResponse.loading();
+    memberId = ApiResponse.loading();
     notifyListeners();
     await _repository.register(
       requestBody: request,
       imageFile: _image,
     ).then((response) {
-      userId = ApiResponse.completed(response.result);
+      memberId = ApiResponse.completed(response.result);
     }).onError((error, stackTrace) {
-      userId = ApiResponse.error(error.toString());
+      memberId = ApiResponse.error(error.toString());
     }).whenComplete(() {
       notifyListeners();
     });
