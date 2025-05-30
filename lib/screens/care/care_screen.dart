@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pawprints/core/network/index.dart';
 import 'package:pawprints/widgets/index.dart';
 import './store_tab.dart';
+import './funeral_tab.dart';
 
 class CareScreen extends StatefulWidget {
   const CareScreen({super.key});
@@ -79,13 +80,3 @@ class GoodsTabBody extends StatelessWidget {
   }
 }
 
-class FuneralTabBody extends StatelessWidget {
-  const FuneralTabBody({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text('장례식 탭 내용'),
-    );
-  }
-}
