@@ -28,7 +28,7 @@ export 'community/community_profile_screen.dart';
 
 // Care
 export 'care/care_screen.dart';
-export 'care/care_detail_screen.dart';
+// export 'care/care_detail_screen.dart';
 
 // Etc
 export 'schedule/schedule_screen.dart';

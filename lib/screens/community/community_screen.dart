@@ -9,7 +9,6 @@ import 'package:pawprints/screens/community/qna_tab.dart';
 import 'package:pawprints/core/network/index.dart';
 import 'package:pawprints/config/index.dart';
 import 'package:pawprints/viewmodels/index.dart';
-import 'package:pawprints/utils/index.dart';
 
 class CommunityScreen extends StatefulWidget {
   const CommunityScreen({super.key});
