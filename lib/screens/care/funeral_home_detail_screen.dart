@@ -77,7 +77,7 @@ class _FuneralHomeDetailScreenState extends State<FuneralHomeDetailScreen>
         slivers: [
           SliverAppBar(
             expandedHeight: 300,
-            floating: false,
+            floating: true,
             pinned: true, 
             backgroundColor: Colors.transparent,
             elevation: 0,
