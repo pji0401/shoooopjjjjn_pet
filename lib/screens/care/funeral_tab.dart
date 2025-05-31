@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:pawprints/screens/care/funeral_home_detail_screen.dart';
 
 class AppColors {
-  static const Color main = Color(0xff4A9BF6); 
-  static const Color iconBlueBackground = Color(0xFFEBF4FF); 
-  static const Color lightGrey = Color(0xFFF5F5F5); 
-  static const Color darkGrey = Color(0xFF757575); 
+  static const Color main = Color(0xff4A9BF6);
+  static const Color iconBlueBackground = Color(0xFFEBF4FF);
+  static const Color lightGrey = Color(0xFFF5F5F5);
+  static const Color darkGrey = Color(0xFF757575);
   static const Color cardBorder = Color(0xFFEEEEEE);
 }
 
@@ -21,13 +22,13 @@ class FuneralTabBody extends StatelessWidget {
         'location': '경기 안산시 단원구 원시동',
         'hours': '매일 09:00 - 22:00',
       },
-      {
-        'image': 'https://plus.unsplash.com/premium_photo-1682130157004-057c137d96d5?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        'name': '펫콤',
-        'distance': '5km',
-        'location': '경기 안산시 단원구 목내동',
-        'hours': '매일 24시간',
-      },
+      // {
+      //   'image': 'https://plus.unsplash.com/premium_photo-1682130157004-057c137d96d5?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      //   'name': '펫콤',
+      //   'distance': '5km',
+      //   'location': '경기 안산시 단원구 목내동',
+      //   'hours': '매일 24시간',
+      // },
     ];
 
     return SingleChildScrollView(
@@ -105,7 +106,6 @@ class FuneralTabBody extends StatelessWidget {
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {
-              print('장례 가이드 보러가기 클릭');
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.main,
@@ -151,8 +151,6 @@ class FuneralTabBody extends StatelessWidget {
           fillColor: Colors.white,
         ),
         onSubmitted: (value) {
-          // AppLogger.d('Search submitted: $value');
-          print('Search submitted: $value');
         },
       ),
     );
@@ -181,10 +179,16 @@ class FuneralTabBody extends StatelessWidget {
     required String distance,
     required String location,
     required String hours,
+    // Map<String, String> funeralHomeData, // REMOVED
   }) {
     return GestureDetector(
       onTap: () {
-        print('Tapped on funeral home: $name');
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const FuneralHomeDetailScreen(), 
+          ),
+        );
       },
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 0), 
@@ -258,7 +262,7 @@ class FuneralTabBody extends StatelessWidget {
                         context,
                         icon: Icons.call,
                         onPressed: () {
-                          print('Call $name');
+                          // print('Call $name');
                         },
                       ),
                       const SizedBox(width: 10),
@@ -266,7 +270,7 @@ class FuneralTabBody extends StatelessWidget {
                         context,
                         icon: Icons.favorite_border,
                         onPressed: () {
-                          print('Favorite $name');
+                          // print('Favorite $name');
                         },
                       ),
                     ],
