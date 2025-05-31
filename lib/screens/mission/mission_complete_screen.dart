@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:pawprints/config/index.dart';
 import 'package:pawprints/widgets/index.dart'; 
 import 'package:pawprints/viewmodels/index.dart';
+import 'package:pawprints/utils/index.dart';
+import 'package:pawprints/data/models/index.dart';
+import 'package:pawprints/core/network/index.dart';
 
 class MemoryItem {
   final String imageUrl;
@@ -13,7 +16,6 @@ class MemoryItem {
 
 class MissionCompleteScreen extends StatefulWidget {
   final int memoryId;
-  final String pet = '봄이'; // FIXME: (nick)name
 
   const MissionCompleteScreen({Key? key, required this.memoryId}) : super(key: key);
 
@@ -22,11 +24,13 @@ class MissionCompleteScreen extends StatefulWidget {
 }
 
 class _MissionCompleteScreenState extends State<MissionCompleteScreen> {
+  bool isFavorite = false;
+
   @override
   void initState() {
     super.initState();
-    Provider.of<MemoryProvider>(context, listen: false).getMemory(widget.memoryId);
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<MemoryProvider>(context, listen: false).getMemory(widget.memoryId);
       if (mounted) { 
         _showMissionCompletionModal;
       }
@@ -54,14 +58,18 @@ class _MissionCompleteScreenState extends State<MissionCompleteScreen> {
                     delegate: SliverChildListDelegate(
                       [
                         const SizedBox(height: 8),
-                        Text(
-                          '${widget.pet}와 함께 쌓은',
-                          style: const TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.w600,
-                            color: primaryTextColor,
-                            fontFamily: 'Pretendard',
-                          ),
+                        Consumer<HomeProvider>(
+                            builder: (context, provider, child) {
+                              return Text(
+                                '${provider.title.data?.pname ?? ""}와 함께 쌓은',
+                                style: const TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w600,
+                                  color: primaryTextColor,
+                                  fontFamily: 'Pretendard',
+                                ),
+                              );
+                            }
                         ),
                         RichText(
                           text: TextSpan(
@@ -201,12 +209,14 @@ class _MissionCompleteScreenState extends State<MissionCompleteScreen> {
                 right: 12,
                 child: Row( 
                   children: [
-                    _buildOverlayIconButton(Icons.ios_share, () {
-                      // logic
+                    _buildOverlayIconButton(Icons.ios_share, Colors.white, () {
+                      _showCommunityShareModal();
                     }),
                     const SizedBox(width: 8),
-                    _buildOverlayIconButton(Icons.favorite_border, () {
-                      // logic
+                    _buildOverlayIconButton(isFavorite ? Icons.favorite : Icons.favorite_border, isFavorite ? Colors.red : Colors.white, () {
+                      setState(() {
+                        isFavorite = !isFavorite;
+                      });
                     }),
                   ],
                 ),
@@ -218,16 +228,16 @@ class _MissionCompleteScreenState extends State<MissionCompleteScreen> {
     );
   }
 
-  Widget _buildOverlayIconButton(IconData icon, VoidCallback onPressed) {
+  Widget _buildOverlayIconButton(IconData icon, Color iconColor, VoidCallback onPressed) {
     return GestureDetector(
       onTap: onPressed,
       child: Container(
         padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration( 
+        decoration: BoxDecoration(
           color: Colors.white.withValues(alpha: 0.3),
           shape: BoxShape.circle,
         ),
-        child: Icon(icon, color: Colors.white, size: 22), 
+        child: Icon(icon, color: iconColor, size: 22),
       ),
     );
   }
@@ -296,6 +306,171 @@ class _MissionCompleteScreenState extends State<MissionCompleteScreen> {
               borderRadius: BorderRadius.circular(8),
             ),
 
+          ),
+          child: const Text(
+            '확인',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Color(0xffffffff),
+              fontSize: 17,
+              fontFamily: 'Pretendard',
+              fontWeight: FontWeight.w500,
+              height: 20 / 17,
+              letterSpacing: 0,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _showCommunityShareModal() {
+    ModalSheet.showModalSheetView(
+      context: context,
+      height: 300,
+      children: [
+        const Padding(
+          padding: EdgeInsets.only(top: 6.0, bottom: 6.0),
+          child: Text(
+            '커뮤니에 게시글 공유',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+              color: AppColors.black,
+              fontFamily: 'Pretendard',
+            ),
+          ),
+        ),
+        const SizedBox(height: 30),
+        const Padding(
+          padding: EdgeInsets.only(top: 4.0, bottom: 29.0),
+          child: Text(
+            '커뮤니티에 공유된 게시글은 커뮤니티 유저 모두가 볼 수 있습니다. 게시물을 공유하시겠습니까?',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 16,
+              color: AppColors.black,
+              fontFamily: 'Pretendard',
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+        ),
+        const SizedBox(height: 30),
+        Row(
+          children: [
+            Expanded(
+              child: ElevatedButton(
+                onPressed: () {
+                  context.pop();
+                },
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(double.infinity, 50),
+                  backgroundColor: const Color(0xFFB0B0B0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                child: const Text(
+                  '취소',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 17,
+                    fontFamily: 'Pretendard',
+                    fontWeight: FontWeight.w500,
+                    height: 20 / 17,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 16),
+            Consumer3<MissionProvider, MemoryProvider, CommunityProvider>(
+                builder: (context, missionProvider, memoryProvider, communityProvider, child) {
+                  return Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        // share memory(completedMission) to community
+                        communityProvider.createContent(
+                            request: ContentCreateRequest(
+                                memberId: SharedPreferencesHelper().memberId,
+                                body: memoryProvider.memory.data?.body ?? ""
+                            ),
+                            imageFiles: (missionProvider.images) // FIXME: multipart 요청 시 networkImage 말고, 직접 첨부해야 함
+                        ).then((_) {
+                          if (communityProvider.contentId.uiState == UIState.COMPLETED) {
+                            AppLogger.d("✅ createContent: ${communityProvider.contentId.data?.id}");
+                            _showPostModal();
+                          } else {
+                            AppLogger.d("⚠️ data is null or wrong type");
+                          }
+                        });
+                      },
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(double.infinity, 50),
+                        backgroundColor: const Color(0xFF3A8DFF),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                      ),
+                      child: const Text(
+                        '확인',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 17,
+                          fontFamily: 'Pretendard',
+                          fontWeight: FontWeight.w500,
+                          height: 20 / 17,
+                        ),
+                      ),
+                    ),
+                  );
+                }
+            )
+          ],
+        ),
+      ],
+    );
+  }
+
+  void _showPostModal() {
+    ModalSheet.showModalSheetView(
+      context: context,
+      children: [
+        const Text(
+          '커뮤니티에 등록되었어요.',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 22,
+            fontFamily: 'Pretendard',
+            fontWeight: FontWeight.w800,
+            height: 20 / 17,
+            letterSpacing: 0,
+          ),
+        ),
+        const SizedBox(height: 20),
+        Image.asset(
+          'assets/datas/post.png',
+          width: 184,
+          height: 170,
+          errorBuilder: (context, error, stackTrace) {
+            return const SizedBox(
+              width: 184,
+              height: 170,
+              child: Center(
+                  child: Text('이미지 로드 실패', style: TextStyle(fontSize: 12))),
+            );
+          },
+        ),
+        const SizedBox(height: 30),
+        ElevatedButton(
+          onPressed: () {
+            context.pop();
+          },
+          style: ElevatedButton.styleFrom(
+            minimumSize: const Size(double.infinity, 50),
+            backgroundColor: const Color(0xFF3A8DFF),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
           ),
           child: const Text(
             '확인',

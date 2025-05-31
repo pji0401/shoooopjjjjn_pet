@@ -214,7 +214,7 @@ class _ArticleItemState extends State<ArticleItem> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
                   image: DecorationImage(
-                    image: NetworkImage(article.contentImageUrls[index]), // FIXME: Image.network
+                    image: NetworkImage(article.contentImageUrls[index]), // FIXME: NetworkImage 화질 문제 - Image.network or .png 문제인지 확인 필요
                     fit: BoxFit.cover,
                   ),
                 ),

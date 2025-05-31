@@ -11,7 +11,7 @@ class PlanRepository {
     required PlanListRequest requestBody
   }) async {
     final request = PlanEndpoint.getPlanList(requestBody: requestBody.toJson());
-    return _dioClient.get<PlanListResponse>(
+    return _dioClient.post<PlanListResponse>(
       request: request,
       fromJson: (json) => PlanListResponse.fromJson(json as Map<String, dynamic>),
     );

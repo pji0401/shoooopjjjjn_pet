@@ -219,4 +219,25 @@ extension DioClientMultipart on DioClient {
       return _handleDioError<T>(e, fromJson);
     }
   }
+
+  Future<BaseResponse<T>> uploadFile<T>({
+    required ApiRequest request,
+    required T Function(dynamic json) fromJson,
+  }) async {
+    try {
+      await _ensureInternet();
+      final formData = FormData.fromMap(request.formData!);
+      final response = await _dio.post(
+        request.fullPath,
+        data: formData,
+        options: Options(
+          contentType: 'multipart/form-data',
+        ),
+      );
+
+      return _handleBaseResponse<T>(response, fromJson);
+    } on DioException catch (e) {
+      return _handleDioError<T>(e, fromJson);
+    }
+  }
 }

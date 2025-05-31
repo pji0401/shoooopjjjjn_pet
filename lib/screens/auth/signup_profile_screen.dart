@@ -123,7 +123,7 @@ class SignUpProfileScreenState extends State<SignUpProfileScreen> {
                           ),
                           child: Center(
                             child: ClipOval(child: Image.file(
-                                    provider.image,
+                                    provider.image ?? File(""),
                                     width: 90,
                                     height: 90,
                                     fit: BoxFit.cover,

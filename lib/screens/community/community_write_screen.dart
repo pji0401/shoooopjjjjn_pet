@@ -50,12 +50,9 @@ class _WritePostScreenState extends State<WritePostScreen> {
               key: _imageSectionKey, // GlobalKey 할당
             ),
           ),
-
-          const SizedBox(height: 16.0),
-
-          // 게시물 내용 작성 영역
+          const SizedBox(height: 12),
           SizedBox(
-            height: 220,
+            height: 100,
             child: TextField(
               controller: _contentController,
               decoration: InputDecoration(
@@ -69,10 +66,11 @@ class _WritePostScreenState extends State<WritePostScreen> {
               keyboardType: TextInputType.multiline,
             ),
           ),
+          const SizedBox(height: 20),
           getSectionDivider(),
+          const SizedBox(height: 24),
           InkWell(
             onTap: () {
-              // 위치 정보 수정 화면으로 이동
               AppLogger.d('위치 정보 수정 클릭');
             },
             child: Padding(
@@ -89,8 +87,8 @@ class _WritePostScreenState extends State<WritePostScreen> {
                     child: Text(
                       '안산 호수공원',
                       style: TextStyle(
-                        fontSize: 18, // 글자 크기 증가
-                        fontWeight: FontWeight.w600, // 세미볼드로 변경
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
                       ),
                       textAlign: TextAlign.left,
                     ),
@@ -104,34 +102,24 @@ class _WritePostScreenState extends State<WritePostScreen> {
               ),
             ),
           ),
-
-          Spacer(),
-
-          // 업로드하기 버튼 영역
+          Spacer(), // const SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: CustomElevatedButton(
               text: '업로드하기',
               onPressed: () {
-                if (!_contentController.text.isEmpty &&
-                    !(provider.imageItemCount == 0)) {
-                  provider
-                      .createContent(
-                          request: ContentCreateRequest(
-                              memberId:
-                                  SharedPreferencesHelper().memberId,
-                              body: _contentController.text))
-                      .then((_) {
+                if (!_contentController.text.isEmpty && !(provider.imageItemCount == 0)) {
+                  provider.createContent(request: ContentCreateRequest(memberId: SharedPreferencesHelper().memberId, body: _contentController.text), imageFiles: null).then((_) {
                     if (provider.contentId.uiState == UIState.COMPLETED) {
-                      AppLogger.d(
-                          "✅ createContent: ${provider.contentId.data?.id}");
+                      AppLogger.d("✅ createContent: ${provider.contentId.data?.id}");
+                      // FIXME: 모달 시트 자동 pop
                       _showPostModal();
                     } else {
                       AppLogger.d("⚠️ data is null or wrong type");
                     }
                   });
                 }
-              }, // 기존 버튼의 배경색 적용
+              },
             ),
           ),
           const SizedBox(height: 24.0),

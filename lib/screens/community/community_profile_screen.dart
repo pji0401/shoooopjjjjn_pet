@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:pawprints/utils/index.dart';
 import 'package:pawprints/viewmodels/index.dart';
 import 'package:pawprints/widgets/index.dart';
 
 class CommunityProfileScreen extends StatefulWidget {
-  final int memberId;
-
-  const CommunityProfileScreen({Key? key, required this.memberId}) : super(key: key);
+  const CommunityProfileScreen({super.key});
 
   @override
   CommunityProfileScreenState createState() => CommunityProfileScreenState();
@@ -52,8 +51,7 @@ class CommunityProfileScreenState extends State<CommunityProfileScreen> {
       ),
     ];
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Provider.of<CommunityProvider>(context, listen: false).getMemberContent(
-          widget.memberId);
+      Provider.of<CommunityProvider>(context, listen: false).getMemberContent(SharedPreferencesHelper().memberId);
     });
   }
 
@@ -166,7 +164,7 @@ class CommunityProfileScreenState extends State<CommunityProfileScreen> {
     return Container(
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: NetworkImage(imageUrl), // FIXME: Image.network
+          image: NetworkImage(imageUrl), // FIXME: NetworkImage 화질 문제 - Image.network or .png 문제인지 확인 필요
           fit: BoxFit.cover,
         ),
       ),

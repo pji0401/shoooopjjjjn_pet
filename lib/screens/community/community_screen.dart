@@ -64,7 +64,7 @@ class CommunityScreenState extends State<CommunityScreen> {
                   BlendMode.srcIn), // 아이콘 색상 적용
             ), // 또는 Icons.person_outline
             onPressed: () {
-              context.push(RoutePath.community_profile.value, extra: SharedPreferencesHelper().memberId);
+              context.push(RoutePath.community_profile.value);
             },
           ),
         ],

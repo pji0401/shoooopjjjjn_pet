@@ -228,7 +228,6 @@ class _TodayMissionSection extends StatelessWidget {
   final Widget Function(bool isCompleted) buildPawDayStatus;
 
   const _TodayMissionSection({
-    super.key,
     required this.missionProvider,
     required this.buildPawDayStatus,
   });
@@ -262,8 +261,7 @@ class _TodayMissionSection extends StatelessWidget {
                     HomeSectionHeader('오늘의 미션'),
                     InkWell(
                         onTap: () {
-                          context.push(RoutePath.mission.value,
-                              extra: missionProvider.mission.data?.id);
+                          context.push(RoutePath.mission.value, extra: missionProvider.mission.data?.id);
                         },
                         child: Row(children: const [
                           Text('미션 수행하기',
@@ -407,7 +405,6 @@ class _TodayMissionSection extends StatelessWidget {
 }
 
 class _MissionFeedSection extends StatelessWidget {
-  const _MissionFeedSection({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -461,15 +458,16 @@ class _MissionFeedSection extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 25, right: 10),
                 child: Row(
                   children: List.generate(length, (index) {
-                    return Row(
+                    return memory.length < 0
+                        ? Row(
                       children: [
                         MissionCard(
                           imagePath: memory[index].media,
                           title: memory[index].body,
                         ),
-                        if (index != length - 1) const SizedBox(width: 12),
                       ],
-                    );
+                    )
+                        : const SizedBox(); // FIXME: Skeleton View/Frame
                   }),
                 ),
               ),
@@ -500,13 +498,14 @@ class MissionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: Skeleton View/Frame
     return Container(
       width: 138,
       height: 120,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         image: DecorationImage(
-          image: AssetImage(imagePath),
+          image: imagePath.startsWith('http') ? NetworkImage(imagePath) : AssetImage(imagePath) as ImageProvider, // FIXME: NetworkImage 화질 문제 - Image.network or .png 문제인지 확인 필요
           fit: BoxFit.cover,
         ),
       ),

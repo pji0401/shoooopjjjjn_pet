@@ -38,12 +38,14 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   }
 
   void fetchPlansForSelectedDate(DateTime selectedDate) {
-    Provider.of<PlanProvider>(context, listen: false).getPlanList(
-      request: PlanListRequest(
-        memberId: SharedPreferencesHelper().memberId,
-        date: DateFormat('yyyy-MM-dd').format(selectedDate),
-      ),
-    );
+    final provider = Provider.of<PlanProvider>(context, listen: false);
+    provider.getPlanList(request: PlanListRequest(memberId: SharedPreferencesHelper().memberId, date: DateFormat('yyyy-MM-dd').format(selectedDate))).then((_) {
+      if (provider.planList.uiState == UIState.COMPLETED) {
+        AppLogger.d('✅ fetchPlanList: ${provider.planList.data?.plans.toString()}');
+      } else {
+        AppLogger.d('⚠️ data is null or wrong type');
+      }
+    });
   }
 
   @override
@@ -130,10 +132,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                         setState(() {
                           currentPage = index;
                           selectedDayIndex = 0;
-                          fetchPlansForSelectedDate(
-                            generateWeek(baseDate.add(Duration(
-                                days: index * 7)))[0]['fullDate'] as DateTime,
-                          );
+                          fetchPlansForSelectedDate(generateWeek(baseDate.add(Duration(days: index * 7)))[0]['fullDate'] as DateTime,);
                         });
                       },
                       itemCount: totalPages,
@@ -163,7 +162,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                                   currentPage = index;
                                   selectedDayIndex = dayIndex;
                                 });
-                                fetchPlansForSelectedDate(day['fullDate'] as DateTime);
+                                fetchPlansForSelectedDate(generateWeek(baseDate.add(Duration(days: index * 7)))[selectedDayIndex]['fullDate'] as DateTime,);
                               },
                               child: Container(
                                 width: 43,
@@ -223,11 +222,9 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                       ),
                       const SizedBox(height: 16),
                       ...List.generate(provider.planList.data?.plans.length ?? 0, (idx) {
-                        final plan = provider.planList.data?.plans[idx];
-                        final isChecked = plan?.isChecked ?? false;;
                         return GestureDetector(
                           onTap: () {
-                            provider.check(plan?.id ?? 0).then((_) {
+                            provider.check(provider.planList.data?.plans[idx].id ?? 0).then((_) {
                               if (provider.isCheck.uiState == UIState.COMPLETED) {
                                 AppLogger.d('✅ checkingPlan: ${provider.isCheck.data?.id}');
                               } else {
@@ -238,9 +235,9 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                           child: Container(
                             margin: const EdgeInsets.only(left: 16, right: 16, bottom: 12),
                             decoration: BoxDecoration(
-                              color: isChecked ? const Color(0xffe9f3ff) : Colors.white,
+                              color: provider.planList.data?.plans[idx].isChecked ?? false ? const Color(0xffe9f3ff) : Colors.white,
                               border: Border.all(
-                                color: isChecked ? const Color(0xff4A9BF6) : const Color(0xffD9D9D9),
+                                color: provider.planList.data?.plans[idx].isChecked ?? false ? const Color(0xff4A9BF6) : const Color(0xffD9D9D9),
                                 width: 1,
                               ),
                               borderRadius: BorderRadius.circular(12),
@@ -251,7 +248,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                                   margin: const EdgeInsets.only(left: 16, right: 12),
                                   child: Icon(
                                     Icons.check_box,
-                                    color: isChecked ? const Color(0xff4A9BF6) : const Color(0xffD9D9D9),
+                                    color: provider.planList.data?.plans[idx].isChecked ?? false ? const Color(0xff4A9BF6) : const Color(0xffD9D9D9),
                                     size: 28,
                                   ),
                                 ),
@@ -262,7 +259,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          plan?.title ?? '',
+                                          provider.planList.data?.plans[idx].title ?? '',
                                           style: const TextStyle(
                                             fontFamily: 'Pretendard',
                                             fontWeight: FontWeight.w600,
@@ -272,7 +269,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                                         ),
                                         const SizedBox(height: 4),
                                         Text(
-                                          plan?.date ?? '',
+                                          provider.planList.data?.plans[idx].date ?? '',
                                           style: const TextStyle(
                                             fontFamily: 'Pretendard',
                                             fontWeight: FontWeight.w400,

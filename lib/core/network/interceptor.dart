@@ -4,7 +4,7 @@ import 'package:pawprints/core/network/index.dart';
 class LoggerInterceptor extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    AppLogger.logger.i('REQUEST[${options.method}] => PATH: ${options.path}');
+    AppLogger.logger.i('REQUEST[${options.data}] => PATH: ${options.path}');
     return super.onRequest(options, handler); // handler.next(options);
   }
 
@@ -17,9 +17,6 @@ class LoggerInterceptor extends Interceptor {
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
     AppLogger.logger.e('ERROR[${err.requestOptions.method}] => PATH: ${err.requestOptions.path}');
-    AppLogger.logger.d('ERROR TYPE: ${err.error} \n '
-        'ERROR MESSAGE: ${err.message} \n'
-        'ERROR STATUSCODE: ${err.response?.statusCode} \n');
     return super.onError(err, handler); // handler.next(err);
   }
 }

@@ -45,7 +45,7 @@ class MissionWriteScreenState extends State<MissionWriteScreen> {
       // ----- BODY -----
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -53,9 +53,7 @@ class MissionWriteScreenState extends State<MissionWriteScreen> {
               ImageAttachingSection<MissionProvider>(
                 key: _imageSectionKey,
               ),
-
-              const SizedBox(height: 24),
-
+              const SizedBox(height: 12),
               // ----- CurrentDate Section -----
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
@@ -74,12 +72,10 @@ class MissionWriteScreenState extends State<MissionWriteScreen> {
                   ],
                 ),
               ),
-
-              const SizedBox(height: 20),
-
+              const SizedBox(height: 12),
               // Text Input Section
               Container(
-                height: 250, 
+                height: 200,
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 decoration: BoxDecoration(
                   color: AppColors.lightGrey, 
@@ -97,26 +93,33 @@ class MissionWriteScreenState extends State<MissionWriteScreen> {
                   ),
                 ),
               ),
-
-              const Spacer(), 
-
+              const SizedBox(height: 20), // const Spacer(),
               // Submit Button
-              CustomElevatedButton(
-                text: '인증하기',
-                onPressed: () {
-                  if (!_textController.text.isEmpty && !(provider.imageItemCount == 0)) {
-                    provider.completeMission(request: MissionCompleteRequest(missionId: provider.mission.data?.id ?? 1, memberId: SharedPreferencesHelper().memberId, body: "success", date: "2025-05-22")).then((_) {
-                      if (provider.compeltedMissionId.uiState == UIState.COMPLETED) {
-                        AppLogger.d("✅ missionComplete: ${provider.compeltedMissionId.data?.id}");
-                        context.go(RoutePath.mission_complete.value, extra: provider.compeltedMissionId.data?.id);
-                      } else {
-                        AppLogger.d("⚠️ data is null or wrong type");
-                      }
-                    });
+              Consumer<HomeProvider>(
+                  builder: (context, homeProvider, child) {
+                    return CustomElevatedButton(
+                      text: '인증하기',
+                      onPressed: () {
+                        if (!_textController.text.isEmpty &&
+                            !(provider.imageItemCount == 0)) {
+                          provider.completeMission(request: MissionCompleteRequest(
+                              missionId: homeProvider.mission.data?.id ?? 1,
+                              memberId: SharedPreferencesHelper().memberId,
+                              body: _textController.text,
+                              date: getCurrentDateForRequest())).then((_) {
+                            if (provider.compeltedMissionId.uiState == UIState.COMPLETED) {
+                              AppLogger.d("✅ missionComplete: ${provider.compeltedMissionId.data?.id}");
+                              context.go(RoutePath.mission_complete.value, extra: provider.compeltedMissionId.data?.id);
+                            } else {
+                              AppLogger.d("⚠️ data is null or wrong type");
+                            }
+                          });
+                        }
+                      },
+                      backgroundColor: const Color(0xFF4A80F0),
+                      height: 56,
+                    );
                   }
-                },
-                backgroundColor: const Color(0xFF4A80F0), 
-                height: 56,
               ),
             ],
           ),

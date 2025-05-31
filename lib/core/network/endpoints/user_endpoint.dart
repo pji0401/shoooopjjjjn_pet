@@ -5,7 +5,7 @@ class UserEndpoint {
   static const String _userPath = '${Constants.baseUrl}/members';
 
   static ApiRequest register({
-    required Map<String, dynamic> requestBody,
+    Map<String, dynamic>? requestBody,
     Map<String, dynamic>? formData,
   }) =>
       ApiRequest(

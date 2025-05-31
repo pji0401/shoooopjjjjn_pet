@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:convert';
 import 'package:http_parser/http_parser.dart';
 import 'package:pawprints/core/network/index.dart';
 import 'package:pawprints/data/models/index.dart';
@@ -10,17 +11,24 @@ class UserRepository {
 
   Future<BaseResponse<IdResponse>> register({
     required RegisterRequest requestBody,
-    required File imageFile,
+    required File? imageFile,
   }) async {
-    final multipartFile = await MultipartFile.fromFile(
-      imageFile.path,
-      filename: imageFile.path.split('/').last,
-      contentType: MediaType('image', 'png'),
-    );
+    final formDataMap = <String, dynamic>{
+      'joinDto': jsonEncode(requestBody.toJson()),
+    };
+
+    if (imageFile != null) {
+      final multipartFile = await MultipartFile.fromFile(
+        imageFile.path,
+        filename: imageFile.path.split('/').last,
+        contentType: MediaType('image', 'png'),
+      );
+      formDataMap['profileImage'] = multipartFile;
+    }
 
     final request = UserEndpoint.register(
-      requestBody: requestBody.toJson(),
-      formData: {'profileImage': multipartFile},
+      requestBody: null,
+      formData: formDataMap,
     );
 
     return _dioClient.uploadFiles<IdResponse>(

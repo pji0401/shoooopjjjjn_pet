@@ -16,7 +16,7 @@ class PlanEndpoint {
     required Map<String, dynamic> requestBody,
   }) =>
       ApiRequest(
-        path: '$_planPath',
+        path: '$_planPath/list',
         body: requestBody,
       );
 

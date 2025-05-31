@@ -13,10 +13,10 @@ class UserProvider with ChangeNotifier {
   ApiResponse<IdResponse> memberId = ApiResponse.loading();
   ApiResponse<IdResponse> id = ApiResponse.loading();
 
-  late File _image = File("");
+  late File? _image = null;
   String _selectedDateString = "생년월일 입력";
 
-  File get image => _image;
+  File? get image => _image;
   String get selectedDateString => _selectedDateString;
 
   String userId = "";
@@ -24,8 +24,7 @@ class UserProvider with ChangeNotifier {
   String name = "";
   String statusNote = "";
   String petName = "";
-  String pbirthday = "";
-  String pgender = "";
+  String petGender = "";
 
   void addImage(File imageFile) {
     _image = imageFile;
@@ -40,7 +39,8 @@ class UserProvider with ChangeNotifier {
       lastDate: DateTime(2101),
     );
     if (picked != null) {
-        _selectedDateString = "${picked.year}.${picked.month.toString().padLeft(2, '0')}.${picked.day.toString().padLeft(2, '0')}";
+        _selectedDateString = "${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";
+        print("_selectedDateString: ${_selectedDateString}");
     }
   }
 

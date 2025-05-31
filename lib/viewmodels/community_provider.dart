@@ -41,12 +41,13 @@ class CommunityProvider with ChangeNotifier implements ImageAttachProvider {
 
   Future<void> createContent({
     required ContentCreateRequest request,
+    List<File>? imageFiles,
   }) async {
     contentId = ApiResponse.loading();
     notifyListeners();
     await _repository.createContent(
       requestBody: request,
-      imageFiles: _imageItems,
+      imageFiles: (imageFiles != null) ? imageFiles : _imageItems,
     ).then((response) {
       contentId = ApiResponse.completed(response.result);
     }).onError((error, stackTrace) {

@@ -169,10 +169,10 @@ class SignUpPetScreenState extends State<SignUpPetScreen> {
             ),
             const SizedBox(height: 8),
             GenderPicker(
-              selectedGender: provider.pgender,
+              selectedGender: provider.petGender,
               onGenderSelected: (gender) {
                 setState(() {
-                  provider.pgender = gender;
+                  provider.petGender = gender;
                 });
               },
             ),
@@ -194,13 +194,20 @@ class SignUpPetScreenState extends State<SignUpPetScreen> {
               height: 52,
               child: ElevatedButton(
                 onPressed: () {
-                  if (_nameController.text.isNotEmpty && provider.pgender.isNotEmpty) {
-                    final provider = Provider.of<UserProvider>(context, listen: false);
+                  if (_nameController.text.isNotEmpty && provider.petGender.isNotEmpty) {
                     provider.petName = _nameController.text;
-                    provider.register(request: RegisterRequest(userId: provider.userId, password: provider.password, name: provider.name, statusNote: provider.statusNote, petName: provider.petName, pbirthday: provider.pbirthday, pgender: provider.pgender)).then((_) {
+                    provider.register(request: RegisterRequest(userId: provider.userId, password: provider.password, name: provider.name, statusNote: provider.statusNote, petName: provider.petName, petBirthday: provider.selectedDateString, petGender: provider.petGender)).then((_) {
                       if (provider.memberId.uiState == UIState.COMPLETED) {
                         AppLogger.d('✅ register: ${provider.memberId.data?.id}');
-                        context.push(RoutePath.signup_welcome.value);
+                        provider.login(request: LoginRequest(userId: provider.userId, password: provider.password)).then((_) {
+                          if (provider.id.uiState == UIState.COMPLETED) {
+                            AppLogger.d('✅ login: ${provider.memberId.data?.id}');
+                            SharedPreferencesHelper().setMemberId(provider.id.data!.id);
+                            context.push(RoutePath.signup_welcome.value);
+                          } else {
+                            AppLogger.d('⚠️ data is null or wrong type');
+                          }
+                        });
                       } else {
                         AppLogger.d('⚠️ data is null or wrong type');
                       }

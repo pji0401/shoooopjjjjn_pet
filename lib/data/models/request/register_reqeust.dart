@@ -4,8 +4,8 @@ class RegisterRequest {
   final String name;
   final String statusNote;
   final String petName;
-  final String pbirthday;
-  final String pgender;
+  final String petBirthday;
+  final String petGender;
 
   RegisterRequest({
     required this.userId,
@@ -13,8 +13,8 @@ class RegisterRequest {
     required this.name,
     required this.statusNote,
     required this.petName,
-    required this.pbirthday,
-    required this.pgender,
+    required this.petBirthday,
+    required this.petGender,
   });
 
   factory RegisterRequest.fromJson(Map<String, dynamic> json) {
@@ -24,8 +24,8 @@ class RegisterRequest {
       name: json['name'] as String,
       statusNote: json['statusNote'] as String,
       petName: json['petName'] as String,
-      pbirthday: json['pbirthday'] as String,
-      pgender: json['pgender'] as String,
+      petBirthday: json['petBirthday'] as String,
+      petGender: json['petGender'] as String,
     );
   }
 
@@ -35,7 +35,7 @@ class RegisterRequest {
     'name': name,
     'statusNote': statusNote,
     'petName': petName,
-    'pbirthday': pbirthday,
-    'pgender': pgender,
+    'petBirthday': petBirthday,
+    'petGender': petGender,
   };
 }

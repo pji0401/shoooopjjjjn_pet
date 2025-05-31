@@ -21,8 +21,8 @@ class GenderPicker extends StatelessWidget {
       ),
       child: Row(
         children: [
-          _buildOption('남자', 'male'),
-          _buildOption('여자', 'female'),
+          _buildOption('남자', 'MALE'),
+          _buildOption('여자', 'FEMALE '),
         ],
       ),
     );
