@@ -18,13 +18,18 @@ class ChatRepository {
 
     final body = {
       "model": "gemini-2.0-flash",
-      // TODO: prompt 수정 필요
       "messages": [
-        {"role": "system", "content": "You are a helpful assistant."},
-        {"role": "user", "content": userMessage}
+        {
+          "role": "system",
+          "content": "You are an AI assistant for a pet care service. Your role is to provide helpful, friendly, and specific advice to customers based on the given context."
+        },
+        {
+          "role": "user",
+          "content": userMessage
+        }
       ],
       "temperature": 0.7,
-      "max_tokens": 150,
+      "max_tokens": 250,
       "stream": true,
     };
 

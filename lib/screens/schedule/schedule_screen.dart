@@ -296,7 +296,12 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
             right: 24,
             bottom: MediaQuery.of(context).padding.bottom + 30,
             child: GestureDetector(
-              onTap: () => context.push(RoutePath.schedule_write.value),
+              onTap: () => {
+                // TODO: context.push(RoutePath.schedule_write.value)
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('일정 작성 기능은 준비 중입니다. (DB에 직접 일정 등록 필요)')),
+                )
+              },
               child: Container(
                 width: 55,
                 height: 55,

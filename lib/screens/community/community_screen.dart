@@ -48,8 +48,10 @@ class CommunityScreenState extends State<CommunityScreen> {
                   BlendMode.srcIn), // 아이콘 색상 적용
             ),
             onPressed: () {
-              // 05.08 - TODO: 검색 기능 구현
-              AppLogger.d('돋보기 아이콘 클릭');
+              // 05.08 - TODO: context.push(RoutePath.community_search.value);
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('검색 기능은 준비 중입니다.')),
+              );
             },
           ),
           IconButton(

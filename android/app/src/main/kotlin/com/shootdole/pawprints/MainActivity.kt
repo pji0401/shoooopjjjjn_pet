@@ -1,4 +1,4 @@
-package com.example.pawprints
+package com.shootdole.pawprints
 
 import io.flutter.embedding.android.FlutterActivity
 

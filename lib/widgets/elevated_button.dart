@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pawprints/screens/care/funeral_details_tab_content.dart';
 
 class CustomElevatedButton extends StatelessWidget {
   final VoidCallback onPressed;
@@ -27,7 +28,7 @@ class CustomElevatedButton extends StatelessWidget {
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           foregroundColor: Colors.white,
-          backgroundColor: const Color(0xFF3A8DFF),
+          backgroundColor: AppColors.main,
           padding: padding ?? const EdgeInsets.symmetric(vertical: 14),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(borderRadius),

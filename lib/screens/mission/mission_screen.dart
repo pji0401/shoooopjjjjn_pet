@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pawprints/config/index.dart';
+import 'package:pawprints/data/models/request/mission_create_request.dart';
+import 'package:pawprints/utils/index.dart';
 import 'package:pawprints/widgets/elevated_button.dart';
 import 'package:pawprints/widgets/index.dart';
 import 'package:pawprints/viewmodels/index.dart';
+import 'package:pawprints/core/network/index.dart';
 
 class MissionScreen extends StatefulWidget {
   const MissionScreen({super.key});
@@ -30,14 +33,15 @@ class _MissionScreenState extends State<MissionScreen> {
                 padding: const EdgeInsets.symmetric(
                   horizontal: 20,
                 ),
-                child: Column(children: [
-                  const SizedBox(height: 120),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 120),
 
-                  // --------- WHITE CONTAINER ------------
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(30),
-                    decoration: BoxDecoration(
+                    // --------- WHITE CONTAINER ------------
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(30),
+                      decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(20),
                         boxShadow: [
@@ -46,88 +50,97 @@ class _MissionScreenState extends State<MissionScreen> {
                             blurRadius: 10,
                             offset: const Offset(0, 4),
                           )
-                        ]),
+                        ]
+                      ),
 
-                    // --------------- ICON --------------
-                    child: Consumer<HomeProvider>(
-                        builder: (context, provider, child) {
-                      return Column(mainAxisSize: MainAxisSize.min, children: [
-                        // ----- SVG ------
-                        Stack(
-                            alignment: Alignment.center,
-                            clipBehavior: Clip.none,
-                            children: [
-                              Positioned(
-                                left: -30,
-                                bottom: -5,
-                                child: SvgPicture.asset(
-                                    'assets/icons/mission_paw.svg',
-                                    width: 90),
+                      // --------------- ICON --------------
+                      child: Consumer<HomeProvider>(
+                          builder: (context, provider, child) {
+                            return Column(mainAxisSize: MainAxisSize.min, children: [
+                              // ----- SVG ------
+                              Stack(
+                                alignment: Alignment.center,
+                                clipBehavior: Clip.none,
+                                children: [
+                                  Positioned(
+                                    left: -30,
+                                    bottom: -5,
+                                    child: SvgPicture.asset(
+                                        'assets/icons/mission_paw.svg',
+                                        width: 90),
+                                  ),
+                                  Image.asset(
+                                    'assets/datas/envelope.png',
+                                    height: 150,
+                                    width: 150,
+                                  )
+                                ]
                               ),
-                              Image.asset(
-                                'assets/datas/envelope.png',
-                                height: 150,
-                                width: 150,
-                              )
-                            ]),
 
-                        const SizedBox(height: 40),
+                              const SizedBox(height: 40),
 
-                        // ---------- MISSION DAY BADGE ----------------
-                        Container(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 4, horizontal: 12),
-                            decoration: BoxDecoration(
-                                color: const Color(0xFFF0F4FF),
-                                borderRadius: BorderRadius.circular(5),
-                                border:
-                                    Border.all(color: const Color(0xFF4285F4))),
-                            child: Text(
-                                '${provider.mission.data?.order ?? ""}번째 미션',
+                              // ---------- MISSION DAY BADGE ----------------
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 4, horizontal: 12),
+                                decoration: BoxDecoration(
+                                    color: const Color(0xFFF0F4FF),
+                                    borderRadius: BorderRadius.circular(5),
+                                    border: Border.all(color: const Color(0xFF4285F4))),
+                                child: Text('${provider.mission.data?.order ?? ""}번째 미션',
+                                  style: TextStyle(
+                                    color: Color(0xFF135DB2),
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                  )
+                                )
+                              ),
+
+                              const SizedBox(height: 20),
+
+                              // --------------- MISSION TEXT ----------------------
+                              Text('${provider.mission.data?.title ?? ""}',
                                 style: TextStyle(
-                                  color: Color(0xFF135DB2),
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-                                ))),
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w600,
+                                  height: 1.45,
+                                  letterSpacing: -0.44,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ]
+                          );
+                        }
+                      ),
+                    ),
 
-                        const SizedBox(height: 20),
+                    const SizedBox(height: 50),
 
-                        // --------------- MISSION TEXT ----------------------
-                        Text(
-                          '${provider.mission.data?.title ?? ""}',
-                          style: TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.w600,
-                            height: 1.45,
-                            letterSpacing: -0.44,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ]);
-                    }),
-                  ),
+                    CustomElevatedButton(
+                      onPressed: () {
+                        context.push(RoutePath.mission_write.value);
+                      },
+                      text: '미션 인증하기',
+                      height: 50,
+                    ),
 
-                  const SizedBox(height: 50),
+                    const SizedBox(height: 5),
 
-                  CustomElevatedButton(
-                    onPressed: () {
-                      context.push(RoutePath.mission_write.value);
-                    },
-                    text: '미션 인증하기',
-                    height: 50,
-                  ),
-
-                  const SizedBox(height: 5),
-
-                  TextButton(
+                    TextButton(
                       onPressed: _showSkipMissionModal,
                       child: const Text('건너뛰기',
                           style: TextStyle(
                             color: Color(0xFF8D8D8D),
                             fontSize: 15,
                             fontWeight: FontWeight.w400,
-                          )))
-                ]))));
+                          )
+                      )
+                    )
+                  ]
+                )
+            )
+        )
+    );
   }
 
   void _showSkipMissionModal() {
@@ -161,19 +174,40 @@ class _MissionScreenState extends State<MissionScreen> {
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 0),
-          child: CustomElevatedButton(
-            text: '건너뛰고 다음에 하기',
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            height: 50,
-          ),
+        Consumer<MissionProvider> (
+          builder: (context, provider, child)  {
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 0),
+              child: CustomElevatedButton(
+                text: '건너뛰고 다음에 하기',
+                onPressed: () {
+                  provider.createMission(request: MissionCreateRequest(memberId: SharedPreferencesHelper().memberId.toString(), title: "첫 미션", description: "첫 미션 생성을 축하합니다!")).then((_) {
+                    if (provider.createdMission.uiState == UIState.COMPLETED) {
+                      AppLogger.d("✅ login: ${provider.createdMission.data?.id}");
+                      context.pop();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('미션 건너뛰기 기능은 준비 중입니다. (대체로 초기 미션을 생성했습니다.)')),
+                      );
+                    } else {
+                      AppLogger.d("⚠️ data is null or wrong type");
+                      context.pop();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('미션 건너뛰기 기능은 준비 중입니다. (대체 작업에서 비정상적인 오류 발생)')),
+                      );
+                    }
+                  });
+                },
+                height: 50,
+              ),
+            );
+          }
         ),
         const SizedBox(height: 10),
         TextButton(
           onPressed: () {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('미션 건너뛰기 기능은 준비 중입니다.')),
+            );
             Navigator.of(context).pop();
             // logic
           },

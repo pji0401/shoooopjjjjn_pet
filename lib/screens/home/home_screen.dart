@@ -20,58 +20,54 @@ class _HomeScreenState extends State<HomeScreen> {
       final memberId = SharedPreferencesHelper().memberId;
       Provider.of<HomeProvider>(context, listen: false).getMission(memberId);
       Provider.of<HomeProvider>(context, listen: false).getTitle(memberId);
-      Provider.of<MemoryProvider>(context, listen: false)
-          .getMemoryList(memberId);
+      Provider.of<MemoryProvider>(context, listen: false).getMemoryList(memberId);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final missionProvider =
-        Provider.of<MissionProvider>(context); // FIXME: HomeProvider
+    final missionProvider = Provider.of<MissionProvider>(context); // FIXME: HomeProvider
 
     return BaseScaffold(
-        // appbar
-        leadingWidth: 100,
-        leadingItem: SvgPicture.asset('assets/icons/pawprint.svg'),
-        trailingItems: [
-          IconButton(
-            icon: SvgPicture.asset('assets/icons/notification_on.svg'),
-            onPressed: () => context.push(RoutePath.notification.value),
-          ),
-          IconButton(
-            icon: SvgPicture.asset('assets/icons/schedule.svg',
-                width: 24, height: 24),
-            onPressed: () => context.push(RoutePath.schedule.value),
-          ),
-        ],
-
-        // body
-        body: Stack(
+      leadingWidth: 100,
+      leadingItem: SvgPicture.asset('assets/icons/pawprint.svg'),
+      trailingItems: [
+        IconButton(
+          icon: SvgPicture.asset('assets/icons/notification_on.svg'),
+          onPressed: () => context.push(RoutePath.notification.value),
+        ),
+        IconButton(
+          icon: SvgPicture.asset('assets/icons/schedule.svg', width: 24, height: 24),
+          onPressed: () => context.push(RoutePath.schedule.value),
+        ),
+      ],
+      // body
+      body: Padding(
+        padding: EdgeInsets.only(
+          bottom: 60, // FIXME: temp
+        ),
+        child: Stack(
           children: [
             // Gradient background
-            Positioned(
-              child: Container(
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Color(0xFFEFF8EB),
-                      Color(0xFFE2EAFC),
-                    ],
-                    stops: [0.03, 0.56],
-                  ),
+            Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color(0xFFEFF8EB),
+                    Color(0xFFE2EAFC),
+                  ],
+                  stops: [0.03, 0.56],
                 ),
               ),
             ),
-            Container(
+            Padding(
               padding: EdgeInsets.only(
-                top: MediaQuery.of(context).padding.top + 34,
-                bottom: 83,
+                top: MediaQuery.of(context).padding.top + 53, // FIXME: temp
               ),
               child: Container(
-                color: Colors.white.withAlpha(51), // 0.2 opacity
+                color: Colors.transparent, // 0.2 opacity
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,30 +85,46 @@ class _HomeScreenState extends State<HomeScreen> {
                                 children: [
                                   Consumer<HomeProvider>(
                                       builder: (context, provider, child) {
-                                    return RichText(
-                                      text: TextSpan(
-                                        style: const TextStyle(
-                                          fontSize: 26.0,
-                                          color: Colors.black,
-                                          height: 1.5,
-                                        ),
-                                        children: [
-                                          BlueColoredText.toTextSpan(
-                                              provider.title.data?.name ?? '',
-                                              fontSize: 26.0),
-                                          const TextSpan(text: '님, '),
-                                          BlueColoredText.toTextSpan(
-                                              provider.title.data?.pname ?? '',
-                                              fontSize: 26.0),
-                                          const TextSpan(text: '와 함께\n'),
-                                          BlueColoredText.toTextSpan(
-                                              '${provider.title.data?.memoryCount ?? ''}',
-                                              fontSize: 26.0),
-                                          const TextSpan(text: '개의 추억을\n쌓았어요!'),
-                                        ],
-                                      ),
-                                    );
-                                  }),
+                                        return Text.rich( // NOTE: text style - Text.rich : default vs RichText : assign
+                                          TextSpan(
+                                            style: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 24,
+                                              fontFamily: 'Pretendard',
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                            children: [
+                                              TextSpan(
+                                                text: provider.title.data?.name ?? '',
+                                                style: TextStyle(
+                                                  color: AppColors.main,
+                                                  fontSize: 25,
+                                                  fontWeight: FontWeight.w700,
+                                                )
+                                              ),
+                                              const TextSpan(text: '님, '),
+                                              TextSpan(
+                                                text: provider.title.data?.pname ?? '',
+                                                style: TextStyle(
+                                                  color: AppColors.main,
+                                                  fontSize: 25,
+                                                  fontWeight: FontWeight.w700,
+                                                )
+                                              ),
+                                              const TextSpan(text: '와 함께\n'),
+                                              TextSpan(
+                                                text: '${provider.title.data?.memoryCount ?? ''}',
+                                                style: TextStyle(
+                                                  color: AppColors.main,
+                                                  fontSize: 25,
+                                                  fontWeight: FontWeight.w700,
+                                                )
+                                              ),
+                                              const TextSpan(text: '개의 추억을\n쌓았어요!'),
+                                            ],
+                                          ),
+                                        );
+                                      }),
                                   const SizedBox(height: 20),
                                   // Memory button
                                   ElevatedButton(
@@ -177,7 +189,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       // Space between sections
-                      const SizedBox(height: 40),
+                      const SizedBox(height: 20),
 
                       _TodayMissionSection(
                         missionProvider: missionProvider,
@@ -192,9 +204,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-            ),
+            )
           ],
-        ));
+        ),
+      )
+    );
   }
 
   Widget _buildPawDayStatus(bool isCompleted) {
@@ -338,25 +352,24 @@ class _TodayMissionSection extends StatelessWidget {
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text('이번주 미션 현황',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        )),
+                    HomeSectionHeader('이번주 미션 현황'),
                     InkWell(
                         onTap: () {
-                          context.push(RoutePath.mission_weekly.value);
+                          // TODO: context.push(RoutePath.mission_weekly.value);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('이번주 미션 조회 기능은 준비 중입니다.')),
+                          );
                         },
                         child: Row(children: const [
                           Text('전체보기',
                               style: TextStyle(
                                 fontSize: 16,
-                                color: Color(0xFF135DB2),
+                                color: Colors.black,
                               )),
                           Icon(
                             Icons.chevron_right,
                             size: 16,
-                            color: Color(0xFF135DB2),
+                            color: Colors.black,
                           )
                         ]))
                   ])),
@@ -405,48 +418,52 @@ class _TodayMissionSection extends StatelessWidget {
 }
 
 class _MissionFeedSection extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: double.infinity,
-        decoration: BoxDecoration(color: Colors.white, boxShadow: [
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
           BoxShadow(
-            color: Colors.black.withAlpha(0x0D), // 0.05 opacity
+            color: Colors.black.withAlpha(0x0D),
             blurRadius: 10,
           )
-        ]),
-        padding: EdgeInsets.symmetric(vertical: 25),
-
-        // Main content
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        ]
+      ),
+      padding: EdgeInsets.symmetric(vertical: 25),
+      // Main content
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
           // header section
           Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    HomeSectionHeader('미션 피드'),
-                    InkWell(
-                        onTap: () {
-                          // context는 StatelessWidget의 build 메소드에서 사용 가능
-                          context.push(RoutePath.memory.value);
-                        },
-                        child: Row(children: const [
-                          Text('전체보기',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.black,
-                              )),
-                          Icon(
-                            Icons.chevron_right,
-                            size: 16,
+            padding: const EdgeInsets.symmetric(horizontal: 25),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                HomeSectionHeader('미션 피드'),
+                InkWell(
+                    onTap: () {
+                      context.push(RoutePath.memory.value);
+                    },
+                    child: Row(children: const [
+                      Text('전체보기',
+                          style: TextStyle(
+                            fontSize: 16,
                             color: Colors.black,
-                          )
-                        ]))
-                  ])),
-
-          const SizedBox(height: 20),
+                          )),
+                      Icon(
+                        Icons.chevron_right,
+                        size: 16,
+                        color: Colors.black,
+                      )
+                    ]
+                    )
+                )
+              ]
+            )
+          ),
 
           // Horizontal Scrollable mission cards
           Consumer<MemoryProvider>(builder: (context, provider, child) {
@@ -455,10 +472,11 @@ class _MissionFeedSection extends StatelessWidget {
             return SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Padding(
-                padding: const EdgeInsets.only(left: 25, right: 10),
+                padding: const EdgeInsets.only(left: 25, right: 10, top: 20, bottom: 20),
                 child: Row(
+                  spacing: 10,
                   children: List.generate(length, (index) {
-                    return memory.length < 0
+                    return memory.isNotEmpty
                         ? Row(
                       children: [
                         MissionCard(
@@ -472,8 +490,10 @@ class _MissionFeedSection extends StatelessWidget {
                 ),
               ),
             );
-          })
-        ]));
+          }),
+        ]
+      )
+    );
   }
 }
 
@@ -499,13 +519,14 @@ class MissionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: Skeleton View/Frame
-    return Container(
+    return imagePath.isNotEmpty ?
+    Container(
       width: 138,
       height: 120,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         image: DecorationImage(
-          image: imagePath.startsWith('http') ? NetworkImage(imagePath) : AssetImage(imagePath) as ImageProvider, // FIXME: NetworkImage 화질 문제 - Image.network or .png 문제인지 확인 필요
+          image: NetworkImage(imagePath), // FIXME: NetworkImage 화질 문제 - Image.network or .png 문제인지 확인 필요
           fit: BoxFit.cover,
         ),
       ),
@@ -543,6 +564,15 @@ class MissionCard extends StatelessWidget {
           ),
         ],
       ),
+    ) :
+    Container(
+      width: 138,
+      height: 120,
+      decoration: BoxDecoration(
+        color: AppColors.lightGrey,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: const Center(child: Icon(Icons.broken_image, color: Colors.grey, size: 25)),
     );
   }
 }

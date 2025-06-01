@@ -42,8 +42,7 @@ class _ChatScreenState extends State<ChatScreen> {
         children: [
           Container(
             padding: EdgeInsets.only(
-              top: MediaQuery.of(context).padding.top + 34,
-              // bottom: 83,
+              top: MediaQuery.of(context).padding.top + 53, // FIXME: temp
             ),
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -59,109 +58,106 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
             child: Column(
               children: [
-                SingleChildScrollView(child: ConstrainedBox(
-                  constraints: BoxConstraints(maxHeight: 600), // FIXME: - MediaQuery.of(context).viewInsets.bottom * 0.5
-                  child: ListView.builder(
-                    padding: const EdgeInsets.all(16.0),
-                    itemCount: _messages.length,
-                    itemBuilder: (context, index) {
-                      final message = _messages[index];
-                      return Align(
-                        alignment: message.isSentByMe
-                            ? Alignment.centerRight
-                            : Alignment.centerLeft,
-                        child: Container(
-                          constraints: BoxConstraints(
-                            maxWidth: MediaQuery.of(context).size.width * 0.7,
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              if (!message.isSentByMe) ...[
-                                Flexible(
-                                  child: Container(
-                                    margin: const EdgeInsets.symmetric(
-                                        vertical: 5.0),
-                                    padding: const EdgeInsets.all(16.0),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: const BorderRadius.only(
-                                        topLeft: Radius.circular(18.0),
-                                        topRight: Radius.circular(18.0),
-                                        bottomRight: Radius.circular(18.0),
-                                      ),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.black.withOpacity(0.04),
-                                          blurRadius: 6,
-                                          offset: const Offset(0, 2),
+                SingleChildScrollView(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.8),
+                    child: ListView.builder(
+                      padding: const EdgeInsets.only(left: 16.0, top: 16.0, right: 16.0, bottom: 134),
+                      itemCount: _messages.length,
+                      itemBuilder: (context, index) {
+                        final message = _messages[index];
+                        return Align(
+                          alignment: message.isSentByMe ? Alignment.centerRight : Alignment.centerLeft,
+                          child: Container(
+                            constraints: BoxConstraints(
+                              maxWidth: MediaQuery.of(context).size.width, // FIXME: temp
+                              maxHeight: MediaQuery.of(context).size.height, // FIXME: temp
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                if (!message.isSentByMe) ...[
+                                  Flexible(
+                                    child: Container(
+                                      margin: const EdgeInsets.symmetric(vertical: 5),
+                                      padding: const EdgeInsets.all(16.0),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: const BorderRadius.only(
+                                          topLeft: Radius.circular(18.0),
+                                          topRight: Radius.circular(18.0),
+                                          bottomRight: Radius.circular(18.0),
                                         ),
-                                      ],
-                                    ),
-                                    child: Text(
-                                      message.text,
-                                      style: chatBubbleTextStyle,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(width: 8),
-                                Text(
-                                  message.time,
-                                  style: const TextStyle(
-                                    color: Colors.black54,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ],
-                              if (message.isSentByMe) ...[
-                                Text(
-                                  message.time,
-                                  style: const TextStyle(
-                                    color: Colors.black54,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                                const SizedBox(width: 8),
-                                Flexible(
-                                  child: Container(
-                                    margin: const EdgeInsets.symmetric(
-                                        vertical: 5.0),
-                                    padding: const EdgeInsets.all(16.0),
-                                    decoration: const BoxDecoration(
-                                      color: Color(0xFF5CA8FF),
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(18.0),
-                                        topRight: Radius.circular(18.0),
-                                        bottomLeft: Radius.circular(18.0),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.black.withOpacity(0.04),
+                                            blurRadius: 6,
+                                            offset: const Offset(0, 2),
+                                          ),
+                                        ],
+                                      ),
+                                      child: Text(
+                                        message.text,
+                                        style: chatBubbleTextStyle,
                                       ),
                                     ),
-                                    child: Text(
-                                      message.text,
-                                      style: chatBubbleTextStyle.copyWith(
-                                          color: Colors.white),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    message.time,
+                                    style: const TextStyle(
+                                      color: Colors.black54,
+                                      fontSize: 12,
                                     ),
                                   ),
-                                ),
+                                ],
+                                if (message.isSentByMe) ...[
+                                  Text(
+                                    message.time,
+                                    style: const TextStyle(
+                                      color: Colors.black54,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Flexible(
+                                    child: Container(
+                                      margin: const EdgeInsets.symmetric(vertical: 5),
+                                      padding: const EdgeInsets.all(16.0),
+                                      decoration: const BoxDecoration(
+                                        color: Color(0xFF5CA8FF),
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(18.0),
+                                          topRight: Radius.circular(18.0),
+                                          bottomLeft: Radius.circular(18.0),
+                                        ),
+                                      ),
+                                      child: Text(
+                                        message.text,
+                                        style: chatBubbleTextStyle.copyWith(color: Colors.white),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ],
-                            ],
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                  ),
-                )),
+                        );
+                      },
+                    ),
+                  )
+                ),
               ],
             ),
           ),
           Positioned(
             left: 0,
             right: 0,
-            bottom: 134 + MediaQuery.of(context).viewInsets.bottom * 0.7,
+            bottom: 134,
             child: Center(
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.9,
-                height: 52,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(26),

@@ -87,9 +87,12 @@ class HomeSectionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(text,
-        style: TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-        ));
+      style: const TextStyle(
+        color: Colors.black,
+        fontSize: 20,
+        fontFamily: 'Pretendard',
+        fontWeight: FontWeight.w600,
+      ),
+    );
   }
 }

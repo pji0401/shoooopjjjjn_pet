@@ -22,11 +22,19 @@ class App extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => CommunityProvider(CommunityRepository(dioClient))),
         ChangeNotifierProvider(create: (context) => ChatProvider(ChatRepository())),
       ],
-      child: MaterialApp.router(
-        theme: ThemeData(scaffoldBackgroundColor: Colors.white),
-        debugShowCheckedModeBanner: false,
-        routerConfig: router,
-      ),
+      child: GestureDetector(
+        onTap: () {
+          FocusManager.instance.primaryFocus?.unfocus(); // NOTE: hideKeyboard
+        },
+        child: MaterialApp.router(
+          theme: ThemeData(
+            scaffoldBackgroundColor: Colors.white,
+            textSelectionTheme: TextSelectionThemeData(cursorColor: AppColors.main)
+          ),
+          debugShowCheckedModeBanner: false,
+          routerConfig: router,
+        ),
+      )
     );
   }
 }

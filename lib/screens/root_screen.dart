@@ -77,16 +77,15 @@ class _RootViewState extends State<RootScreen> {
             left: 0,
             right: 0,
             child: Center(
-                child: _buildNavItem('assets/icons/chatbot_off.svg',
-                    'assets/icons/chatbot_on.svg', 'AI 챗봇', 2)),
+                child: _buildNavItem('assets/icons/chatbot_off.svg', 'assets/icons/chatbot_on.svg', 'AI 챗봇', 2)
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildNavItem(
-      String assetNameOff, String assetNameOn, String label, int index) {
+  Widget _buildNavItem(String assetNameOff, String assetNameOn, String label, int index) {
     return GestureDetector(
       onTap: () => _onItemTapped(index),
       child: Column(
@@ -103,11 +102,7 @@ class _RootViewState extends State<RootScreen> {
             label,
             style: TextStyle(
               fontSize: 12,
-              color: _selectedIndex == 2
-                  ? Color(0xff070707)
-                  : _selectedIndex == index
-                      ? Color(0xff135DB2)
-                      : Color(0xff070707),
+              color: _selectedIndex == 2 ? Color(0xff070707) : _selectedIndex == index ? Color(0xff135DB2) : Color(0xff070707),
             ),
           ),
         ],

@@ -117,9 +117,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         setState(() {
                           _autoLogin = value ?? false;
                         });
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('자동 로그인 기능은 준비 중입니다.')),
+                        );
                       },
                       visualDensity: VisualDensity.compact,
                       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      activeColor: AppColors.main,
+                      checkColor: Colors.white,
                     ),
                     const Text('자동로그인'),
                   ],
