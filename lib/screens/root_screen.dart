@@ -4,14 +4,16 @@ import 'package:pawprints/screens/index.dart';
 import 'package:pawprints/widgets/index.dart';
 
 class RootScreen extends StatefulWidget {
-  const RootScreen({super.key});
+  final int selectedIndex;
+
+  const RootScreen({super.key, required this.selectedIndex});
 
   @override
   State<RootScreen> createState() => _RootViewState();
 }
 
 class _RootViewState extends State<RootScreen> {
-  int _selectedIndex = 0;
+  late int _selectedIndex;
 
   static const List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
@@ -25,6 +27,12 @@ class _RootViewState extends State<RootScreen> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedIndex = widget.selectedIndex;
   }
 
   @override

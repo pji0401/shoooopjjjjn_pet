@@ -46,10 +46,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
   void _handleNotificationTap(AppNotification notification) {
     switch (notification.type) {
       case '일정':
-        context.push('/schedule');
+        context.push(RoutePath.schedule.value);
         break;
       case '커뮤니티':
-        context.push('/community');
+        context.push(RoutePath.root.value, extra: 1);
         break;
     }
   }

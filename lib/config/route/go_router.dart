@@ -12,10 +12,10 @@ final router = GoRouter(
     GoRoute(path: RoutePath.signup_user.value, builder: (context, state) => const SignUpUserScreen()),
     GoRoute(path: RoutePath.signup_profile.value, builder: (context, state) => const SignUpProfileScreen()),
     GoRoute(path: RoutePath.signup_pet.value, builder: (context, state) => const SignUpPetScreen()),
-    GoRoute(path: RoutePath.signup_welcome.value, builder: (context, state) => const SignUpWelcomeScreen()),
+    GoRoute(path: RoutePath.signup_welcome.value, builder: (context, state) => SignUpWelcomeScreen(userName: state.extra as String)),
 
     // Home
-    GoRoute(path: RoutePath.root.value, builder: (context, state) => const RootScreen()),
+    GoRoute(path: RoutePath.root.value, builder: (context, state) => RootScreen(selectedIndex: state.extra as int)),
     GoRoute(path: RoutePath.home.value, builder: (context, state) => const HomeScreen()),
 
     // Mission

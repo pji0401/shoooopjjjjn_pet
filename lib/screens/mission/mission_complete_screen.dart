@@ -17,7 +17,7 @@ class MemoryItem {
 class MissionCompleteScreen extends StatefulWidget {
   final int memoryId;
 
-  const MissionCompleteScreen({Key? key, required this.memoryId}) : super(key: key);
+  const MissionCompleteScreen({super.key, required this.memoryId});
 
   @override
   State<MissionCompleteScreen> createState() => _MissionCompleteScreenState();

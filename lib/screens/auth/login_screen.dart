@@ -141,7 +141,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           AppLogger.d("✅ login: ${provider.id.data?.id}");
                           if (provider.id.data != null)
                           SharedPreferencesHelper().setMemberId(provider.id.data!.id);
-                          context.push(RoutePath.root.value);
+                          context.push(RoutePath.root.value, extra: 0);
                         } else {
                           AppLogger.d("⚠️ data is null or wrong type");
                         }

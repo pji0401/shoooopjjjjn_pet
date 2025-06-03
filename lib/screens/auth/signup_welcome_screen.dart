@@ -2,11 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:pawprints/config/index.dart';
 import 'package:pawprints/widgets/index.dart';
 
-class SignUpWelcomeScreen extends StatelessWidget {
-  final String userName = '호준';
+class SignUpWelcomeScreen extends StatefulWidget {
+  final String userName;
 
-  const SignUpWelcomeScreen({super.key});
+  const SignUpWelcomeScreen({super.key, required this.userName});
 
+  @override
+  State<SignUpWelcomeScreen> createState() => SignUpWelcomeScreenState();
+}
+
+class SignUpWelcomeScreenState extends State<SignUpWelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
@@ -17,7 +22,7 @@ class SignUpWelcomeScreen extends StatelessWidget {
           children: [
             const SizedBox(height: 75),
             Text(
-              '$userName님,\n환영합니다!',
+              '${widget.userName}님,\n환영합니다!',
               style: TextStyle(
                 color: Color(0xff000000),
                 fontSize: 30,

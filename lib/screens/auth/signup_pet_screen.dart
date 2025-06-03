@@ -203,7 +203,7 @@ class SignUpPetScreenState extends State<SignUpPetScreen> {
                           if (provider.id.uiState == UIState.COMPLETED) {
                             AppLogger.d('✅ login: ${provider.memberId.data?.id}');
                             SharedPreferencesHelper().setMemberId(provider.id.data!.id);
-                            context.push(RoutePath.signup_welcome.value);
+                            context.push(RoutePath.signup_welcome.value, extra: provider.name);
                           } else {
                             AppLogger.d('⚠️ data is null or wrong type');
                           }

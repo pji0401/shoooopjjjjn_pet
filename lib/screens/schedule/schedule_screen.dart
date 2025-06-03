@@ -132,7 +132,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                         setState(() {
                           currentPage = index;
                           selectedDayIndex = 0;
-                          fetchPlansForSelectedDate(generateWeek(baseDate.add(Duration(days: index * 7)))[0]['fullDate'] as DateTime,);
+                          fetchPlansForSelectedDate(generateWeek(baseDate.add(Duration(days: index * 7)))[0]['fullDate'] as DateTime);
                         });
                       },
                       itemCount: totalPages,
@@ -142,8 +142,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: List.generate(7, (dayIndex) {
-                            final isSelected = (index == currentPage) &&
-                                (dayIndex == selectedDayIndex);
+                            final isSelected = (index == currentPage) && (dayIndex == selectedDayIndex);
                             final day = week[dayIndex];
                             final label = day['label'] as String;
 
@@ -227,6 +226,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                             provider.check(provider.planList.data?.plans[idx].id ?? 0).then((_) {
                               if (provider.isCheck.uiState == UIState.COMPLETED) {
                                 AppLogger.d('✅ checkingPlan: ${provider.isCheck.data?.id}');
+                                fetchPlansForSelectedDate(selectedDateTime); // FIXME: check api
                               } else {
                                 AppLogger.d('⚠️ data is null or wrong type');
                               }
