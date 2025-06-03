@@ -64,7 +64,7 @@ class SignUpWelcomeScreenState extends State<SignUpWelcomeScreen> {
               height: 50,
               child: ElevatedButton(
                 onPressed: () {
-                  context.go(RoutePath.root.value);
+                  context.push(RoutePath.root.value, extra: 0);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF4A9BF6),
