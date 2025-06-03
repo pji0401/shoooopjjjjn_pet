@@ -269,7 +269,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                                         ),
                                         const SizedBox(height: 4),
                                         Text(
-                                          provider.planList.data?.plans[idx].date ?? '',
+                                          '${DateFormat('HH:mm:ss').parse(provider.planList.data?.plans[idx].time ?? '').hour}시 ${DateFormat('HH:mm:ss').parse(provider.planList.data?.plans[idx].time ?? '').minute}분' ?? '',
                                           style: const TextStyle(
                                             fontFamily: 'Pretendard',
                                             fontWeight: FontWeight.w400,
