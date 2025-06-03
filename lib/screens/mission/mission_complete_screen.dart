@@ -45,7 +45,7 @@ class _MissionCompleteScreenState extends State<MissionCompleteScreen> {
     return BaseScaffold(
       leadingItem: IconButton(
         icon: const Icon(Icons.arrow_back_ios, color: primaryTextColor, size: 20),
-        onPressed: () => context.go(RoutePath.root.value),
+        onPressed: () => context.go(RoutePath.root.value, extra: 0),
       ),
       body: SafeArea(
         child: Consumer<MemoryProvider>(

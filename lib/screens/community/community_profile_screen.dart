@@ -79,42 +79,46 @@ class CommunityProfileScreenState extends State<CommunityProfileScreen> {
           Padding(
             padding:
             const EdgeInsets.symmetric(vertical: 28.0, horizontal: 32.0),
-            child: Row(
-              children: [
-                // 프로필 이미지
-                CircleAvatar(
-                  radius: 40,
-                  backgroundImage:
-                  AssetImage('assets/images/default_profile.png'),
-                ),
-                const SizedBox(width: 16),
+            child: Consumer<CommunityProvider> (
+                builder: (context, provider, child) {
+                  return Row(
+                    children: [
+                      // 프로필 이미지
+                      CircleAvatar(
+                        radius: 40,
+                        backgroundImage: NetworkImage(provider.memberContentList.data?.profile ?? 'assets/images/default_profile.png'),
+                      ),
 
-                // 닉네임과 프로필 메시지
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'bombom',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                        fontFamily: pretendardFontFamily,
+                      const SizedBox(width: 16),
+
+                      // 닉네임과 프로필 메시지
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            provider.memberContentList.data?.name ?? '',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                              fontFamily: pretendardFontFamily,
+                            ),
+                          ),
+                          SizedBox(height: 0.2),
+                          Text(
+                            provider.memberContentList.data?.statusNote ?? '',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              fontFamily: pretendardFontFamily,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    SizedBox(height: 0.2),
-                    Text(
-                      '봄플루언서가 되는 그날까지',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        fontFamily: pretendardFontFamily,
-                        color: Colors.grey[600],
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+                    ],
+                  );
+                },
+            )
           ),
           Expanded(
             child: CenterFitTabViewSection(
